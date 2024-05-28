@@ -8,7 +8,7 @@
 import UIKit
 protocol SidebarDelegate {
     func sidebarDidOpen()
-//    func sidebarDidClose(with item: NavigationModel?)
+    func sidebarDidClose(with item: NavigationModel?)
 }
 
 class SidebarLauncher: NSObject{
@@ -41,7 +41,6 @@ class SidebarLauncher: NSObject{
 
     func show(){
         let bounds = UIScreen.main.bounds
-        //Aqui cambiar el valor de x
         let v = UIView(frame: CGRect(x: -bounds.width, y: 0, width: bounds.width, height: bounds.height))
         v.backgroundColor = .clear
         let vc = NavigationVC()
@@ -63,7 +62,8 @@ class SidebarLauncher: NSObject{
             vc.view.trailingAnchor.constraint(equalTo: v.trailingAnchor, constant: 0)
             ])
 
-//        closeButton.addTarget(self, action: #selector(close(_:)), for: .touchUpInside)
+        closeButton.addTarget(self, action: #selector(close(_:)), for: .touchUpInside)
+        
         self.view = v
         self.vc = vc
         UIApplication.shared.keyWindow?.addSubview(v)
@@ -77,28 +77,28 @@ class SidebarLauncher: NSObject{
 
     }
 
-//    @objc func close(_ sender: UIButton){
-//        closeSidebar(option: nil)
-//    }
-//    func closeSidebar(option: NavigationModel?){
-//        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
-//            if let view = self.view{
-//                view.frame = CGRect(x: view.frame.width, y: 0, width: view.frame.width, height: view.frame.height)
-//                self.view?.backgroundColor = .clear
-//
-//            }
-//        }, completion: {completed in
-//            self.view?.removeFromSuperview()
-//            self.view = nil
-//            self.vc = nil
-//            self.delegate?.sidebarDidClose(with: option)
-//        })
-//    }
+    @objc func close(_ sender: UIButton){
+        closeSidebar(option: nil)
+    }
+    
+    func closeSidebar(option: NavigationModel?){
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
+            if let view = self.view{
+                view.frame = CGRect(x: -view.frame.width, y: 0, width: view.frame.width, height: view.frame.height)
+                self.view?.backgroundColor = .clear
+
+            }
+        }, completion: {completed in
+            self.view?.removeFromSuperview()
+            self.view = nil
+            self.vc = nil
+            self.delegate?.sidebarDidClose(with: option)
+        })
+    }
 
 }
 extension SidebarLauncher: NavigationDelegate{
     func navigation(didSelect: NavigationModel?) {
-        print(didSelect)
-//        closeSidebar(option: didSelect)
+        closeSidebar(option: didSelect)
     }
 }

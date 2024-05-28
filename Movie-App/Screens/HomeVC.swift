@@ -8,6 +8,14 @@
 import UIKit
 
 class HomeVC: UIViewController {
+//    func sidebarDidOpen() {
+//        <#code#>
+//    }
+//    
+//    func sidebarDidClose(with item: NavigationModel?) {
+//        <#code#>
+//    }
+    
     
     let openSideBarBtn = UIButton()
     
@@ -33,7 +41,7 @@ class HomeVC: UIViewController {
         openSideBarBtn.clipsToBounds = true
         openSideBarBtn.layer.borderColor = UIColor(named: "Medium-Gray")?.cgColor
         openSideBarBtn.layer.borderWidth = 1
-        openSideBarBtn.addTarget(self, action: #selector(didSelect(_:)), for: .touchUpInside)
+//        openSideBarBtn.addTarget(self, action: #selector(didSelect(_:)), for: .touchUpInside)
         view.addSubview(openSideBarBtn)
     }
     
@@ -46,31 +54,6 @@ class HomeVC: UIViewController {
         ])
     }
     
-    
-    @objc func didSelect(_ sender: UIButton){
-            SidebarLauncher.init(delegate: self).show()
-        }
 }
 
 
-extension HomeVC: SidebarDelegate{
-    func sidebarDidOpen() {
-        print("sideBar opened")
-    }
-
-//    func sidebarDidClose(with item: NavigationModel?) {
-//        guard let item = item else {return}
-//        switch item.type {
-//        case .home:
-//            print("called home")
-//        case .star:
-//            print("called star")
-//        case .about:
-//            print("called about")
-//        case .facebook:
-//            print("called facebook")
-//        case .instagram:
-//            print("instagram")
-//        }
-//    }
-}
