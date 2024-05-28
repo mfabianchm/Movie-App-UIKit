@@ -8,16 +8,11 @@
 import UIKit
 
 class HomeVC: UIViewController {
-//    func sidebarDidOpen() {
-//        <#code#>
-//    }
-//    
-//    func sidebarDidClose(with item: NavigationModel?) {
-//        <#code#>
-//    }
-    
-    
+
     let openSideBarBtn = UIButton()
+    let logoImage = UIImageView()
+    let appNameLabel = UILabel()
+    let profileImage = UIImageView()
     
     var padding: CGFloat = 10
 
@@ -29,6 +24,9 @@ class HomeVC: UIViewController {
     
     func configure() {
         configureSideBarBtn()
+        configureUIImageView()
+        configureAppNameLabel()
+        configureProfileImage()
         configureConstrainst()
     }
     
@@ -41,8 +39,31 @@ class HomeVC: UIViewController {
         openSideBarBtn.clipsToBounds = true
         openSideBarBtn.layer.borderColor = UIColor(named: "Medium-Gray")?.cgColor
         openSideBarBtn.layer.borderWidth = 1
-//        openSideBarBtn.addTarget(self, action: #selector(didSelect(_:)), for: .touchUpInside)
         view.addSubview(openSideBarBtn)
+    }
+    
+    func configureUIImageView() {
+        logoImage.translatesAutoresizingMaskIntoConstraints = false
+        logoImage.image = UIImage(systemName: "movieclapper")
+        logoImage.tintColor = UIColor(named: "Yellow")
+        view.addSubview(logoImage)
+    }
+    
+    func configureAppNameLabel() {
+        appNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        appNameLabel.text = "Movie Online"
+        appNameLabel.font = .systemFont(ofSize: 20)
+        appNameLabel.textColor = .white
+        view.addSubview(appNameLabel)
+    }
+    
+    func configureProfileImage() {
+        profileImage.translatesAutoresizingMaskIntoConstraints = false
+        profileImage.image = UIImage(named: "profile-image")
+        profileImage.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        profileImage.layer.cornerRadius = 0.5 * profileImage.bounds.size.width
+        profileImage.clipsToBounds = true
+        view.addSubview(profileImage)
     }
     
     func configureConstrainst() {
@@ -50,7 +71,21 @@ class HomeVC: UIViewController {
             openSideBarBtn.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
             openSideBarBtn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
             openSideBarBtn.widthAnchor.constraint(equalToConstant: 50),
-            openSideBarBtn.heightAnchor.constraint(equalToConstant: 50)
+            openSideBarBtn.heightAnchor.constraint(equalToConstant: 50),
+            
+            logoImage.leadingAnchor.constraint(equalTo: openSideBarBtn.trailingAnchor, constant: 40),
+            logoImage.topAnchor.constraint(equalTo: openSideBarBtn.topAnchor),
+            logoImage.widthAnchor.constraint(equalToConstant: 50),
+            logoImage.heightAnchor.constraint(equalToConstant: 50),
+            
+            appNameLabel.topAnchor.constraint(equalTo: logoImage.topAnchor),
+            appNameLabel.bottomAnchor.constraint(equalTo: logoImage.bottomAnchor),
+            appNameLabel.leadingAnchor.constraint(equalTo: logoImage.trailingAnchor, constant: padding),
+            
+            profileImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            profileImage.topAnchor.constraint(equalTo: openSideBarBtn.topAnchor),
+            profileImage.widthAnchor.constraint(equalToConstant: 50),
+            profileImage.heightAnchor.constraint(equalToConstant: 50),
         ])
     }
     
