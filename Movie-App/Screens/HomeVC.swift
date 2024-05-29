@@ -13,6 +13,7 @@ class HomeVC: UIViewController {
     let logoImage = UIImageView()
     let appNameLabel = UILabel()
     let profileImage = UIImageView()
+    let searchBar = UISearchBar()
     
     var padding: CGFloat = 10
 
@@ -22,11 +23,24 @@ class HomeVC: UIViewController {
         configure()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+//       searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Enter Search Here", attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
+        let textFieldInsideSearchBar = searchBar.value(forKey: "searchField") as? UITextField
+        textFieldInsideSearchBar?.textColor = UIColor.white
+
+        let textFieldInsideSearchBarLabel = textFieldInsideSearchBar!.value(forKey: "placeholderLabel") as? UILabel
+        textFieldInsideSearchBarLabel?.textColor = UIColor(named: "Yellow")
+        
+        
+    }
+    
     func configure() {
         configureSideBarBtn()
         configureUIImageView()
         configureAppNameLabel()
         configureProfileImage()
+        configureSearchBar()
         configureConstrainst()
     }
     
@@ -81,13 +95,30 @@ class HomeVC: UIViewController {
             appNameLabel.topAnchor.constraint(equalTo: logoImage.topAnchor),
             appNameLabel.bottomAnchor.constraint(equalTo: logoImage.bottomAnchor),
             appNameLabel.leadingAnchor.constraint(equalTo: logoImage.trailingAnchor, constant: padding),
-            
             profileImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
             profileImage.topAnchor.constraint(equalTo: openSideBarBtn.topAnchor),
             profileImage.widthAnchor.constraint(equalToConstant: 50),
             profileImage.heightAnchor.constraint(equalToConstant: 50),
+            
+            searchBar.topAnchor.constraint(equalTo: openSideBarBtn.bottomAnchor, constant: 20),
+            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            searchBar.heightAnchor.constraint(equalToConstant: 65),
         ])
     }
+    
+    func configureSearchBar() {
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        searchBar.placeholder = "Search"
+        searchBar.barTintColor = UIColor(named: "Medium-Gray")
+        searchBar.searchTextField.backgroundColor = UIColor(named: "Medium-Gray")
+        searchBar.layer.cornerRadius = 20
+        searchBar.clipsToBounds = true
+        searchBar.searchTextField.leftView?.tintColor = UIColor(named: "Yellow")
+        view.addSubview(searchBar)
+    }
+    
+    
     
 }
 
