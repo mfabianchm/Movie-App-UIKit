@@ -14,6 +14,7 @@ class HomeVC: UIViewController {
     let appNameLabel = UILabel()
     let profileImage = UIImageView()
     let searchBar = UISearchBar()
+    let selectionCarouselVC = SelectionCarousselVC()
     
     var padding: CGFloat = 10
 
@@ -25,7 +26,7 @@ class HomeVC: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-//       searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Enter Search Here", attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
+        
         let textFieldInsideSearchBar = searchBar.value(forKey: "searchField") as? UITextField
         textFieldInsideSearchBar?.textColor = UIColor.white
 
@@ -41,6 +42,7 @@ class HomeVC: UIViewController {
         configureAppNameLabel()
         configureProfileImage()
         configureSearchBar()
+        addVCChilds()
         configureConstrainst()
     }
     
@@ -81,6 +83,7 @@ class HomeVC: UIViewController {
     }
     
     func configureConstrainst() {
+        
         NSLayoutConstraint.activate([
             openSideBarBtn.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
             openSideBarBtn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
@@ -104,6 +107,12 @@ class HomeVC: UIViewController {
             searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             searchBar.heightAnchor.constraint(equalToConstant: 65),
+            
+            selectionCarouselVC.view.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 10),
+            selectionCarouselVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            selectionCarouselVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            selectionCarouselVC.view.heightAnchor.constraint(equalToConstant: 400)
+            
         ])
     }
     
@@ -115,11 +124,23 @@ class HomeVC: UIViewController {
         searchBar.layer.cornerRadius = 20
         searchBar.clipsToBounds = true
         searchBar.searchTextField.leftView?.tintColor = UIColor(named: "Yellow")
+        searchBar.searchTextField.delegate = self
         view.addSubview(searchBar)
     }
     
-    
-    
+    func addVCChilds() {
+        let carouselView = selectionCarouselVC.view
+        addChild(selectionCarouselVC)
+        view.addSubview(carouselView!)
+        selectionCarouselVC.didMove(toParent: self)
+    }
+}
+
+extension HomeVC: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print("return button pressed")
+        return true
+    }
 }
 
 
