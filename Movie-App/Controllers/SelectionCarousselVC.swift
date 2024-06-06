@@ -11,6 +11,7 @@ class SelectionCarousselVC: UIViewController {
     
     let buttonsText: [String] = ["Popular", "New", "Premieres", "Random"]
     let buttonsStackView = UIStackView()
+    var buttons: [UIButton] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,9 +39,9 @@ class SelectionCarousselVC: UIViewController {
             button.setTitle(buttonsText[index], for: .normal)
             button.setTitleColor(.white, for: .normal)
             button.setTitleColor(UIColor(named: "Yellow"), for: .selected)
-            
-            
-            
+            button.addTarget(self, action: #selector(buttonChanged(_:)), for: .touchUpInside)
+            buttons.append(button)
+    
             if(index == 0) {
                 button.isSelected = true
                 button.underlineText()
@@ -55,6 +56,16 @@ class SelectionCarousselVC: UIViewController {
             buttonsStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             buttonsStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
+    }
+    
+    @objc func buttonChanged(_ sender: UIButton) {
+        buttons.forEach { btn in
+            btn.isSelected = false
+            btn.setTitleColor(.white, for: .normal)
+            btn.normalText()
+        }
+        sender.isSelected = true
+        sender.underlineText()
     }
     
 

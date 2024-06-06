@@ -19,4 +19,13 @@ extension UIButton {
     )
     setAttributedTitle(titleString, for: .normal)
   }
+    
+    func normalText() {
+      guard let title = title(for: .normal) else { return }
+        let myAttribute = [ NSAttributedString.Key.underlineStyle: 0]
+      let titleString = NSMutableAttributedString(string: title, attributes: myAttribute)
+      setAttributedTitle(titleString, for: .normal)
+      print(titleString)
+      
+    }
 }
