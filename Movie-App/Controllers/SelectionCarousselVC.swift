@@ -17,6 +17,7 @@ class SelectionCarousselVC: UIViewController {
     
     let buttonsText: [String] = ["Popular", "New", "Premieres", "Random"]
     let buttonsStackView = UIStackView()
+    let cellScale: CGFloat = 0.6
     
     let moviesCollectionView = MoviesCollectionView()
     
@@ -35,6 +36,7 @@ class SelectionCarousselVC: UIViewController {
         super.viewDidLoad()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .red
+        
 //        getPopularMovies()
         configure()
     }
@@ -87,7 +89,9 @@ class SelectionCarousselVC: UIViewController {
         view.addSubview(moviesCollectionView)
         moviesCollectionView.backgroundColor = .blue
         moviesCollectionView.dataSource = self
+        moviesCollectionView.delegate = self
         moviesCollectionView.register(MovieCell.self, forCellWithReuseIdentifier: "MovieCell")
+        moviesCollectionView.showsHorizontalScrollIndicator = false
         moviesCollectionView.translatesAutoresizingMaskIntoConstraints = false
     }
     
@@ -106,7 +110,6 @@ class SelectionCarousselVC: UIViewController {
             switch result {
                case .success(let movies):
                 self.popularMovies = movies.results
-                print(self.popularMovies)
                case .failure(let error):
                    print(error.localizedDescription)
                }
@@ -127,6 +130,24 @@ extension SelectionCarousselVC: UICollectionViewDataSource {
                           
         return cell
     }
+}
+
+extension SelectionCarousselVC: UIScrollViewDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let layout = self.moviesCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        let cellWidthIncludingSpacing = layout.itemSize.width + layout.minimumLineSpacing
+
+        var offset = targetContentOffset.pointee
+        let index = (offset.x + scrollView.contentInset.left) / cellWidthIncludingSpacing
+        let roundedIndex = round(index)
+
+        offset = CGPoint(x: roundedIndex * cellWidthIncludingSpacing - scrollView.contentInset.left, y: scrollView.contentInset.top)
+
+        targetContentOffset.pointee = offset
+    }
     
-    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        let sideInset = (collectionView.frame.size.width - 200) / 2
+        return UIEdgeInsets(top: 0, left: sideInset, bottom: 0, right: sideInset)
+    }
 }
