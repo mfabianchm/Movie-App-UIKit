@@ -114,9 +114,7 @@ class NetworkManager {
                 
                 movies.results.forEach { movie in
                     guard let posterPath = movie.posterPath else {return}
-                    
-                    let url = URL(string: "https://image.tmdb.org/t/p/original\(movie.posterPath)")
-                    print(url)
+                    let url = URL(string: "https://image.tmdb.org/t/p/original\(posterPath)")
                     let data = try? Data(contentsOf: url!)
                     
                     if let imageData = data {

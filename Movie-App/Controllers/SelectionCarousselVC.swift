@@ -92,6 +92,8 @@ class SelectionCarousselVC: UIViewController {
         moviesCollectionView.backgroundColor = .blue
         moviesCollectionView.dataSource = self
         moviesCollectionView.delegate = self
+        
+        moviesCollectionView.alwaysBounceHorizontal = true
         moviesCollectionView.register(MovieCell.self, forCellWithReuseIdentifier: "MovieCell")
         moviesCollectionView.showsHorizontalScrollIndicator = false
         moviesCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -111,7 +113,7 @@ class SelectionCarousselVC: UIViewController {
         NetworkManager.shared.getMovies(requestName: .popularMovies) { result in
             switch result {
                case .success(let movies):
-                print(movies)
+                print(movies.posterImages)
                 self.popularMovies = movies.data
                 self.posterImages = movies.posterImages
                case .failure(let error):
@@ -132,7 +134,8 @@ extension SelectionCarousselVC: UICollectionViewDataSource {
         
         if let movies = popularMovies {
             let model = movies[indexPath.row]
-            cell.configureData(model: model)
+            let image = posterImages![indexPath.row]
+            cell.configureData(model: model, image: image)
         }
                           
         return cell

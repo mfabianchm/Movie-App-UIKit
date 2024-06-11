@@ -28,7 +28,7 @@ class MovieCell: UICollectionViewCell {
         addSubview(button)
         addSubview(hdLabel)
         
-        button.setBackgroundImage(UIImage(named: "joker-image"), for: .normal)
+//        button.setBackgroundImage(UIImage(named: "joker-image"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 15
         button.layer.masksToBounds = true
@@ -58,8 +58,8 @@ class MovieCell: UICollectionViewCell {
         ])
     }
     
-    func configureData(model: Movie) {
-        button.setBackgroundImage(UIImage(named: "joker-image"), for: .normal)
+    func configureData(model: Movie, image: UIImage) {
+        button.setBackgroundImage(image, for: .normal)
         button.setTitle(model.originalTitle, for: .normal)
     }
 }
