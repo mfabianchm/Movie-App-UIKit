@@ -27,7 +27,6 @@ struct Movie: Decodable {
     var originalLanguage: String
     var originalTitle: String
     var popularity: Float
-    var overview: String
     var posterPath: String?
     var releaseDate: String
     var title: String
@@ -40,13 +39,18 @@ struct Movies: Decodable {
     var results: [Movie]
 }
 
+struct MoviesData {
+    var data: [Movie]
+    var posterImages: [UIImage]
+}
+
 class NetworkManager {
     
     static let shared = NetworkManager()
     private let baseURL = "https://api.themoviedb.org/3/"
     let decoder = JSONDecoder()
     
-    func getMovies(requestName: EndPoint, completed: @escaping (Result<Movies, MovieAppError>) -> Void) {
+    func getMovies(requestName: EndPoint, completed: @escaping (Result<MoviesData, MovieAppError>) -> Void) {
         
         let endPoint: String
         
@@ -106,7 +110,24 @@ class NetworkManager {
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
                 let movies = try decoder.decode(Movies.self, from: data)
-                completed(.success(movies))
+                var moviesCoverImages: [UIImage] = []
+                
+                movies.results.forEach { movie in
+                    guard let posterPath = movie.posterPath else {return}
+                    
+                    let url = URL(string: "https://image.tmdb.org/t/p/original\(movie.posterPath)")
+                    print(url)
+                    let data = try? Data(contentsOf: url!)
+                    
+                    if let imageData = data {
+                        let image = UIImage(data: imageData)
+                        moviesCoverImages.append(image!)
+                    }
+                }
+                
+                let moviesData = MoviesData(data: movies.results, posterImages: moviesCoverImages)
+                
+                completed(.success(moviesData))
             } catch {
                 completed(.failure(.errorInParsing))
             }

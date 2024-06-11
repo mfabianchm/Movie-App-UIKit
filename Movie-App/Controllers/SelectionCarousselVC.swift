@@ -23,13 +23,15 @@ class SelectionCarousselVC: UIViewController {
     
     let moviesArray: [MovieTest] = [
         MovieTest(title: "Joker", imageMovie: "joker-image"),
-        MovieTest(title: "Joker", imageMovie: "joker-image"),
-        MovieTest(title: "Joker", imageMovie: "joker-image"),
+        MovieTest(title: "Toy Story 2", imageMovie: "joker-image"),
+        MovieTest(title: "La dama y el vagabundo", imageMovie: "joker-image"),
         MovieTest(title: "Joker", imageMovie: "joker-image"),
         MovieTest(title: "Joker", imageMovie: "joker-image"),
     ]
     
     var popularMovies: [Movie]?
+    var posterImages: [UIImage]?
+    
     var buttons: [UIButton] = []
 
     override func viewDidLoad() {
@@ -37,7 +39,7 @@ class SelectionCarousselVC: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .red
         
-//        getPopularMovies()
+        getPopularMovies()
         configure()
     }
     
@@ -109,7 +111,9 @@ class SelectionCarousselVC: UIViewController {
         NetworkManager.shared.getMovies(requestName: .popularMovies) { result in
             switch result {
                case .success(let movies):
-                self.popularMovies = movies.results
+                print(movies)
+                self.popularMovies = movies.data
+                self.posterImages = movies.posterImages
                case .failure(let error):
                    print(error.localizedDescription)
                }
@@ -125,8 +129,11 @@ extension SelectionCarousselVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieCell", for: indexPath) as! MovieCell
         cell.backgroundColor = .red
-        let model = moviesArray[indexPath.row]
-        cell.configureData(model: model)
+        
+        if let movies = popularMovies {
+            let model = movies[indexPath.row]
+            cell.configureData(model: model)
+        }
                           
         return cell
     }

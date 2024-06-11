@@ -13,9 +13,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        UILabel.appearance().substituteFontName = "Montserrat-SemiBold";
-        UITextView.appearance().substituteFontName = "Montserrat-SemiBold";
-        UITextField.appearance().substituteFontName = "Montserrat-SemiBold"; // 
         return true
     }
 
