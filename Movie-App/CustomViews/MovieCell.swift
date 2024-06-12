@@ -25,6 +25,7 @@ class MovieCell: UICollectionViewCell {
     func configure() {
         self.layer.cornerRadius = 15
         
+        
         addSubview(button)
         addSubview(hdLabel)
         
@@ -36,6 +37,7 @@ class MovieCell: UICollectionViewCell {
         button.titleEdgeInsets = UIEdgeInsets(top: 0.0, left: 10.0, bottom: 15.0, right: 10.0)
         button.titleLabel?.font = UIFont(name: "Montserrat-SemiBold", size: 23)
         button.titleLabel?.numberOfLines = 4
+        button.setBackgroundImage(UIImage(named: "loading-image"), for: .normal)
         
         hdLabel.translatesAutoresizingMaskIntoConstraints = false
         hdLabel.text = "HD"
@@ -58,8 +60,21 @@ class MovieCell: UICollectionViewCell {
         ])
     }
     
-    func configureData(model: Movie, image: UIImage) {
-        button.setBackgroundImage(image, for: .normal)
-        button.setTitle(model.originalTitle, for: .normal)
+    func configureData(model: Movie, posterImage: UIImage) {
+        button.setBackgroundImage(posterImage, for: .normal)
+        button.setTitle(model.title, for: .normal)
     }
+    
+    
+    func transformToLarge(){
+        UIView.animate(withDuration: 0.2){
+          self.transform = CGAffineTransform(scaleX: 1.07, y: 1.07)
+        }
+      }
+      
+      func transformToStandard(){
+        UIView.animate(withDuration: 0.2){
+          self.transform = CGAffineTransform.identity
+        }
+      }
 }

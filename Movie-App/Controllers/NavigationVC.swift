@@ -63,8 +63,6 @@ extension NavigationVC: UICollectionViewDelegate{
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let model = list[indexPath.row]
-        let vcName = model.name
-        
         delegate?.navigation(didSelect: list[indexPath.item])
     }
 }

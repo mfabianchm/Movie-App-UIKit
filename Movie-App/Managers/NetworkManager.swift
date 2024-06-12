@@ -124,7 +124,6 @@ class NetworkManager {
                 }
                 
                 let moviesData = MoviesData(data: movies.results, posterImages: moviesCoverImages)
-                
                 completed(.success(moviesData))
             } catch {
                 completed(.failure(.errorInParsing))

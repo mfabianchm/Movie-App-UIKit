@@ -24,6 +24,8 @@
 		58C76E612C1294DB00E88D54 /* MoviesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C76E602C1294DB00E88D54 /* MoviesCollectionView.swift */; };
 		58C76E632C12A79C00E88D54 /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C76E622C12A79C00E88D54 /* MovieCell.swift */; };
 		58EC2C152C078F1D00A6D287 /* Ext-UISearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EC2C142C078F1D00A6D287 /* Ext-UISearchBar.swift */; };
+		829D86DA2C18F3D10076910A /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829D86D92C18F3D10076910A /* LoadingView.swift */; };
+		829D86DC2C1902CC0076910A /* DetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829D86DB2C1902CC0076910A /* DetailsVC.swift */; };
 		82E774142C0A28D90026347D /* SelectionCarousselVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E774132C0A28D90026347D /* SelectionCarousselVC.swift */; };
 		82E774162C0A34780026347D /* Ext-UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E774152C0A34780026347D /* Ext-UIButton.swift */; };
 		82E774182C0A378D0026347D /* Ext-Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E774172C0A378D0026347D /* Ext-Fonts.swift */; };
@@ -51,6 +53,8 @@
 		58C76E602C1294DB00E88D54 /* MoviesCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesCollectionView.swift; sourceTree = "<group>"; };
 		58C76E622C12A79C00E88D54 /* MovieCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
 		58EC2C142C078F1D00A6D287 /* Ext-UISearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext-UISearchBar.swift"; sourceTree = "<group>"; };
+		829D86D92C18F3D10076910A /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		829D86DB2C1902CC0076910A /* DetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsVC.swift; sourceTree = "<group>"; };
 		82E774132C0A28D90026347D /* SelectionCarousselVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCarousselVC.swift; sourceTree = "<group>"; };
 		82E774152C0A34780026347D /* Ext-UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext-UIButton.swift"; sourceTree = "<group>"; };
 		82E774172C0A378D0026347D /* Ext-Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext-Fonts.swift"; sourceTree = "<group>"; };
@@ -79,6 +83,7 @@
 				582B96592C00F46C0021AED6 /* NavigationCell.swift */,
 				58C76E602C1294DB00E88D54 /* MoviesCollectionView.swift */,
 				58C76E622C12A79C00E88D54 /* MovieCell.swift */,
+				829D86D92C18F3D10076910A /* LoadingView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -89,6 +94,7 @@
 				582B964D2BFFA9DE0021AED6 /* HomeVC.swift */,
 				582B964F2BFFAA000021AED6 /* SearchVC.swift */,
 				582B96512BFFAA100021AED6 /* FavoritesVC.swift */,
+				829D86DB2C1902CC0076910A /* DetailsVC.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -244,6 +250,7 @@
 				58C76E612C1294DB00E88D54 /* MoviesCollectionView.swift in Sources */,
 				582B964B2BFFA92C0021AED6 /* MovieTabBarController.swift in Sources */,
 				582B96562C00F3A90021AED6 /* NavigationView.swift in Sources */,
+				829D86DC2C1902CC0076910A /* DetailsVC.swift in Sources */,
 				582B964E2BFFA9DE0021AED6 /* HomeVC.swift in Sources */,
 				58EC2C152C078F1D00A6D287 /* Ext-UISearchBar.swift in Sources */,
 				587F39A32BFE5ADB0082FB53 /* NetworkManager.swift in Sources */,
@@ -252,6 +259,7 @@
 				587F39902BFE59BD0082FB53 /* SceneDelegate.swift in Sources */,
 				582B96542C00EF760021AED6 /* SideBar.swift in Sources */,
 				582B96492BFF9F430021AED6 /* CustomBarButtonItem.swift in Sources */,
+				829D86DA2C18F3D10076910A /* LoadingView.swift in Sources */,
 				582B965A2C00F46C0021AED6 /* NavigationCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
