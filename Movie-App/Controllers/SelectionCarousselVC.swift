@@ -8,33 +8,24 @@
 
 import UIKit
 
-//struct MovieTest {
-//    let title: String
-//    let imageMovie: String
-//}
-
 class SelectionCarousselVC: UIViewController {
     
     let buttonsText: [String] = ["Popular", "New", "Most-Rated", "Upcoming"]
     let buttonsStackView = UIStackView()
     let cellScale: CGFloat = 0.6
     let numberOfItems = 100
+
+    var movieSelected: Movie?
     
     var spinner: UIActivityIndicatorView = LoadingView(frame: CGRect(x: 0, y: 0, width: 40, height:40))
     var centerCell: MovieCell?
     
     let moviesCollectionView = MoviesCollectionView()
     
-//    let moviesArray: [MovieTest] = [
-//        MovieTest(title: "Joker", imageMovie: "joker-image"),
-//        MovieTest(title: "Toy Story 2", imageMovie: "joker-image"),
-//        MovieTest(title: "La dama y el vagabundo", imageMovie: "joker-image"),
-//        MovieTest(title: "Joker", imageMovie: "joker-image"),
-//        MovieTest(title: "Joker", imageMovie: "joker-image"),
-//    ]
-    
     var fetchedMovies: [Movie]?
     var posterImages: [UIImage]?
+    
+    var genres: [Genre]?
     
     var buttons: [UIButton] = []
 
@@ -43,6 +34,7 @@ class SelectionCarousselVC: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .red
         getPopularMovies()
+        getGenres()
         configure()
     }
     
@@ -194,6 +186,17 @@ class SelectionCarousselVC: UIViewController {
         }
     }
     
+    func getGenres() {
+        NetworkManager.shared.getMoviesGenres { result in
+            switch result {
+               case .success(let genres):
+                self.genres = genres.genres
+               case .failure(let error):
+                   print(error.localizedDescription)
+               }
+        }
+    }
+    
     func showLoader() {
         view.addSubview(spinner)
         spinner.startAnimating()
@@ -211,7 +214,7 @@ class SelectionCarousselVC: UIViewController {
     }
     
     @objc func presentDetailsVC() {
-        navigationController?.pushViewController(DetailsVC(), animated: true)
+        navigationController?.pushViewController(DetailsVC(model: movieSelected, genres: genres!), animated: true)
     }
 
 }
@@ -247,6 +250,14 @@ extension SelectionCarousselVC: UIScrollViewDelegate, UICollectionViewDelegate, 
             let sideInset = (collectionView.frame.size.width - 200) / 2
             return UIEdgeInsets(top: 0, left: sideInset, bottom: 0, right: sideInset)
         }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        didSelectItemAt indexPath: IndexPath) {
+        let numbersOfMovies = fetchedMovies?.count
+        let cellToSearch = collectionView.cellForItem(at: indexPath) as! MovieCell
+        self.movieSelected = cellToSearch.model
+        presentDetailsVC()
+    }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
       let layout = self.moviesCollectionView.collectionViewLayout as! UICollectionViewFlowLayout

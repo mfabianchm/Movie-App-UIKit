@@ -12,6 +12,8 @@ class MovieCell: UICollectionViewCell {
     let button = UIButton()
     let hdLabel = UILabel()
     
+    var model: Movie?
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         configure()
@@ -38,6 +40,7 @@ class MovieCell: UICollectionViewCell {
         button.titleLabel?.font = UIFont(name: "Montserrat-SemiBold", size: 23)
         button.titleLabel?.numberOfLines = 4
         button.setBackgroundImage(UIImage(named: "loading-image"), for: .normal)
+        button.isUserInteractionEnabled = false
         
         hdLabel.translatesAutoresizingMaskIntoConstraints = false
         hdLabel.text = "HD"
@@ -61,6 +64,7 @@ class MovieCell: UICollectionViewCell {
     }
     
     func configureData(model: Movie, posterImage: UIImage) {
+        self.model = model
         button.setBackgroundImage(posterImage, for: .normal)
         button.setTitle(model.title, for: .normal)
     }
