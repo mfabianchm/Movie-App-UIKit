@@ -23,6 +23,7 @@ enum EndPoint: String {
 }
 
 struct Movie: Decodable {
+    var genreIds: [Int]
     var id: Int
     var originalLanguage: String
     var originalTitle: String
