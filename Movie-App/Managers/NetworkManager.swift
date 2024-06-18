@@ -55,6 +55,14 @@ struct Genre: Decodable {
 }
 
 
+struct MovieDetails: Decodable {
+    var originCountry: [String]
+    var originalLanguage: String
+    var releaseDate: String
+    var status: String
+}
+
+
 class NetworkManager {
     
     static let shared = NetworkManager()
@@ -162,7 +170,6 @@ class NetworkManager {
           URLQueryItem(name: "page", value: "1"),
         ]
         components.queryItems = components.queryItems.map { $0 + queryItems } ?? queryItems
-        print(components.url!)
         
         var request = URLRequest(url: components.url!)
         request.httpMethod = "GET"
@@ -197,6 +204,62 @@ class NetworkManager {
                 print(data)
                 let movies = try decoder.decode(Movies.self, from: data)
                 completed(.success(movies))
+            } catch {
+                completed(.failure(.errorInParsing))
+            }
+        }
+        
+        task.resume()
+        }
+    
+    
+    func getMovieDetails(id: Int, completed: @escaping (Result<MovieDetails, MovieAppError>) -> Void) {
+        
+        let endPoint = baseURL + "movie/\(id.description)"
+           
+        guard let url = URL(string: endPoint) else {
+            print("invalid URL")
+            return
+        }
+        
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+        let queryItems: [URLQueryItem] = [
+          URLQueryItem(name: "language", value: "en-US"),
+        ]
+        components.queryItems = components.queryItems.map { $0 + queryItems } ?? queryItems
+    
+        var request = URLRequest(url: components.url!)
+        request.httpMethod = "GET"
+        request.timeoutInterval = 10
+        request.allHTTPHeaderFields = [
+            "accept": "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjNjI5MzYzYmNlMmEyNDQ0Yzc3NmU5ZGI3NDlkMjg2MiIsInN1YiI6IjY1Mjc1OWQ2ODEzODMxMDBlMTJlMGZlYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.eIYhB8d7dfMO53g5e_y7Vqu0O08NINMKdoY1NZrO-FU"
+        ]
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            
+            if let _ = error {
+                completed(.failure(.unableToComplete))
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                completed(.failure(.invalidResponse))
+                return
+            }
+            
+            
+            guard let data = data else {
+                completed(.failure(.invalidData))
+                return
+            }
+            
+            
+            do {
+                let decoder = JSONDecoder()
+                decoder.keyDecodingStrategy = .convertFromSnakeCase
+                let movieDetails = try decoder.decode(MovieDetails.self, from: data)
+                completed(.success(movieDetails))
             } catch {
                 completed(.failure(.errorInParsing))
             }
@@ -258,6 +321,10 @@ class NetworkManager {
         }
         
         task.resume()
+    }
+    
+    func getImage(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
     }
     
     

@@ -18,6 +18,7 @@ class DetailsVC: UIViewController {
     let genresStackView = UIStackView()
     let rankingLabel = UILabel()
     let iconsStack = UIStackView()
+    let infoMovieStack = UIStackView()
     
     var posterImage: UIImage?
     
@@ -26,13 +27,16 @@ class DetailsVC: UIViewController {
     let model: Movie?
     let genres: [Genre]?
     var movieGenresId: [Int]?
+    var movieGenres: [String] = []
+    
+    var movieDetails: MovieDetails?
 
     init(model: Movie?, genres: [Genre]) {
         self.model = model
         self.genres = genres
         self.movieGenresId = model?.genreIds
         super.init(nibName: nil, bundle: nil)
-        configure()
+        self.getMovieDetails()
     }
     
     required init?(coder: NSCoder) {
@@ -46,12 +50,12 @@ class DetailsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         getImage()
-        print(model)
+        configure()
     }
     
 //    override func viewWillAppear(_ animated: Bool){
 //        super.viewWillAppear(animated)
-//        self.navigationController?.isNavigationBarHidden = true
+////        self.navigationController?.isNavigationBarHidden = true
 //    }
     
 //    override func viewWillDisappear(_ animated: Bool){
@@ -67,6 +71,7 @@ class DetailsVC: UIViewController {
         configureGenresStackView()
         configureRankingLabel()
         configureIconsStackView()
+        configureInfoMovieStackView()
         configureConstrainst()
     }
     
@@ -128,8 +133,6 @@ class DetailsVC: UIViewController {
             movieGenresId!.removeSubrange(2...lastElement)
         }
         
-        var movieGenres: [String] = []
-        
         movieGenresId?.forEach { id in
             genres?.forEach { genre in
                 if(genre.id) == id {
@@ -137,7 +140,7 @@ class DetailsVC: UIViewController {
                 }
             }
         }
-    
+        
         movieGenres.forEach { genre in
             let genreLabel: UILabel = {
                 let label = UILabel()
@@ -208,6 +211,77 @@ class DetailsVC: UIViewController {
         view.addSubview(iconsStack)
     }
     
+    func configureInfoMovieStackView() {
+        let countriesString: String
+        let genresString = movieGenres.joined()
+        
+        if let countries = movieDetails?.originCountry {
+            countriesString = countries.joined(separator: ",")
+        } else {
+            countriesString = "N/A"
+        }
+    
+        
+        infoMovieStack.translatesAutoresizingMaskIntoConstraints = false
+        infoMovieStack.alignment = .leading
+        infoMovieStack.spacing = 10
+        infoMovieStack.axis = .vertical
+
+        let movieTitle: UILabel = {
+            let label = UILabel()
+            label.text = model!.originalTitle
+            label.font = UIFont(name: "Montserrat-SemiBold", size: 30)
+            label.textColor = .white
+            return label
+        }()
+        
+        let releaseDateLabel: UILabel = {
+            let label = UILabel()
+            label.text = "\(model!.releaseDate)•\(genresString)"
+            label.font = UIFont(name: "Montserrat-SemiBold", size: 13)
+            label.textColor = .gray
+            return label
+        }()
+        
+        let countryLabel: UILabel = {
+            let label = UILabel()
+            label.text = "Country: \(countriesString)"
+            label.font = UIFont(name: "Montserrat-SemiBold", size: 13)
+            label.textColor = .gray
+            return label
+        }()
+        
+        let languageLabel: UILabel = {
+            let label = UILabel()
+//            label.text = "Original language: \(movieDetails!.originalLanguage)"
+            label.text = "Original language:"
+            label.font = UIFont(name: "Montserrat-SemiBold", size: 13)
+            label.textColor = .gray
+            return label
+        }()
+        
+        
+        let statusLabel: UILabel = {
+            let label = UILabel()
+//            label.text = "Status: \(movieDetails!.status)"
+            label.text = "Status: "
+            label.font = UIFont(name: "Montserrat-SemiBold", size: 13)
+            label.textColor = .gray
+            return label
+        }()
+        
+        
+        
+        
+
+        infoMovieStack.addArrangedSubview(movieTitle)
+        infoMovieStack.addArrangedSubview(releaseDateLabel)
+        infoMovieStack.addArrangedSubview(countryLabel)
+        infoMovieStack.addArrangedSubview(languageLabel)
+        infoMovieStack.addArrangedSubview(statusLabel)
+        view.addSubview(infoMovieStack)
+    }
+    
     func configureConstrainst() {
         
         NSLayoutConstraint.activate([
@@ -258,29 +332,40 @@ class DetailsVC: UIViewController {
             iconsStack.trailingAnchor.constraint(equalTo: genresStackView.trailingAnchor),
             iconsStack.heightAnchor.constraint(equalToConstant: 35),
             iconsStack.widthAnchor.constraint(equalToConstant: 110),
+            
+            infoMovieStack.topAnchor.constraint(equalTo: rankingLabel.bottomAnchor, constant: 20),
+            infoMovieStack.leadingAnchor.constraint(equalTo: rankingLabel.leadingAnchor),
+            infoMovieStack.trailingAnchor.constraint(equalTo: iconsStack.trailingAnchor)
         ])
     }
+}
+
+extension DetailsVC {
     
-    
+    func getMovieDetails() {
+        NetworkManager.shared.getMovieDetails(id: model!.id) { result in
+            switch result {
+               case .success(let movie):
+                self.movieDetails = movie
+                DispatchQueue.main.async {
+                    print(self.infoMovieStack.subviews[0].self.subviews)
+                }
+               case .failure(let error):
+                   print(error.localizedDescription)
+               }
+        }
+    }
     
     func getImage() {
         guard let movieData = model else {return}
         guard let movieUrl = movieData.posterPath else {return}
         let url = URL(string: "https://image.tmdb.org/t/p/original\(movieUrl)")!
-        downloadImage(from: url)
-    }
-    
-    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
-    }
-    
-    func downloadImage(from url: URL) {
-        getData(from: url) { data, response, error in
+        
+        NetworkManager.shared.getImage(from: url) { data, response, error in
             guard let data = data, error == nil else { return }
             DispatchQueue.main.async() { [weak self] in
                 self?.mainMovieImage.image = UIImage(data: data)
             }
         }
     }
-
 }
