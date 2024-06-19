@@ -7,19 +7,54 @@
 
 import UIKit
 
+struct FetchedMovies {
+    var popularMovies: [Movie]?
+    var moviesInTheatres: [Movie]?
+    var ratedMovies: [Movie]?
+    var upcomingMovies: [Movie]?
+}
+
+struct PosterImages {
+    var popularMovies: [UIImage]?
+    var moviesInTheatres: [UIImage]?
+    var ratedMovies: [UIImage]?
+    var upcomingMovies: [UIImage]?
+}
+
 class HomeVC: UIViewController {
     
     let scrollView = UIScrollView()
     let contentView = HomeContentView()
-    
     let selectionCarouselVC = SelectionCarousselVC()
+    let loadingVC = LoadingViewController()
+    
+    var fetchedMovies: FetchedMovies = FetchedMovies()
+    var posterImages: PosterImages = PosterImages()
+    var genres: [Genre]?
     
     var padding: CGFloat = 10
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "Dark-Gray")
+
+        getGenres()
+        getMovies(type: .popularMovies)
+        getMovies(type: .moviesInTheatres)
+        getMovies(type: .ratedMovies)
+        getMovies(type: .upcomingMovies)
         configure()
+        
+        if(fetchedMovies.popularMovies == nil) {
+            self.add(loadingVC)
+            view.isUserInteractionEnabled = false
+            NSLayoutConstraint.activate([
+                loadingVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                loadingVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                loadingVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                loadingVC.view.topAnchor.constraint(equalTo: view.topAnchor),
+            ])
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -73,8 +108,8 @@ class HomeVC: UIViewController {
             contentView.heightAnchor.constraint(equalToConstant: 2000),
             
             selectionCarouselVC.view.topAnchor.constraint(equalTo: contentView.searchBar.bottomAnchor, constant: 10),
-            selectionCarouselVC.view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
-            selectionCarouselVC.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            selectionCarouselVC.view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            selectionCarouselVC.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             selectionCarouselVC.view.heightAnchor.constraint(equalToConstant: 400)
             
         ])
@@ -87,6 +122,81 @@ extension HomeVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         print("return button pressed")
         return true
+    }
+}
+
+
+extension HomeVC {
+    func getMovies(type: EndPoint) {
+        
+        let requestName: EndPoint
+        let movieType: String
+        
+        switch type {
+        case .popularMovies:
+            requestName = type
+            movieType = "popular"
+        case .moviesInTheatres:
+            requestName = type
+            movieType = "inTheatres"
+        case .ratedMovies:
+            requestName = type
+            movieType = "rated"
+        case .upcomingMovies:
+            requestName = type
+            movieType = "upcoming"
+        }
+        
+        NetworkManager.shared.getMovies(requestName: requestName) { result in
+            switch result {
+               case .success(let movies):
+                
+                if(movieType == "popular") {
+                    print("hola")
+                    self.fetchedMovies.popularMovies = movies.data
+                    self.posterImages.popularMovies = movies.posterImages
+                }
+                if(movieType == "inTheatres") {
+                    self.fetchedMovies.moviesInTheatres = movies.data
+                    self.posterImages.moviesInTheatres = movies.posterImages
+                }
+                if(movieType == "rated") {
+                    self.fetchedMovies.ratedMovies = movies.data
+                    self.posterImages.ratedMovies = movies.posterImages
+                }
+                else {
+                    self.fetchedMovies.upcomingMovies = movies.data
+                    self.posterImages.upcomingMovies = movies.posterImages
+                    DispatchQueue.main.async {
+                        self.selectionCarouselVC.fetchedMovies = self.fetchedMovies
+                        self.selectionCarouselVC.posterImages = self.posterImages
+                        self.selectionCarouselVC.genres = self.genres
+                        
+                        self.selectionCarouselVC.moviesToDisplay = self.selectionCarouselVC.fetchedMovies?.popularMovies
+                        self.selectionCarouselVC.postersToDisplay = self.selectionCarouselVC.posterImages?.popularMovies
+                        self.selectionCarouselVC.moviesCollectionView.reloadData()
+                        self.loadingVC.remove()
+                        self.view.isUserInteractionEnabled = true
+                    }
+                }
+               case .failure(let error):
+                   print(error.localizedDescription)
+               }
+        }
+        
+    }
+    
+    func getGenres() {
+        NetworkManager.shared.getMoviesGenres { result in
+            switch result {
+               case .success(let genres):
+                self.genres = genres.genres
+                self.selectionCarouselVC.genres = genres.genres
+                
+               case .failure(let error):
+                   print(error.localizedDescription)
+               }
+        }
     }
 }
 

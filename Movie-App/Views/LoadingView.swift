@@ -20,11 +20,11 @@ class LoadingView: UIActivityIndicatorView {
     
     func configure() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        color = .white
         layer.cornerRadius = 3.0
         clipsToBounds = true
         hidesWhenStopped = true
-        style = UIActivityIndicatorView.Style.white;
+        style = UIActivityIndicatorView.Style.large
     }
     
 }

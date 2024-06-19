@@ -21,6 +21,7 @@
 		587F39972BFE59BE0082FB53 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 587F39962BFE59BE0082FB53 /* Assets.xcassets */; };
 		587F399A2BFE59BE0082FB53 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 587F39982BFE59BE0082FB53 /* LaunchScreen.storyboard */; };
 		587F39A32BFE5ADB0082FB53 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587F39A22BFE5ADB0082FB53 /* NetworkManager.swift */; };
+		58B267A22C228B5500E987C4 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B267A12C228B5500E987C4 /* LoadingViewController.swift */; };
 		58C76E612C1294DB00E88D54 /* MoviesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C76E602C1294DB00E88D54 /* MoviesCollectionView.swift */; };
 		58C76E632C12A79C00E88D54 /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C76E622C12A79C00E88D54 /* MovieCell.swift */; };
 		58EC2C152C078F1D00A6D287 /* Ext-UISearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EC2C142C078F1D00A6D287 /* Ext-UISearchBar.swift */; };
@@ -60,6 +61,7 @@
 		587F39992BFE59BE0082FB53 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		587F399B2BFE59BE0082FB53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		587F39A22BFE5ADB0082FB53 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		58B267A12C228B5500E987C4 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		58C76E602C1294DB00E88D54 /* MoviesCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesCollectionView.swift; sourceTree = "<group>"; };
 		58C76E622C12A79C00E88D54 /* MovieCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
 		58EC2C142C078F1D00A6D287 /* Ext-UISearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext-UISearchBar.swift"; sourceTree = "<group>"; };
@@ -101,7 +103,6 @@
 				582B96532C00EF760021AED6 /* SideBar.swift */,
 				582B96552C00F3A90021AED6 /* NavigationView.swift */,
 				582B96592C00F46C0021AED6 /* NavigationCell.swift */,
-				58C76E602C1294DB00E88D54 /* MoviesCollectionView.swift */,
 				58C76E622C12A79C00E88D54 /* MovieCell.swift */,
 				829D86D92C18F3D10076910A /* LoadingView.swift */,
 				8271F8302C222D8A00350F7B /* Home */,
@@ -185,6 +186,7 @@
 		8271F8302C222D8A00350F7B /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				58C76E602C1294DB00E88D54 /* MoviesCollectionView.swift */,
 				8271F8282C21F9E100350F7B /* AppLogoView.swift */,
 				8271F82A2C21FC7A00350F7B /* ProfileImageView.swift */,
 				8271F82C2C21FE1D00350F7B /* SearchBarView.swift */,
@@ -202,6 +204,7 @@
 				582B964C2BFFA9980021AED6 /* Screens */,
 				582B96572C00F3F50021AED6 /* NavigationVC.swift */,
 				82E774132C0A28D90026347D /* SelectionCarousselVC.swift */,
+				58B267A12C228B5500E987C4 /* LoadingViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 				8271F82F2C21FF2400350F7B /* Ext-UIViewController.swift in Sources */,
 				582B96542C00EF760021AED6 /* SideBar.swift in Sources */,
 				582B96492BFF9F430021AED6 /* CustomBarButtonItem.swift in Sources */,
+				58B267A22C228B5500E987C4 /* LoadingViewController.swift in Sources */,
 				829D86DA2C18F3D10076910A /* LoadingView.swift in Sources */,
 				8271F82D2C21FE1D00350F7B /* SearchBarView.swift in Sources */,
 				8271F82B2C21FC7A00350F7B /* ProfileImageView.swift in Sources */,

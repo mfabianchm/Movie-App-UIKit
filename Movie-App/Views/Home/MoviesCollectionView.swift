@@ -16,10 +16,18 @@ class MoviesCollectionView: UICollectionView {
         layout.itemSize = .init(width: 200, height: 300)
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 30
+        configure()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configure() {
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.showsHorizontalScrollIndicator = false
+        self.backgroundColor = .blue
+        self.alwaysBounceHorizontal = true
     }
     
 }

@@ -56,7 +56,6 @@ class NetworkManager {
             URLQueryItem(name: "page", value: "1"),
         ]
         components.queryItems = components.queryItems.map { $0 + queryItems } ?? queryItems
-        print(components.url!)
         
         var request = URLRequest(url: components.url!)
         request.httpMethod = "GET"
