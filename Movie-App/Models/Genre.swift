@@ -6,3 +6,13 @@
 //
 
 import Foundation
+
+
+struct Genres: Decodable {
+    var genres: [Genre]
+}
+
+struct Genre: Decodable {
+    var id: Int
+    var name: String
+}

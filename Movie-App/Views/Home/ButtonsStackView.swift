@@ -9,12 +9,19 @@ import UIKit
 
 class ButtonsStackView: UIStackView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    override init(frame: CGRect) {
+        super.init(frame: .zero)
+        configure()
     }
-    */
+    
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configure() {
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.axis = .horizontal
+        self.distribution = .equalSpacing
+    }
 
 }

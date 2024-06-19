@@ -27,7 +27,7 @@ class MovieTabBarController: UITabBarController {
     func createHomeNC() -> UINavigationController {
         let homeVC        = HomeVC()
         homeVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "homekit"), tag: 0)
-        homeVC.openSideBarBtn.addTarget(self, action: #selector(didSelect(_:)), for: .touchUpInside)
+        homeVC.contentView.openSideBarBtn.addTarget(self, action: #selector(didSelect(_:)), for: .touchUpInside)
         
         return UINavigationController(rootViewController: homeVC)
     }

@@ -22,46 +22,6 @@ enum EndPoint: String {
     case upcomingMovies = "movie/upcoming"
 }
 
-struct Movie: Decodable {
-    var genreIds: [Int]
-    var id: Int
-    var originalLanguage: String
-    var originalTitle: String
-    var popularity: Float
-    var posterPath: String?
-    var releaseDate: String
-    var title: String
-    var video: Bool
-    var voteAverage: Float
-    var voteCount: Int
-}
-
-struct Movies: Decodable {
-    var results: [Movie]
-}
-
-struct MoviesData {
-    var data: [Movie]
-    var posterImages: [UIImage]
-}
-
-struct Genres: Decodable {
-    var genres: [Genre]
-}
-
-struct Genre: Decodable {
-    var id: Int
-    var name: String
-}
-
-
-struct MovieDetails: Decodable {
-    var originCountry: [String]
-    var originalLanguage: String
-    var releaseDate: String
-    var status: String
-}
-
 
 class NetworkManager {
     

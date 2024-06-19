@@ -8,10 +8,21 @@
 
 import UIKit
 
+enum MovieType: String {
+    case moviesInTheatres = ""
+    case popularMovies = "movie/popular"
+    case ratedMovies = "movie/top_rated"
+    case upcomingMovies = "movie/upcoming"
+}
+
 class SelectionCarousselVC: UIViewController {
     
+    let buttonsStackView = ButtonsStackView()
+    let moviesCollectionView = MoviesCollectionView()
+    
     let buttonsText: [String] = ["Popular", "New", "Most-Rated", "Upcoming"]
-    let buttonsStackView = UIStackView()
+    var buttons: [UIButton] = []
+    
     let cellScale: CGFloat = 0.6
     let numberOfItems = 100
 
@@ -20,20 +31,17 @@ class SelectionCarousselVC: UIViewController {
     var spinner: UIActivityIndicatorView = LoadingView(frame: CGRect(x: 0, y: 0, width: 40, height:40))
     var centerCell: MovieCell?
     
-    let moviesCollectionView = MoviesCollectionView()
-    
     var fetchedMovies: [Movie]?
     var posterImages: [UIImage]?
     
     var genres: [Genre]?
     
-    var buttons: [UIButton] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .red
-        getPopularMovies()
+        getMovies(type: .popularMovies)
         getGenres()
         configure()
     }
@@ -44,25 +52,19 @@ class SelectionCarousselVC: UIViewController {
     
     func configure() {
         self.configureStack()
-        self.configureButtons()
         self.configureMoviesCollectionView()
         self.configureConstrainst()
     }
     
     func configureStack() {
         view.addSubview(buttonsStackView)
-        buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
-        buttonsStackView.axis = .horizontal
-        buttonsStackView.distribution = .equalSpacing
+        configureButtons()
     }
     
     func configureButtons() {
         buttonsText.indices.forEach { index in
-            let button = UIButton()
+            let button = CarouselButton(title: buttonsText[index])
             button.tag = index
-            button.setTitle(buttonsText[index], for: .normal)
-            button.setTitleColor(.white, for: .normal)
-            button.setTitleColor(UIColor(named: "Yellow"), for: .selected)
             button.addTarget(self, action: #selector(buttonChanged(_:)), for: .touchUpInside)
             buttons.append(button)
     
@@ -73,6 +75,18 @@ class SelectionCarousselVC: UIViewController {
             
             buttonsStackView.addArrangedSubview(button)
         }
+    }
+    
+    func configureMoviesCollectionView() {
+        view.addSubview(moviesCollectionView)
+        moviesCollectionView.backgroundColor = .blue
+        moviesCollectionView.dataSource = self
+        moviesCollectionView.delegate = self
+        
+        moviesCollectionView.alwaysBounceHorizontal = true
+        moviesCollectionView.register(MovieCell.self, forCellWithReuseIdentifier: "MovieCell")
+        moviesCollectionView.showsHorizontalScrollIndicator = false
+        moviesCollectionView.translatesAutoresizingMaskIntoConstraints = false
     }
     
     func configureConstrainst() {
@@ -87,33 +101,21 @@ class SelectionCarousselVC: UIViewController {
         ])
     }
     
-    func configureMoviesCollectionView() {
-        view.addSubview(moviesCollectionView)
-        moviesCollectionView.backgroundColor = .blue
-        moviesCollectionView.dataSource = self
-        moviesCollectionView.delegate = self
-        
-        moviesCollectionView.alwaysBounceHorizontal = true
-        moviesCollectionView.register(MovieCell.self, forCellWithReuseIdentifier: "MovieCell")
-        moviesCollectionView.showsHorizontalScrollIndicator = false
-        moviesCollectionView.translatesAutoresizingMaskIntoConstraints = false
-    }
-
     
     @objc func buttonChanged(_ sender: UIButton) {
         
         switch sender.tag {
         case 0:
-            getPopularMovies()
+            getMovies(type: .popularMovies)
             showLoader()
         case 1:
-            getNewMovies()
+            getMovies(type: .moviesInTheatres)
             showLoader()
         case 2:
-            getMostRatedMovies()
+            getMovies(type: .ratedMovies)
             showLoader()
         default:
-            getUpcomingMovies()
+            getMovies(type: .upcomingMovies)
             showLoader()
         }
         
@@ -126,8 +128,23 @@ class SelectionCarousselVC: UIViewController {
         sender.underlineText()
     }
     
-    func getPopularMovies() {
-        NetworkManager.shared.getMovies(requestName: .popularMovies) { result in
+    
+    func getMovies(type: EndPoint) {
+        
+        let requestName: EndPoint
+        
+        switch type {
+        case .popularMovies:
+            requestName = type
+        case .moviesInTheatres:
+            requestName = type
+        case .ratedMovies:
+            requestName = type
+        case .upcomingMovies:
+            requestName = type
+        }
+        
+        NetworkManager.shared.getMovies(requestName: requestName) { result in
             switch result {
                case .success(let movies):
                 self.fetchedMovies = movies.data
@@ -139,52 +156,9 @@ class SelectionCarousselVC: UIViewController {
                    print(error.localizedDescription)
                }
         }
+        
     }
     
-    func getNewMovies() {
-        NetworkManager.shared.getMovies(requestName: .moviesInTheatres) { result in
-            switch result {
-               case .success(let movies):
-                self.fetchedMovies = movies.data
-                self.posterImages = movies.posterImages
-                DispatchQueue.main.async {
-                    self.moviesCollectionView.reloadData()
-                }
-               case .failure(let error):
-                   print(error.localizedDescription)
-               }
-        }
-    }
-    
-    func getMostRatedMovies() {
-        NetworkManager.shared.getMovies(requestName: .ratedMovies) { result in
-            switch result {
-               case .success(let movies):
-                self.fetchedMovies = movies.data
-                self.posterImages = movies.posterImages
-                DispatchQueue.main.async {
-                    self.moviesCollectionView.reloadData()
-                }
-               case .failure(let error):
-                   print(error.localizedDescription)
-               }
-        }
-    }
-    
-    func getUpcomingMovies() {
-        NetworkManager.shared.getMovies(requestName: .upcomingMovies) { result in
-            switch result {
-               case .success(let movies):
-                self.fetchedMovies = movies.data
-                self.posterImages = movies.posterImages
-                DispatchQueue.main.async {
-                    self.moviesCollectionView.reloadData()
-                }
-               case .failure(let error):
-                   print(error.localizedDescription)
-               }
-        }
-    }
     
     func getGenres() {
         NetworkManager.shared.getMoviesGenres { result in

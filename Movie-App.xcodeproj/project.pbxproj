@@ -24,6 +24,16 @@
 		58C76E612C1294DB00E88D54 /* MoviesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C76E602C1294DB00E88D54 /* MoviesCollectionView.swift */; };
 		58C76E632C12A79C00E88D54 /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C76E622C12A79C00E88D54 /* MovieCell.swift */; };
 		58EC2C152C078F1D00A6D287 /* Ext-UISearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EC2C142C078F1D00A6D287 /* Ext-UISearchBar.swift */; };
+		8271F8232C21F6B300350F7B /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8271F8222C21F6B300350F7B /* Movie.swift */; };
+		8271F8252C21F73400350F7B /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8271F8242C21F73400350F7B /* Genre.swift */; };
+		8271F8272C21F80E00350F7B /* SideBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8271F8262C21F80E00350F7B /* SideBarButton.swift */; };
+		8271F8292C21F9E100350F7B /* AppLogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8271F8282C21F9E100350F7B /* AppLogoView.swift */; };
+		8271F82B2C21FC7A00350F7B /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8271F82A2C21FC7A00350F7B /* ProfileImageView.swift */; };
+		8271F82D2C21FE1D00350F7B /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8271F82C2C21FE1D00350F7B /* SearchBarView.swift */; };
+		8271F82F2C21FF2400350F7B /* Ext-UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8271F82E2C21FF2400350F7B /* Ext-UIViewController.swift */; };
+		8271F8322C2233C900350F7B /* HomeContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8271F8312C2233C900350F7B /* HomeContentView.swift */; };
+		8271F8342C223EAD00350F7B /* ButtonsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8271F8332C223EAD00350F7B /* ButtonsStackView.swift */; };
+		8271F8362C223F9500350F7B /* CarouselButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8271F8352C223F9500350F7B /* CarouselButton.swift */; };
 		829D86DA2C18F3D10076910A /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829D86D92C18F3D10076910A /* LoadingView.swift */; };
 		829D86DC2C1902CC0076910A /* DetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829D86DB2C1902CC0076910A /* DetailsVC.swift */; };
 		82E774142C0A28D90026347D /* SelectionCarousselVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E774132C0A28D90026347D /* SelectionCarousselVC.swift */; };
@@ -53,6 +63,16 @@
 		58C76E602C1294DB00E88D54 /* MoviesCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesCollectionView.swift; sourceTree = "<group>"; };
 		58C76E622C12A79C00E88D54 /* MovieCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
 		58EC2C142C078F1D00A6D287 /* Ext-UISearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext-UISearchBar.swift"; sourceTree = "<group>"; };
+		8271F8222C21F6B300350F7B /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
+		8271F8242C21F73400350F7B /* Genre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genre.swift; sourceTree = "<group>"; };
+		8271F8262C21F80E00350F7B /* SideBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarButton.swift; sourceTree = "<group>"; };
+		8271F8282C21F9E100350F7B /* AppLogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogoView.swift; sourceTree = "<group>"; };
+		8271F82A2C21FC7A00350F7B /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
+		8271F82C2C21FE1D00350F7B /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
+		8271F82E2C21FF2400350F7B /* Ext-UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext-UIViewController.swift"; sourceTree = "<group>"; };
+		8271F8312C2233C900350F7B /* HomeContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeContentView.swift; sourceTree = "<group>"; };
+		8271F8332C223EAD00350F7B /* ButtonsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsStackView.swift; sourceTree = "<group>"; };
+		8271F8352C223F9500350F7B /* CarouselButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselButton.swift; sourceTree = "<group>"; };
 		829D86D92C18F3D10076910A /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		829D86DB2C1902CC0076910A /* DetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsVC.swift; sourceTree = "<group>"; };
 		82E774132C0A28D90026347D /* SelectionCarousselVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCarousselVC.swift; sourceTree = "<group>"; };
@@ -73,7 +93,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		582B96452BFF9A290021AED6 /* CustomViews */ = {
+		582B96452BFF9A290021AED6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				582B96482BFF9F430021AED6 /* CustomBarButtonItem.swift */,
@@ -84,8 +104,9 @@
 				58C76E602C1294DB00E88D54 /* MoviesCollectionView.swift */,
 				58C76E622C12A79C00E88D54 /* MovieCell.swift */,
 				829D86D92C18F3D10076910A /* LoadingView.swift */,
+				8271F8302C222D8A00350F7B /* Home */,
 			);
-			path = CustomViews;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		582B964C2BFFA9980021AED6 /* Screens */ = {
@@ -118,17 +139,17 @@
 		587F398C2BFE59BD0082FB53 /* Movie-App */ = {
 			isa = PBXGroup;
 			children = (
+				8271F8212C21F63700350F7B /* Models */,
 				58EC2C132C078F0000A6D287 /* Extensions */,
-				582B964C2BFFA9980021AED6 /* Screens */,
-				582B96452BFF9A290021AED6 /* CustomViews */,
+				582B96452BFF9A290021AED6 /* Views */,
 				587F39A12BFE5AC70082FB53 /* Managers */,
-				587F398D2BFE59BD0082FB53 /* AppDelegate.swift */,
+				82E774122C0A28730026347D /* Controllers */,
 				587F398F2BFE59BD0082FB53 /* SceneDelegate.swift */,
+				587F398D2BFE59BD0082FB53 /* AppDelegate.swift */,
 				587F39962BFE59BE0082FB53 /* Assets.xcassets */,
 				587F39982BFE59BE0082FB53 /* LaunchScreen.storyboard */,
 				587F399B2BFE59BE0082FB53 /* Info.plist */,
 				82E7741D2C0A38330026347D /* Fonts */,
-				82E774122C0A28730026347D /* Controllers */,
 			);
 			path = "Movie-App";
 			sourceTree = "<group>";
@@ -147,13 +168,38 @@
 				58EC2C142C078F1D00A6D287 /* Ext-UISearchBar.swift */,
 				82E774152C0A34780026347D /* Ext-UIButton.swift */,
 				82E774172C0A378D0026347D /* Ext-Fonts.swift */,
+				8271F82E2C21FF2400350F7B /* Ext-UIViewController.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		8271F8212C21F63700350F7B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8271F8222C21F6B300350F7B /* Movie.swift */,
+				8271F8242C21F73400350F7B /* Genre.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		8271F8302C222D8A00350F7B /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				8271F8282C21F9E100350F7B /* AppLogoView.swift */,
+				8271F82A2C21FC7A00350F7B /* ProfileImageView.swift */,
+				8271F82C2C21FE1D00350F7B /* SearchBarView.swift */,
+				8271F8262C21F80E00350F7B /* SideBarButton.swift */,
+				8271F8312C2233C900350F7B /* HomeContentView.swift */,
+				8271F8332C223EAD00350F7B /* ButtonsStackView.swift */,
+				8271F8352C223F9500350F7B /* CarouselButton.swift */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 		82E774122C0A28730026347D /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				582B964C2BFFA9980021AED6 /* Screens */,
 				582B96572C00F3F50021AED6 /* NavigationVC.swift */,
 				82E774132C0A28D90026347D /* SelectionCarousselVC.swift */,
 			);
@@ -244,6 +290,9 @@
 				82E774162C0A34780026347D /* Ext-UIButton.swift in Sources */,
 				582B96502BFFAA000021AED6 /* SearchVC.swift in Sources */,
 				58C76E632C12A79C00E88D54 /* MovieCell.swift in Sources */,
+				8271F8342C223EAD00350F7B /* ButtonsStackView.swift in Sources */,
+				8271F8322C2233C900350F7B /* HomeContentView.swift in Sources */,
+				8271F8252C21F73400350F7B /* Genre.swift in Sources */,
 				82E774182C0A378D0026347D /* Ext-Fonts.swift in Sources */,
 				82E774142C0A28D90026347D /* SelectionCarousselVC.swift in Sources */,
 				582B96582C00F3F50021AED6 /* NavigationVC.swift in Sources */,
@@ -251,15 +300,22 @@
 				582B964B2BFFA92C0021AED6 /* MovieTabBarController.swift in Sources */,
 				582B96562C00F3A90021AED6 /* NavigationView.swift in Sources */,
 				829D86DC2C1902CC0076910A /* DetailsVC.swift in Sources */,
+				8271F8362C223F9500350F7B /* CarouselButton.swift in Sources */,
 				582B964E2BFFA9DE0021AED6 /* HomeVC.swift in Sources */,
 				58EC2C152C078F1D00A6D287 /* Ext-UISearchBar.swift in Sources */,
 				587F39A32BFE5ADB0082FB53 /* NetworkManager.swift in Sources */,
 				582B96522BFFAA100021AED6 /* FavoritesVC.swift in Sources */,
+				8271F8232C21F6B300350F7B /* Movie.swift in Sources */,
 				587F398E2BFE59BD0082FB53 /* AppDelegate.swift in Sources */,
+				8271F8292C21F9E100350F7B /* AppLogoView.swift in Sources */,
 				587F39902BFE59BD0082FB53 /* SceneDelegate.swift in Sources */,
+				8271F82F2C21FF2400350F7B /* Ext-UIViewController.swift in Sources */,
 				582B96542C00EF760021AED6 /* SideBar.swift in Sources */,
 				582B96492BFF9F430021AED6 /* CustomBarButtonItem.swift in Sources */,
 				829D86DA2C18F3D10076910A /* LoadingView.swift in Sources */,
+				8271F82D2C21FE1D00350F7B /* SearchBarView.swift in Sources */,
+				8271F82B2C21FC7A00350F7B /* ProfileImageView.swift in Sources */,
+				8271F8272C21F80E00350F7B /* SideBarButton.swift in Sources */,
 				582B965A2C00F46C0021AED6 /* NavigationCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
