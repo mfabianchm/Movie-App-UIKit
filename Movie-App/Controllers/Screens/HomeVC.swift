@@ -152,7 +152,6 @@ extension HomeVC {
                case .success(let movies):
                 
                 if(movieType == "popular") {
-                    print("hola")
                     self.fetchedMovies.popularMovies = movies.data
                     self.posterImages.popularMovies = movies.posterImages
                 }
@@ -170,10 +169,10 @@ extension HomeVC {
                     DispatchQueue.main.async {
                         self.selectionCarouselVC.fetchedMovies = self.fetchedMovies
                         self.selectionCarouselVC.posterImages = self.posterImages
-                        self.selectionCarouselVC.genres = self.genres
-                        
+                    
                         self.selectionCarouselVC.moviesToDisplay = self.selectionCarouselVC.fetchedMovies?.popularMovies
                         self.selectionCarouselVC.postersToDisplay = self.selectionCarouselVC.posterImages?.popularMovies
+                        
                         self.selectionCarouselVC.moviesCollectionView.reloadData()
                         self.loadingVC.remove()
                         self.view.isUserInteractionEnabled = true

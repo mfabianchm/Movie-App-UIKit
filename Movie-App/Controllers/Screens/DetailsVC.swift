@@ -5,29 +5,31 @@
 //  Created by Marcos Chong on 11/06/24.
 //
 
+
+//We used this data: posterImage, movieGenres, model
+
 import UIKit
 
 class DetailsVC: UIViewController {
     
     let scrollView = UIScrollView()
-    let contentView = UIView()
-    let profileImage = UIImageView()
-    let mainMovieImage = UIImageView()
-    let hdLabel = UILabel()
-    let qualityLabel = UILabel()
+    var contentView: UIView?
+    
     let genresStackView = UIStackView()
     let rankingLabel = UILabel()
     let iconsStack = UIStackView()
     let infoMovieStack = UIStackView()
-    
-    var posterImage: UIImage?
-    
+        
     var padding: CGFloat = 10
     
+    var posterImage: UIImage?
+    var movieGenres: [String] = []
     let model: Movie?
+    
+    
     let genres: [Genre]?
     var movieGenresId: [Int]?
-    var movieGenres: [String] = []
+    
     
     var movieDetails: MovieDetails?
 
@@ -36,7 +38,6 @@ class DetailsVC: UIViewController {
         self.genres = genres
         self.movieGenresId = model?.genreIds
         super.init(nibName: nil, bundle: nil)
-        self.getMovieDetails()
     }
     
     required init?(coder: NSCoder) {
@@ -49,7 +50,10 @@ class DetailsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setMovieGenres()
         getImage()
+        getMovieDetails()
+        contentView = DetailsContentView(model: model!, genres: movieGenres)
         configure()
     }
     
@@ -65,69 +69,29 @@ class DetailsVC: UIViewController {
     
     func configure() {
         configureScrollView()
-        configureContentView()
-        configureProfileImage()
-        configureMainImage()
-        configureGenresStackView()
-        configureRankingLabel()
-        configureIconsStackView()
-        configureInfoMovieStackView()
+        addViews()
+//        configureContentView()
+//        configureProfileImage()
+//        configureMainImage()
+//        configureGenresStackView()
+//        configureRankingLabel()
+//        configureIconsStackView()
+//        configureInfoMovieStackView()
         configureConstrainst()
     }
     
     func configureScrollView() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.backgroundColor = UIColor(named: "Dark-Gray")
+    }
+    
+    func addViews() {
         view.addSubview(scrollView)
+        scrollView.addSubview(contentView!)
     }
     
-    func configureContentView() {
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.backgroundColor = UIColor(named: "Dark-Gray")
-        scrollView.addSubview(contentView)
-    }
     
-    func configureProfileImage() {
-        profileImage.translatesAutoresizingMaskIntoConstraints = false
-        profileImage.image = UIImage(named: "profile-image")
-        profileImage.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-        profileImage.layer.cornerRadius = 0.5 * profileImage.bounds.size.width
-        profileImage.clipsToBounds = true
-        profileImage.layer.zPosition = 100
-        contentView.addSubview(profileImage)
-    }
-    
-    func configureMainImage() {
-        contentView.addSubview(mainMovieImage)
-        
-        mainMovieImage.addSubview(hdLabel)
-        mainMovieImage.addSubview(qualityLabel)
-        
-        mainMovieImage.image = self.posterImage
-        mainMovieImage.contentMode = .scaleToFill
-        mainMovieImage.backgroundColor = .gray
-        mainMovieImage.translatesAutoresizingMaskIntoConstraints = false
-        
-        hdLabel.translatesAutoresizingMaskIntoConstraints = false
-        hdLabel.text = "HD"
-        hdLabel.backgroundColor = UIColor(named: "Yellow")
-        hdLabel.layer.cornerRadius = 5
-        hdLabel.layer.masksToBounds = true
-        hdLabel.font = UIFont(name: "Montserrat-Medium", size: 15)
-        hdLabel.textAlignment = .center
-        
-        qualityLabel.translatesAutoresizingMaskIntoConstraints = false
-        qualityLabel.text = "4K"
-        qualityLabel.backgroundColor = UIColor.black.withAlphaComponent(0.3)
-        qualityLabel.textColor = .white
-        qualityLabel.layer.cornerRadius = 5
-        qualityLabel.layer.masksToBounds = true
-        qualityLabel.font = UIFont(name: "Montserrat-Medium", size: 15)
-        qualityLabel.textAlignment = .center
-    }
-    
-    func configureGenresStackView() {
-        
+    func setMovieGenres() {
         if(movieGenresId!.count > 2) {
             let lastElement = movieGenresId!.count - 1
             movieGenresId!.removeSubrange(2...lastElement)
@@ -140,6 +104,23 @@ class DetailsVC: UIViewController {
                 }
             }
         }
+        
+    }
+    
+    func configureGenresStackView() {
+        
+//        if(movieGenresId!.count > 2) {
+//            let lastElement = movieGenresId!.count - 1
+//            movieGenresId!.removeSubrange(2...lastElement)
+//        }
+//
+//        movieGenresId?.forEach { id in
+//            genres?.forEach { genre in
+//                if(genre.id) == id {
+//                    movieGenres.append(genre.name)
+//                }
+//            }
+//        }
         
         movieGenres.forEach { genre in
             let genreLabel: UILabel = {
@@ -291,51 +272,55 @@ class DetailsVC: UIViewController {
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
-            contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor, constant: 0
+            contentView!.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor, constant: 0
                                         ),
-            contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: 0),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: 0),
-            contentView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            contentView.heightAnchor.constraint(equalToConstant: 2000),
+            contentView!.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            contentView!.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: 0),
+            contentView!.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: 0),
+            contentView!.widthAnchor.constraint(equalTo: view.widthAnchor),
+            contentView!.heightAnchor.constraint(equalToConstant: 2000),
             
-            profileImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
-            profileImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 50),
-            profileImage.widthAnchor.constraint(equalToConstant: 50),
-            profileImage.heightAnchor.constraint(equalToConstant: 50),
             
-            mainMovieImage.topAnchor.constraint(equalTo: contentView.topAnchor),
-            mainMovieImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            mainMovieImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            mainMovieImage.heightAnchor.constraint(equalToConstant: 550),
             
-            hdLabel.bottomAnchor.constraint(equalTo: mainMovieImage.bottomAnchor, constant: -10),
-            hdLabel.leadingAnchor.constraint(equalTo: mainMovieImage.leadingAnchor, constant: 10),
-            hdLabel.widthAnchor.constraint(equalToConstant: 30),
-            hdLabel.heightAnchor.constraint(equalToConstant: 25),
             
-            qualityLabel.bottomAnchor.constraint(equalTo: hdLabel.bottomAnchor),
-            qualityLabel.leadingAnchor.constraint(equalTo: hdLabel.trailingAnchor, constant: 5),
-            qualityLabel.widthAnchor.constraint(equalToConstant: 30),
-            qualityLabel.heightAnchor.constraint(equalToConstant: 25),
             
-            genresStackView.bottomAnchor.constraint(equalTo: hdLabel.bottomAnchor),
-            genresStackView.trailingAnchor.constraint(equalTo: mainMovieImage.trailingAnchor, constant: -10),
-            genresStackView.heightAnchor.constraint(equalToConstant: 25),
             
-            rankingLabel.topAnchor.constraint(equalTo: mainMovieImage.bottomAnchor, constant: 10),
-            rankingLabel.leadingAnchor.constraint(equalTo: hdLabel.leadingAnchor),
-            rankingLabel.widthAnchor.constraint(equalToConstant: 100),
-            rankingLabel.heightAnchor.constraint(equalToConstant: 35),
+//            Move all this constraints into its own view
             
-            iconsStack.topAnchor.constraint(equalTo: rankingLabel.topAnchor),
-            iconsStack.trailingAnchor.constraint(equalTo: genresStackView.trailingAnchor),
-            iconsStack.heightAnchor.constraint(equalToConstant: 35),
-            iconsStack.widthAnchor.constraint(equalToConstant: 110),
             
-            infoMovieStack.topAnchor.constraint(equalTo: rankingLabel.bottomAnchor, constant: 20),
-            infoMovieStack.leadingAnchor.constraint(equalTo: rankingLabel.leadingAnchor),
-            infoMovieStack.trailingAnchor.constraint(equalTo: iconsStack.trailingAnchor)
+            
+//            mainMovieImage.topAnchor.constraint(equalTo: contentView.topAnchor),
+//            mainMovieImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+//            mainMovieImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+//            mainMovieImage.heightAnchor.constraint(equalToConstant: 550),
+//            
+//            hdLabel.bottomAnchor.constraint(equalTo: mainMovieImage.bottomAnchor, constant: -10),
+//            hdLabel.leadingAnchor.constraint(equalTo: mainMovieImage.leadingAnchor, constant: 10),
+//            hdLabel.widthAnchor.constraint(equalToConstant: 30),
+//            hdLabel.heightAnchor.constraint(equalToConstant: 25),
+//            
+//            qualityLabel.bottomAnchor.constraint(equalTo: hdLabel.bottomAnchor),
+//            qualityLabel.leadingAnchor.constraint(equalTo: hdLabel.trailingAnchor, constant: 5),
+//            qualityLabel.widthAnchor.constraint(equalToConstant: 30),
+//            qualityLabel.heightAnchor.constraint(equalToConstant: 25),
+//            
+//            genresStackView.bottomAnchor.constraint(equalTo: hdLabel.bottomAnchor),
+//            genresStackView.trailingAnchor.constraint(equalTo: mainMovieImage.trailingAnchor, constant: -10),
+//            genresStackView.heightAnchor.constraint(equalToConstant: 25),
+//            
+//            rankingLabel.topAnchor.constraint(equalTo: mainMovieImage.bottomAnchor, constant: 10),
+//            rankingLabel.leadingAnchor.constraint(equalTo: hdLabel.leadingAnchor),
+//            rankingLabel.widthAnchor.constraint(equalToConstant: 100),
+//            rankingLabel.heightAnchor.constraint(equalToConstant: 35),
+//            
+//            iconsStack.topAnchor.constraint(equalTo: rankingLabel.topAnchor),
+//            iconsStack.trailingAnchor.constraint(equalTo: genresStackView.trailingAnchor),
+//            iconsStack.heightAnchor.constraint(equalToConstant: 35),
+//            iconsStack.widthAnchor.constraint(equalToConstant: 110),
+//            
+//            infoMovieStack.topAnchor.constraint(equalTo: rankingLabel.bottomAnchor, constant: 20),
+//            infoMovieStack.leadingAnchor.constraint(equalTo: rankingLabel.leadingAnchor),
+//            infoMovieStack.trailingAnchor.constraint(equalTo: iconsStack.trailingAnchor)
         ])
     }
 }
@@ -345,14 +330,13 @@ extension DetailsVC {
     func getMovieDetails() {
         NetworkManager.shared.getMovieDetails(id: model!.id) { result in
             switch result {
-               case .success(let movie):
-                self.movieDetails = movie
+            case .success(let movie):
                 DispatchQueue.main.async {
-                    print(self.infoMovieStack.subviews[0].self.subviews)
+                    self.movieDetails = movie
                 }
-               case .failure(let error):
-                   print(error.localizedDescription)
-               }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
         }
     }
     
@@ -364,7 +348,10 @@ extension DetailsVC {
         NetworkManager.shared.getImage(from: url) { data, response, error in
             guard let data = data, error == nil else { return }
             DispatchQueue.main.async() { [weak self] in
-                self?.mainMovieImage.image = UIImage(data: data)
+                guard let self = self else {return}
+                guard let contentView = self.contentView as? DetailsContentView else {return}
+                
+                contentView.mainMovieImage.image = UIImage(data: data)
             }
         }
     }

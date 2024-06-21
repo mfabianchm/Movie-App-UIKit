@@ -12,10 +12,6 @@ protocol SidebarDelegate {
 }
 
 class SidebarLauncher: NSObject{
-//    func navigation(didSelect: NavigationModel?) {
-//        print("navigation")
-//    }
-    
 
     var view: UIView?
     var delegate: SidebarDelegate?

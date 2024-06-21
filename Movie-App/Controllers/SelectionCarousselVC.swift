@@ -46,6 +46,7 @@ class SelectionCarousselVC: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .red
         configure()
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -135,10 +136,11 @@ class SelectionCarousselVC: UIViewController {
     
    
     @objc func presentDetailsVC() {
-        navigationController?.pushViewController(DetailsVC(model: movieSelected, genres: genres!), animated: true)
+        guard let genres = genres else {return}
+        navigationController?.pushViewController(DetailsVC(model: movieSelected, genres: genres), animated: true)
     }
-
 }
+
 
 extension SelectionCarousselVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -158,21 +160,30 @@ extension SelectionCarousselVC: UICollectionViewDataSource {
     }
 }
 
-extension SelectionCarousselVC: UIScrollViewDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 
+
+extension SelectionCarousselVC: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView,
+                        didSelectItemAt indexPath: IndexPath) {
+        scrollToMiddle = false
+        let cellToSearch = collectionView.cellForItem(at: indexPath) as! MovieCell
+        self.movieSelected = cellToSearch.model
+        presentDetailsVC()
+    }
+}
+
+
+
+extension SelectionCarousselVC: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
             let sideInset = (collectionView.frame.size.width - 200) / 2
             return UIEdgeInsets(top: 0, left: sideInset, bottom: 0, right: sideInset)
         }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        didSelectItemAt indexPath: IndexPath) {
-        let cellToSearch = collectionView.cellForItem(at: indexPath) as! MovieCell
-        scrollToMiddle = false
-        self.movieSelected = cellToSearch.model
-        presentDetailsVC()
-    }
-    
+}
+
+
+
+extension SelectionCarousselVC: UIScrollViewDelegate {
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
       let layout = self.moviesCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
       let cellWidthIncludingSpacing = layout.itemSize.width + layout.minimumLineSpacing
@@ -190,6 +201,8 @@ extension SelectionCarousselVC: UIScrollViewDelegate, UICollectionViewDelegate, 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
       guard scrollView is UICollectionView else {return}
 
+      let centerCell: MovieCell?
+
       let centerPoint = CGPoint(x: self.moviesCollectionView.frame.size.width / 2 + scrollView.contentOffset.x,
                                 y: self.moviesCollectionView.frame.size.height / 2 + scrollView.contentOffset.y)
       if let indexPath = self.moviesCollectionView.indexPathForItem(at: centerPoint) {
@@ -205,7 +218,4 @@ extension SelectionCarousselVC: UIScrollViewDelegate, UICollectionViewDelegate, 
         }
       }
     }
-    
-    
-    
 }

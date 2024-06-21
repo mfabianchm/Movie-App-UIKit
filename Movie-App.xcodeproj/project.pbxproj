@@ -22,6 +22,8 @@
 		587F399A2BFE59BE0082FB53 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 587F39982BFE59BE0082FB53 /* LaunchScreen.storyboard */; };
 		587F39A32BFE5ADB0082FB53 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587F39A22BFE5ADB0082FB53 /* NetworkManager.swift */; };
 		58B267A22C228B5500E987C4 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B267A12C228B5500E987C4 /* LoadingViewController.swift */; };
+		58B267A82C24DE7000E987C4 /* DetailsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B267A72C24DE7000E987C4 /* DetailsContentView.swift */; };
+		58B267AB2C24E1DE00E987C4 /* DetailsPosterImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B267AA2C24E1DE00E987C4 /* DetailsPosterImage.swift */; };
 		58C76E612C1294DB00E88D54 /* MoviesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C76E602C1294DB00E88D54 /* MoviesCollectionView.swift */; };
 		58C76E632C12A79C00E88D54 /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C76E622C12A79C00E88D54 /* MovieCell.swift */; };
 		58EC2C152C078F1D00A6D287 /* Ext-UISearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EC2C142C078F1D00A6D287 /* Ext-UISearchBar.swift */; };
@@ -62,6 +64,8 @@
 		587F399B2BFE59BE0082FB53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		587F39A22BFE5ADB0082FB53 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		58B267A12C228B5500E987C4 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
+		58B267A72C24DE7000E987C4 /* DetailsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsContentView.swift; sourceTree = "<group>"; };
+		58B267AA2C24E1DE00E987C4 /* DetailsPosterImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsPosterImage.swift; sourceTree = "<group>"; };
 		58C76E602C1294DB00E88D54 /* MoviesCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesCollectionView.swift; sourceTree = "<group>"; };
 		58C76E622C12A79C00E88D54 /* MovieCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
 		58EC2C142C078F1D00A6D287 /* Ext-UISearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext-UISearchBar.swift"; sourceTree = "<group>"; };
@@ -106,6 +110,7 @@
 				58C76E622C12A79C00E88D54 /* MovieCell.swift */,
 				829D86D92C18F3D10076910A /* LoadingView.swift */,
 				8271F8302C222D8A00350F7B /* Home */,
+				58B267A92C24E1A700E987C4 /* Details */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -161,6 +166,15 @@
 				587F39A22BFE5ADB0082FB53 /* NetworkManager.swift */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		58B267A92C24E1A700E987C4 /* Details */ = {
+			isa = PBXGroup;
+			children = (
+				58B267A72C24DE7000E987C4 /* DetailsContentView.swift */,
+				58B267AA2C24E1DE00E987C4 /* DetailsPosterImage.swift */,
+			);
+			path = Details;
 			sourceTree = "<group>";
 		};
 		58EC2C132C078F0000A6D287 /* Extensions */ = {
@@ -290,6 +304,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				58B267AB2C24E1DE00E987C4 /* DetailsPosterImage.swift in Sources */,
 				82E774162C0A34780026347D /* Ext-UIButton.swift in Sources */,
 				582B96502BFFAA000021AED6 /* SearchVC.swift in Sources */,
 				58C76E632C12A79C00E88D54 /* MovieCell.swift in Sources */,
@@ -305,6 +320,7 @@
 				829D86DC2C1902CC0076910A /* DetailsVC.swift in Sources */,
 				8271F8362C223F9500350F7B /* CarouselButton.swift in Sources */,
 				582B964E2BFFA9DE0021AED6 /* HomeVC.swift in Sources */,
+				58B267A82C24DE7000E987C4 /* DetailsContentView.swift in Sources */,
 				58EC2C152C078F1D00A6D287 /* Ext-UISearchBar.swift in Sources */,
 				587F39A32BFE5ADB0082FB53 /* NetworkManager.swift in Sources */,
 				582B96522BFFAA100021AED6 /* FavoritesVC.swift in Sources */,
