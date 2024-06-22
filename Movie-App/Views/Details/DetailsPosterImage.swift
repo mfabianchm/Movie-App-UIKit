@@ -11,6 +11,7 @@ class DetailsPosterImage: UIImageView {
 
     let hdLabel = UILabel()
     let qualityLabel = UILabel()
+    let genresStackView = UIStackView()
     
     var posterImage: UIImage?
     var movieGenres: [String]?
@@ -35,6 +36,12 @@ class DetailsPosterImage: UIImageView {
         self.addSubview(hdLabel)
         self.addSubview(qualityLabel)
         
+        configureHDLabel()
+        configureQualityLabel()
+        configureGenresStackView()
+    }
+    
+    func configureHDLabel() {
         hdLabel.translatesAutoresizingMaskIntoConstraints = false
         hdLabel.text = "HD"
         hdLabel.backgroundColor = UIColor(named: "Yellow")
@@ -42,7 +49,9 @@ class DetailsPosterImage: UIImageView {
         hdLabel.layer.masksToBounds = true
         hdLabel.font = UIFont(name: "Montserrat-Medium", size: 15)
         hdLabel.textAlignment = .center
-        
+    }
+    
+    func configureQualityLabel() {
         qualityLabel.translatesAutoresizingMaskIntoConstraints = false
         qualityLabel.text = "4K"
         qualityLabel.backgroundColor = UIColor.black.withAlphaComponent(0.3)
@@ -51,6 +60,35 @@ class DetailsPosterImage: UIImageView {
         qualityLabel.layer.masksToBounds = true
         qualityLabel.font = UIFont(name: "Montserrat-Medium", size: 15)
         qualityLabel.textAlignment = .center
+    }
+    
+    func configureGenresStackView() {
+        genresStackView.axis = .horizontal
+        genresStackView.spacing = 5
+        genresStackView.alignment = .fill
+        genresStackView.distribution = .fillProportionally
+        genresStackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.addSubview(genresStackView)
+    }
+    
+    func setGenresStackView() {
+        movieGenres!.forEach { genre in
+            let genreLabel: UILabel = {
+                let label = UILabel()
+                label.backgroundColor = UIColor.black.withAlphaComponent(0.3)
+                label.font = UIFont(name: "Montserrat-Medium", size: 13)
+                label.textColor = .white
+                label.layer.cornerRadius = 5
+                label.layer.masksToBounds = true
+                label.textAlignment = .center
+                return label
+            }()
+            
+            genreLabel.text = genre
+            genresStackView.addArrangedSubview(genreLabel)
+        }
+        
     }
     
     func configureLayout() {
@@ -65,6 +103,10 @@ class DetailsPosterImage: UIImageView {
             qualityLabel.leadingAnchor.constraint(equalTo: hdLabel.trailingAnchor, constant: 5),
             qualityLabel.widthAnchor.constraint(equalToConstant: 30),
             qualityLabel.heightAnchor.constraint(equalToConstant: 25),
+            
+            genresStackView.bottomAnchor.constraint(equalTo: hdLabel.bottomAnchor),
+            genresStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
+            genresStackView.heightAnchor.constraint(equalToConstant: 25),
         ])
        
     }

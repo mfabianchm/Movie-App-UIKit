@@ -15,11 +15,6 @@ class DetailsVC: UIViewController {
     let scrollView = UIScrollView()
     var contentView: UIView?
     
-    let genresStackView = UIStackView()
-    let rankingLabel = UILabel()
-    let iconsStack = UIStackView()
-    let infoMovieStack = UIStackView()
-        
     var padding: CGFloat = 10
     
     var posterImage: UIImage?
@@ -29,7 +24,6 @@ class DetailsVC: UIViewController {
     
     let genres: [Genre]?
     var movieGenresId: [Int]?
-    
     
     var movieDetails: MovieDetails?
 
@@ -70,12 +64,6 @@ class DetailsVC: UIViewController {
     func configure() {
         configureScrollView()
         addViews()
-//        configureContentView()
-//        configureProfileImage()
-//        configureMainImage()
-//        configureGenresStackView()
-//        configureRankingLabel()
-//        configureIconsStackView()
 //        configureInfoMovieStackView()
         configureConstrainst()
     }
@@ -107,90 +95,6 @@ class DetailsVC: UIViewController {
         
     }
     
-    func configureGenresStackView() {
-        
-//        if(movieGenresId!.count > 2) {
-//            let lastElement = movieGenresId!.count - 1
-//            movieGenresId!.removeSubrange(2...lastElement)
-//        }
-//
-//        movieGenresId?.forEach { id in
-//            genres?.forEach { genre in
-//                if(genre.id) == id {
-//                    movieGenres.append(genre.name)
-//                }
-//            }
-//        }
-        
-        movieGenres.forEach { genre in
-            let genreLabel: UILabel = {
-                let label = UILabel()
-                label.backgroundColor = UIColor.black.withAlphaComponent(0.3)
-                label.font = UIFont(name: "Montserrat-Medium", size: 13)
-                label.textColor = .white
-                label.layer.cornerRadius = 5
-                label.layer.masksToBounds = true
-                label.textAlignment = .center
-                return label
-            }()
-            
-            genreLabel.text = genre
-            genresStackView.addArrangedSubview(genreLabel)
-        }
-        
-        genresStackView.axis = .horizontal
-        genresStackView.spacing = 5
-        genresStackView.alignment = .fill
-        genresStackView.distribution = .fillProportionally
-        genresStackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(genresStackView)
-    }
-    
-    func configureRankingLabel() {
-        rankingLabel.translatesAutoresizingMaskIntoConstraints = false
-        rankingLabel.backgroundColor = UIColor(named: "Yellow")
-        rankingLabel.textColor = .gray
-        rankingLabel.layer.cornerRadius = 5
-        rankingLabel.layer.masksToBounds = true
-        rankingLabel.font = UIFont(name: "Montserrat-SemiBold", size: 12)
-        rankingLabel.textAlignment = .center
-        view.addSubview(rankingLabel)
-        
-        guard let model = model else {
-            rankingLabel.text = "N/A"
-            return
-        }
-        
-        let ranking = String(format: "%.2f", model.voteAverage)
-        
-        let attributedString = NSMutableAttributedString(string: "IMDB \(ranking)/10")
-        attributedString.addAttribute(.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: 10))
-        rankingLabel.attributedText = attributedString
-    }
-    
-    func configureIconsStackView() {
-        let iconsName: [String] = ["heart","square.and.arrow.up" ,"bookmark"]
-        
-        iconsName.forEach { icon in
-            let button: UIButton = {
-                let button = UIButton(type: .system)
-                button.setImage(UIImage(systemName: icon), for: .normal)
-                button.tintColor = .white
-                return button
-            }()
-            
-            iconsStack.addArrangedSubview(button)
-        }
-        
-        iconsStack.axis = .horizontal
-        iconsStack.spacing = 5
-        iconsStack.alignment = .center
-        iconsStack.distribution = .fillProportionally
-        iconsStack.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(iconsStack)
-    }
     
     func configureInfoMovieStackView() {
         let countriesString: String
@@ -201,66 +105,19 @@ class DetailsVC: UIViewController {
         } else {
             countriesString = "N/A"
         }
-    
         
-        infoMovieStack.translatesAutoresizingMaskIntoConstraints = false
-        infoMovieStack.alignment = .leading
-        infoMovieStack.spacing = 10
-        infoMovieStack.axis = .vertical
-
-        let movieTitle: UILabel = {
-            let label = UILabel()
-            label.text = model!.originalTitle
-            label.font = UIFont(name: "Montserrat-SemiBold", size: 30)
-            label.textColor = .white
-            return label
-        }()
+        guard let contentView = contentView as? DetailsContentView else {return}
         
-        let releaseDateLabel: UILabel = {
-            let label = UILabel()
-            label.text = "\(model!.releaseDate)•\(genresString)"
-            label.font = UIFont(name: "Montserrat-SemiBold", size: 13)
-            label.textColor = .gray
-            return label
-        }()
+        print(countriesString)
         
-        let countryLabel: UILabel = {
-            let label = UILabel()
-            label.text = "Country: \(countriesString)"
-            label.font = UIFont(name: "Montserrat-SemiBold", size: 13)
-            label.textColor = .gray
-            return label
-        }()
+        contentView.infoMovieStack.originalTitle =  model!.originalTitle
+        contentView.infoMovieStack.countriesString = countriesString
+        contentView.infoMovieStack.releaseDate = "\(model!.releaseDate)•\(genresString)"
+        contentView.infoMovieStack.originalLanguage = movieDetails?.originalLanguage
+        contentView.infoMovieStack.status = movieDetails?.status
         
-        let languageLabel: UILabel = {
-            let label = UILabel()
-//            label.text = "Original language: \(movieDetails!.originalLanguage)"
-            label.text = "Original language:"
-            label.font = UIFont(name: "Montserrat-SemiBold", size: 13)
-            label.textColor = .gray
-            return label
-        }()
+        contentView.infoMovieStack.redrawView()
         
-        
-        let statusLabel: UILabel = {
-            let label = UILabel()
-//            label.text = "Status: \(movieDetails!.status)"
-            label.text = "Status: "
-            label.font = UIFont(name: "Montserrat-SemiBold", size: 13)
-            label.textColor = .gray
-            return label
-        }()
-        
-        
-        
-        
-
-        infoMovieStack.addArrangedSubview(movieTitle)
-        infoMovieStack.addArrangedSubview(releaseDateLabel)
-        infoMovieStack.addArrangedSubview(countryLabel)
-        infoMovieStack.addArrangedSubview(languageLabel)
-        infoMovieStack.addArrangedSubview(statusLabel)
-        view.addSubview(infoMovieStack)
     }
     
     func configureConstrainst() {
@@ -280,47 +137,6 @@ class DetailsVC: UIViewController {
             contentView!.widthAnchor.constraint(equalTo: view.widthAnchor),
             contentView!.heightAnchor.constraint(equalToConstant: 2000),
             
-            
-            
-            
-            
-            
-//            Move all this constraints into its own view
-            
-            
-            
-//            mainMovieImage.topAnchor.constraint(equalTo: contentView.topAnchor),
-//            mainMovieImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-//            mainMovieImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-//            mainMovieImage.heightAnchor.constraint(equalToConstant: 550),
-//            
-//            hdLabel.bottomAnchor.constraint(equalTo: mainMovieImage.bottomAnchor, constant: -10),
-//            hdLabel.leadingAnchor.constraint(equalTo: mainMovieImage.leadingAnchor, constant: 10),
-//            hdLabel.widthAnchor.constraint(equalToConstant: 30),
-//            hdLabel.heightAnchor.constraint(equalToConstant: 25),
-//            
-//            qualityLabel.bottomAnchor.constraint(equalTo: hdLabel.bottomAnchor),
-//            qualityLabel.leadingAnchor.constraint(equalTo: hdLabel.trailingAnchor, constant: 5),
-//            qualityLabel.widthAnchor.constraint(equalToConstant: 30),
-//            qualityLabel.heightAnchor.constraint(equalToConstant: 25),
-//            
-//            genresStackView.bottomAnchor.constraint(equalTo: hdLabel.bottomAnchor),
-//            genresStackView.trailingAnchor.constraint(equalTo: mainMovieImage.trailingAnchor, constant: -10),
-//            genresStackView.heightAnchor.constraint(equalToConstant: 25),
-//            
-//            rankingLabel.topAnchor.constraint(equalTo: mainMovieImage.bottomAnchor, constant: 10),
-//            rankingLabel.leadingAnchor.constraint(equalTo: hdLabel.leadingAnchor),
-//            rankingLabel.widthAnchor.constraint(equalToConstant: 100),
-//            rankingLabel.heightAnchor.constraint(equalToConstant: 35),
-//            
-//            iconsStack.topAnchor.constraint(equalTo: rankingLabel.topAnchor),
-//            iconsStack.trailingAnchor.constraint(equalTo: genresStackView.trailingAnchor),
-//            iconsStack.heightAnchor.constraint(equalToConstant: 35),
-//            iconsStack.widthAnchor.constraint(equalToConstant: 110),
-//            
-//            infoMovieStack.topAnchor.constraint(equalTo: rankingLabel.bottomAnchor, constant: 20),
-//            infoMovieStack.leadingAnchor.constraint(equalTo: rankingLabel.leadingAnchor),
-//            infoMovieStack.trailingAnchor.constraint(equalTo: iconsStack.trailingAnchor)
         ])
     }
 }
@@ -333,6 +149,7 @@ extension DetailsVC {
             case .success(let movie):
                 DispatchQueue.main.async {
                     self.movieDetails = movie
+                    self.configureInfoMovieStackView()
                 }
             case .failure(let error):
                 print(error.localizedDescription)

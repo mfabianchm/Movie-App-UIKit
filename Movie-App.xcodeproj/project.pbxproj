@@ -24,6 +24,9 @@
 		58B267A22C228B5500E987C4 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B267A12C228B5500E987C4 /* LoadingViewController.swift */; };
 		58B267A82C24DE7000E987C4 /* DetailsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B267A72C24DE7000E987C4 /* DetailsContentView.swift */; };
 		58B267AB2C24E1DE00E987C4 /* DetailsPosterImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B267AA2C24E1DE00E987C4 /* DetailsPosterImage.swift */; };
+		58B267AD2C25028000E987C4 /* IconsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B267AC2C25028000E987C4 /* IconsStackView.swift */; };
+		58B267AF2C2503CB00E987C4 /* InfoMovieStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B267AE2C2503CA00E987C4 /* InfoMovieStackView.swift */; };
+		58B267B12C25052500E987C4 /* DetailsLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B267B02C25052500E987C4 /* DetailsLabel.swift */; };
 		58C76E612C1294DB00E88D54 /* MoviesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C76E602C1294DB00E88D54 /* MoviesCollectionView.swift */; };
 		58C76E632C12A79C00E88D54 /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C76E622C12A79C00E88D54 /* MovieCell.swift */; };
 		58EC2C152C078F1D00A6D287 /* Ext-UISearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EC2C142C078F1D00A6D287 /* Ext-UISearchBar.swift */; };
@@ -66,6 +69,9 @@
 		58B267A12C228B5500E987C4 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		58B267A72C24DE7000E987C4 /* DetailsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsContentView.swift; sourceTree = "<group>"; };
 		58B267AA2C24E1DE00E987C4 /* DetailsPosterImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsPosterImage.swift; sourceTree = "<group>"; };
+		58B267AC2C25028000E987C4 /* IconsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconsStackView.swift; sourceTree = "<group>"; };
+		58B267AE2C2503CA00E987C4 /* InfoMovieStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMovieStackView.swift; sourceTree = "<group>"; };
+		58B267B02C25052500E987C4 /* DetailsLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsLabel.swift; sourceTree = "<group>"; };
 		58C76E602C1294DB00E88D54 /* MoviesCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesCollectionView.swift; sourceTree = "<group>"; };
 		58C76E622C12A79C00E88D54 /* MovieCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
 		58EC2C142C078F1D00A6D287 /* Ext-UISearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext-UISearchBar.swift"; sourceTree = "<group>"; };
@@ -173,6 +179,9 @@
 			children = (
 				58B267A72C24DE7000E987C4 /* DetailsContentView.swift */,
 				58B267AA2C24E1DE00E987C4 /* DetailsPosterImage.swift */,
+				58B267AC2C25028000E987C4 /* IconsStackView.swift */,
+				58B267AE2C2503CA00E987C4 /* InfoMovieStackView.swift */,
+				58B267B02C25052500E987C4 /* DetailsLabel.swift */,
 			);
 			path = Details;
 			sourceTree = "<group>";
@@ -311,6 +320,7 @@
 				8271F8342C223EAD00350F7B /* ButtonsStackView.swift in Sources */,
 				8271F8322C2233C900350F7B /* HomeContentView.swift in Sources */,
 				8271F8252C21F73400350F7B /* Genre.swift in Sources */,
+				58B267AF2C2503CB00E987C4 /* InfoMovieStackView.swift in Sources */,
 				82E774182C0A378D0026347D /* Ext-Fonts.swift in Sources */,
 				82E774142C0A28D90026347D /* SelectionCarousselVC.swift in Sources */,
 				582B96582C00F3F50021AED6 /* NavigationVC.swift in Sources */,
@@ -320,6 +330,7 @@
 				829D86DC2C1902CC0076910A /* DetailsVC.swift in Sources */,
 				8271F8362C223F9500350F7B /* CarouselButton.swift in Sources */,
 				582B964E2BFFA9DE0021AED6 /* HomeVC.swift in Sources */,
+				58B267AD2C25028000E987C4 /* IconsStackView.swift in Sources */,
 				58B267A82C24DE7000E987C4 /* DetailsContentView.swift in Sources */,
 				58EC2C152C078F1D00A6D287 /* Ext-UISearchBar.swift in Sources */,
 				587F39A32BFE5ADB0082FB53 /* NetworkManager.swift in Sources */,
@@ -333,6 +344,7 @@
 				582B96492BFF9F430021AED6 /* CustomBarButtonItem.swift in Sources */,
 				58B267A22C228B5500E987C4 /* LoadingViewController.swift in Sources */,
 				829D86DA2C18F3D10076910A /* LoadingView.swift in Sources */,
+				58B267B12C25052500E987C4 /* DetailsLabel.swift in Sources */,
 				8271F82D2C21FE1D00350F7B /* SearchBarView.swift in Sources */,
 				8271F82B2C21FC7A00350F7B /* ProfileImageView.swift in Sources */,
 				8271F8272C21F80E00350F7B /* SideBarButton.swift in Sources */,
