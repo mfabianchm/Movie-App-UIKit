@@ -18,8 +18,7 @@ class LoadingViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(spinner)
         view.isUserInteractionEnabled = false
-//        view.backgroundColor = UIColor(named: "Medium-Gray")
-        view.backgroundColor = .red
+        view.backgroundColor = UIColor(named: "Dark-Gray")
         spinner.startAnimating()
         
         NSLayoutConstraint.activate([

@@ -39,8 +39,8 @@ class AppLogoView: UIView {
     
     func configureAppNameLabel() {
         appNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        appNameLabel.text = "Movie Online"
-        appNameLabel.font = .systemFont(ofSize: 20)
+        appNameLabel.text = "MovieOnline"
+        appNameLabel.font = UIFont(name: "Montserrat-SemiBold", size: 22)
         appNameLabel.textColor = .white
         self.addSubview(appNameLabel)
     }

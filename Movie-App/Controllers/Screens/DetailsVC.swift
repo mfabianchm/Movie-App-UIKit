@@ -5,9 +5,6 @@
 //  Created by Marcos Chong on 11/06/24.
 //
 
-
-//We used this data: posterImage, movieGenres, model
-
 import UIKit
 
 class DetailsVC: UIViewController {
@@ -20,7 +17,6 @@ class DetailsVC: UIViewController {
     var posterImage: UIImage?
     var movieGenres: [String] = []
     let model: Movie?
-    
     
     let genres: [Genre]?
     var movieGenresId: [Int]?
@@ -107,8 +103,6 @@ class DetailsVC: UIViewController {
         }
         
         guard let contentView = contentView as? DetailsContentView else {return}
-        
-        print(countriesString)
         
         contentView.infoMovieStack.originalTitle =  model!.originalTitle
         contentView.infoMovieStack.countriesString = countriesString

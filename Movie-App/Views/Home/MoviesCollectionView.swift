@@ -26,8 +26,8 @@ class MoviesCollectionView: UICollectionView {
     func configure() {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.showsHorizontalScrollIndicator = false
-        self.backgroundColor = .blue
         self.alwaysBounceHorizontal = true
+        self.backgroundColor = UIColor(named: "Dark-Gray")
     }
     
 }

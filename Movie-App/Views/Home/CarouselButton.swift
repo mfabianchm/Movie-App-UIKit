@@ -24,6 +24,7 @@ class CarouselButton: UIButton {
     func configure() {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.setTitle(title, for: .normal)
+        self.titleLabel?.font = UIFont(name: "Montserrat-SemiBold", size: 16)!
         self.setTitleColor(.white, for: .normal)
         self.setTitleColor(UIColor(named: "Yellow"), for: .selected)
     }

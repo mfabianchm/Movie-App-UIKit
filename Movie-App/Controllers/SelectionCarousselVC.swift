@@ -44,7 +44,6 @@ class SelectionCarousselVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .red
         configure()
         
     }
