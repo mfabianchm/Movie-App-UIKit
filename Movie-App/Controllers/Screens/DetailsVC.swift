@@ -20,6 +20,7 @@ class DetailsVC: UIViewController {
     
     let genres: [Genre]?
     var movieGenresId: [Int]?
+    var cast: [Person]?
     
     var movieDetails: MovieDetails?
 
@@ -42,6 +43,7 @@ class DetailsVC: UIViewController {
         super.viewDidLoad()
         setMovieGenres()
         getImage()
+        getMovieCast()
         getMovieDetails()
         contentView = DetailsContentView(model: model!, genres: movieGenres)
         configure()
@@ -144,6 +146,24 @@ extension DetailsVC {
                 DispatchQueue.main.async {
                     self.movieDetails = movie
                     self.configureInfoMovieStackView()
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    func getMovieCast() {
+        NetworkManager.shared.getCastInfo(movie_id: model!.id) { result in
+            switch result {
+            case .success(var cast):
+                DispatchQueue.main.async {
+                    if(cast.cast.count > 10) {
+                        let lastElement = cast.cast.count - 1
+                        cast.cast.removeSubrange(10...lastElement)
+                    }
+                    self.cast = cast.cast
+                    print(self.cast)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
