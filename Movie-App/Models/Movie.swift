@@ -21,6 +21,7 @@ struct Movie: Decodable {
     var video: Bool
     var voteAverage: Float
     var voteCount: Int
+    var overview: String?
 }
 
 struct Movies: Decodable {

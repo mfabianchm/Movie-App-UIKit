@@ -14,9 +14,11 @@ class DetailsContentView: UIView {
     let rankingLabel = UILabel()
     let iconsStack = IconsStackView()
     var infoMovieStack = InfoMovieStackView()
+    let storyLineView = StoryLineView()
+    
+    var castCarousel: UIView?
     
     var padding: CGFloat = 10
-    
     
     var posterImage: UIImage?
     var movieGenres: [String] = []
@@ -103,6 +105,28 @@ class DetailsContentView: UIView {
             infoMovieStack.trailingAnchor.constraint(equalTo: iconsStack.trailingAnchor)
         ])
         
+    }
+    
+    func configureCastCarouselView(childView: UIView) {
+        
+        self.castCarousel = childView
+        
+        self.addSubview(castCarousel!)
+        self.addSubview(storyLineView)
+        storyLineView.updateView(description: model!.overview ?? "N/A")
+        
+        NSLayoutConstraint.activate([
+            castCarousel!.topAnchor.constraint(equalTo: infoMovieStack.bottomAnchor, constant: 10),
+            castCarousel!.leadingAnchor.constraint(equalTo: infoMovieStack.leadingAnchor),
+            castCarousel!.trailingAnchor.constraint(equalTo: infoMovieStack.trailingAnchor),
+            castCarousel!.heightAnchor.constraint(equalToConstant: 140),
+            
+            storyLineView.topAnchor.constraint(equalTo: castCarousel!.bottomAnchor, constant: 10),
+            storyLineView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
+            storyLineView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding)
+            
+            
+        ])
     }
 
 }

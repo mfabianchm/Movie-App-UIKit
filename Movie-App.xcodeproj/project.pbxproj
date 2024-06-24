@@ -28,6 +28,10 @@
 		58B267AF2C2503CB00E987C4 /* InfoMovieStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B267AE2C2503CA00E987C4 /* InfoMovieStackView.swift */; };
 		58B267B12C25052500E987C4 /* DetailsLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B267B02C25052500E987C4 /* DetailsLabel.swift */; };
 		58B267D32C2898B600E987C4 /* Cast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B267D22C2898B600E987C4 /* Cast.swift */; };
+		58B267D72C28CDF700E987C4 /* CastCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B267D62C28CDF700E987C4 /* CastCollectionView.swift */; };
+		58B267D92C28CEE200E987C4 /* CastCarouselVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B267D82C28CEE200E987C4 /* CastCarouselVC.swift */; };
+		58B267DB2C28D02B00E987C4 /* CastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B267DA2C28D02B00E987C4 /* CastCell.swift */; };
+		58B267DD2C2A1BE600E987C4 /* StoryLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B267DC2C2A1BE600E987C4 /* StoryLineView.swift */; };
 		58C76E612C1294DB00E88D54 /* MoviesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C76E602C1294DB00E88D54 /* MoviesCollectionView.swift */; };
 		58C76E632C12A79C00E88D54 /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C76E622C12A79C00E88D54 /* MovieCell.swift */; };
 		58EC2C152C078F1D00A6D287 /* Ext-UISearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EC2C142C078F1D00A6D287 /* Ext-UISearchBar.swift */; };
@@ -74,6 +78,10 @@
 		58B267AE2C2503CA00E987C4 /* InfoMovieStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMovieStackView.swift; sourceTree = "<group>"; };
 		58B267B02C25052500E987C4 /* DetailsLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsLabel.swift; sourceTree = "<group>"; };
 		58B267D22C2898B600E987C4 /* Cast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cast.swift; sourceTree = "<group>"; };
+		58B267D62C28CDF700E987C4 /* CastCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastCollectionView.swift; sourceTree = "<group>"; };
+		58B267D82C28CEE200E987C4 /* CastCarouselVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastCarouselVC.swift; sourceTree = "<group>"; };
+		58B267DA2C28D02B00E987C4 /* CastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastCell.swift; sourceTree = "<group>"; };
+		58B267DC2C2A1BE600E987C4 /* StoryLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryLineView.swift; sourceTree = "<group>"; };
 		58C76E602C1294DB00E88D54 /* MoviesCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesCollectionView.swift; sourceTree = "<group>"; };
 		58C76E622C12A79C00E88D54 /* MovieCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
 		58EC2C142C078F1D00A6D287 /* Ext-UISearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext-UISearchBar.swift"; sourceTree = "<group>"; };
@@ -110,13 +118,8 @@
 		582B96452BFF9A290021AED6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				582B96482BFF9F430021AED6 /* CustomBarButtonItem.swift */,
-				582B964A2BFFA92C0021AED6 /* MovieTabBarController.swift */,
-				582B96532C00EF760021AED6 /* SideBar.swift */,
-				582B96552C00F3A90021AED6 /* NavigationView.swift */,
-				582B96592C00F46C0021AED6 /* NavigationCell.swift */,
-				58C76E622C12A79C00E88D54 /* MovieCell.swift */,
-				829D86D92C18F3D10076910A /* LoadingView.swift */,
+				58B267D42C28CD4500E987C4 /* Sidebar */,
+				58B267D52C28CD6900E987C4 /* General */,
 				8271F8302C222D8A00350F7B /* Home */,
 				58B267A92C24E1A700E987C4 /* Details */,
 			);
@@ -184,8 +187,30 @@
 				58B267AC2C25028000E987C4 /* IconsStackView.swift */,
 				58B267AE2C2503CA00E987C4 /* InfoMovieStackView.swift */,
 				58B267B02C25052500E987C4 /* DetailsLabel.swift */,
+				58B267D62C28CDF700E987C4 /* CastCollectionView.swift */,
+				58B267DA2C28D02B00E987C4 /* CastCell.swift */,
+				58B267DC2C2A1BE600E987C4 /* StoryLineView.swift */,
 			);
 			path = Details;
+			sourceTree = "<group>";
+		};
+		58B267D42C28CD4500E987C4 /* Sidebar */ = {
+			isa = PBXGroup;
+			children = (
+				582B96482BFF9F430021AED6 /* CustomBarButtonItem.swift */,
+				582B96532C00EF760021AED6 /* SideBar.swift */,
+				582B96552C00F3A90021AED6 /* NavigationView.swift */,
+				582B96592C00F46C0021AED6 /* NavigationCell.swift */,
+			);
+			path = Sidebar;
+			sourceTree = "<group>";
+		};
+		58B267D52C28CD6900E987C4 /* General */ = {
+			isa = PBXGroup;
+			children = (
+				829D86D92C18F3D10076910A /* LoadingView.swift */,
+			);
+			path = General;
 			sourceTree = "<group>";
 		};
 		58EC2C132C078F0000A6D287 /* Extensions */ = {
@@ -219,6 +244,7 @@
 				8271F8262C21F80E00350F7B /* SideBarButton.swift */,
 				8271F8312C2233C900350F7B /* HomeContentView.swift */,
 				8271F8332C223EAD00350F7B /* ButtonsStackView.swift */,
+				58C76E622C12A79C00E88D54 /* MovieCell.swift */,
 				8271F8352C223F9500350F7B /* CarouselButton.swift */,
 			);
 			path = Home;
@@ -230,7 +256,9 @@
 				582B964C2BFFA9980021AED6 /* Screens */,
 				582B96572C00F3F50021AED6 /* NavigationVC.swift */,
 				82E774132C0A28D90026347D /* SelectionCarousselVC.swift */,
+				582B964A2BFFA92C0021AED6 /* MovieTabBarController.swift */,
 				58B267A12C228B5500E987C4 /* LoadingViewController.swift */,
+				58B267D82C28CEE200E987C4 /* CastCarouselVC.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -320,12 +348,14 @@
 				82E774162C0A34780026347D /* Ext-UIButton.swift in Sources */,
 				582B96502BFFAA000021AED6 /* SearchVC.swift in Sources */,
 				58C76E632C12A79C00E88D54 /* MovieCell.swift in Sources */,
+				58B267DB2C28D02B00E987C4 /* CastCell.swift in Sources */,
 				8271F8342C223EAD00350F7B /* ButtonsStackView.swift in Sources */,
 				8271F8322C2233C900350F7B /* HomeContentView.swift in Sources */,
 				8271F8252C21F73400350F7B /* Genre.swift in Sources */,
 				58B267AF2C2503CB00E987C4 /* InfoMovieStackView.swift in Sources */,
 				82E774182C0A378D0026347D /* Ext-Fonts.swift in Sources */,
 				82E774142C0A28D90026347D /* SelectionCarousselVC.swift in Sources */,
+				58B267D92C28CEE200E987C4 /* CastCarouselVC.swift in Sources */,
 				582B96582C00F3F50021AED6 /* NavigationVC.swift in Sources */,
 				58C76E612C1294DB00E88D54 /* MoviesCollectionView.swift in Sources */,
 				582B964B2BFFA92C0021AED6 /* MovieTabBarController.swift in Sources */,
@@ -335,6 +365,7 @@
 				8271F8362C223F9500350F7B /* CarouselButton.swift in Sources */,
 				582B964E2BFFA9DE0021AED6 /* HomeVC.swift in Sources */,
 				58B267AD2C25028000E987C4 /* IconsStackView.swift in Sources */,
+				58B267D72C28CDF700E987C4 /* CastCollectionView.swift in Sources */,
 				58B267A82C24DE7000E987C4 /* DetailsContentView.swift in Sources */,
 				58EC2C152C078F1D00A6D287 /* Ext-UISearchBar.swift in Sources */,
 				587F39A32BFE5ADB0082FB53 /* NetworkManager.swift in Sources */,
@@ -343,6 +374,7 @@
 				587F398E2BFE59BD0082FB53 /* AppDelegate.swift in Sources */,
 				8271F8292C21F9E100350F7B /* AppLogoView.swift in Sources */,
 				587F39902BFE59BD0082FB53 /* SceneDelegate.swift in Sources */,
+				58B267DD2C2A1BE600E987C4 /* StoryLineView.swift in Sources */,
 				8271F82F2C21FF2400350F7B /* Ext-UIViewController.swift in Sources */,
 				582B96542C00EF760021AED6 /* SideBar.swift in Sources */,
 				582B96492BFF9F430021AED6 /* CustomBarButtonItem.swift in Sources */,

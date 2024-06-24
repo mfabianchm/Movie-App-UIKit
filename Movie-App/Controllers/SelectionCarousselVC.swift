@@ -172,7 +172,6 @@ extension SelectionCarousselVC: UICollectionViewDelegate {
 }
 
 
-
 extension SelectionCarousselVC: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
             let sideInset = (collectionView.frame.size.width - 200) / 2
@@ -218,3 +217,6 @@ extension SelectionCarousselVC: UIScrollViewDelegate {
       }
     }
 }
+
+
+

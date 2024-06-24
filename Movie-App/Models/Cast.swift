@@ -14,4 +14,5 @@ struct Cast: Decodable {
 struct Person: Decodable {
     var name: String
     var character: String
+    var profilePath: String?
 }
