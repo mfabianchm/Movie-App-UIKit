@@ -217,7 +217,6 @@ class NetworkManager {
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
                 let movieDetails = try decoder.decode(MovieDetails.self, from: data)
-                print(movieDetails)
                 completed(.success(movieDetails))
             } catch {
                 completed(.failure(.errorInParsing))
@@ -328,6 +327,67 @@ class NetworkManager {
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
                 let cast = try decoder.decode(Cast.self, from: data)
                 completed(.success(cast))
+            } catch {
+                completed(.failure(.errorInParsing))
+            }
+        }
+        
+        task.resume()
+    }
+    
+    func getMovieImages(movie_id: Int, completed: @escaping (Result<[UIImage], MovieAppError>) -> Void) {
+        let endPoint = baseURL + "movie/\(movie_id)/images"
+           
+        guard let url = URL(string: endPoint) else {
+            print("invalid URL")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.timeoutInterval = 10
+        request.allHTTPHeaderFields = [
+            "accept": "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjNjI5MzYzYmNlMmEyNDQ0Yzc3NmU5ZGI3NDlkMjg2MiIsInN1YiI6IjY1Mjc1OWQ2ODEzODMxMDBlMTJlMGZlYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.eIYhB8d7dfMO53g5e_y7Vqu0O08NINMKdoY1NZrO-FU"
+        ]
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            
+            if let _ = error {
+                completed(.failure(.unableToComplete))
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                completed(.failure(.invalidResponse))
+                return
+            }
+            
+            
+            guard let data = data else {
+                completed(.failure(.invalidData))
+                return
+            }
+            
+            
+            do {
+                let decoder = JSONDecoder()
+                decoder.keyDecodingStrategy = .convertFromSnakeCase
+                let imagesPath = try decoder.decode(MovieImages.self, from: data)
+                
+                var movieImages: [UIImage] = []
+                
+                imagesPath.backdrops.forEach { image in
+                    let url = URL(string: "https://image.tmdb.org/t/p/original\(image.filePath)")
+                    let data = try? Data(contentsOf: url!)
+                    
+                    if let imageData = data {
+                        let image = UIImage(data: imageData)
+                        movieImages.append(image!)
+                    }
+                }
+                
+                completed(.success(movieImages))
             } catch {
                 completed(.failure(.errorInParsing))
             }

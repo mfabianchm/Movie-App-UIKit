@@ -45,6 +45,9 @@ class DetailsVC: UIViewController {
         setMovieGenres()
         getImage()
         getMovieDetails()
+        getMovieImages()
+        
+        
         contentView = DetailsContentView(model: model!, genres: movieGenres)
         castCarouselVC = CastCarouselVC(movieId: model!.id)
         addVCChilds()
@@ -148,6 +151,21 @@ class DetailsVC: UIViewController {
 }
 
 extension DetailsVC {
+    
+    func getMovieImages() {
+        NetworkManager.shared.getMovieImages(movie_id: model!.id) {  result in
+            switch result {
+            case .success(let moviesArray):
+                print(moviesArray)
+//                DispatchQueue.main.async {
+//                    self.movieDetails = movie
+//                    self.configureInfoMovieStackView()
+//                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
     
     func getMovieDetails() {
         NetworkManager.shared.getMovieDetails(id: model!.id) { result in

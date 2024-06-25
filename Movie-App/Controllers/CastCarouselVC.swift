@@ -78,12 +78,6 @@ class CastCarouselVC: UIViewController {
             castCollectionView.heightAnchor.constraint(equalToConstant: 100),
         ])
     }
-
-   
-    @objc func showImage() {
-       print("image clicked")
-    }
-
 }
 
 
@@ -95,7 +89,6 @@ extension CastCarouselVC: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CastCell", for: indexPath) as! CastCell
-        cell.imageView.addTarget(self, action: #selector(showImage), for: .touchUpInside)
         
         if(self.actors.count == 0 && self.characters.count == 0) {
             return cell
