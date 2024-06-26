@@ -134,10 +134,148 @@ class SelectionCarousselVC: UIViewController {
     }
     
    
-    @objc func presentDetailsVC() {
-        guard let genres = genres else {return}
-        navigationController?.pushViewController(DetailsVC(model: movieSelected, genres: genres), animated: true)
-    }
+//    @objc func presentDetailsVC() {
+//        guard let genres = genres else {return}
+//
+////        1 GET IMAGES
+//
+//
+//
+//
+//        navigationController?.pushViewController(DetailsVC(model: movieSelected, genres: genres), animated: true)
+//    }
+    
+    
+    func presentDetailsVC(movieId: Int) {
+//         guard let genres = genres else {return}
+
+        let images: [UIImage]
+        
+//        getData(movieId: movieId)
+//        getMovieImages(movieId: movieId)
+//        getMovieCast(movieId: movieId)
+        Task {
+            do {
+                let details = try await NetworkManager.shared.getMovies(requestName: .upcomingMovies)
+                print(details)
+            } catch {
+                if let movieError = error as? MovieAppError {
+                    print(movieError.rawValue)
+                } else {
+                    print("something went wrong?")
+                }
+            }
+        }
+        
+            
+
+        
+       
+ 
+ 
+ 
+ 
+//         navigationController?.pushViewController(DetailsVC(model: movieSelected, genres: genres), animated: true)
+     }
+    
+    
+}
+
+
+
+extension SelectionCarousselVC {
+    
+//    func getMovieDetails(movieId: Int) async throws -> MovieDetails {
+//        do {
+//            let movieDetails = try await NetworkManager.shared.getMovieDetails(id: movieId)
+//        } catch MovieAppError.invalidURL {
+//            print("invalid URL")
+//        } catch MovieAppError.invalidData {
+//            print("invalid Data")
+//        } catch MovieAppError.invalidResponse {
+//            print("invalid Response")
+//        } catch MovieAppError.errorInParsing {
+//            print("Error in parsing")
+//        }
+//    }
+    
+//    func getData(movieId: Int) {
+//        NetworkManager.shared.getMovieDetails(id: movieId) { result in
+//            switch result {
+//            case .success(let movie):
+//                DispatchQueue.main.async {
+//                    print(movie)
+//                }
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//            }
+//        }
+//    }
+    
+    
+//    func getMovieImages(movieId: Int) {
+//        NetworkManager.shared.getMovieImages(movie_id: movieId) { result in
+//            switch result {
+//            case .success(let moviesArray):
+//                print(moviesArray)
+////                DispatchQueue.main.async {
+////                    self.movieDetails = movie
+////                    self.configureInfoMovieStackView()
+////                }
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//            }
+//        }
+//    }
+    
+//    func getMovieCast(movieId: Int) {
+//        NetworkManager.shared.getCastInfo(movie_id: movieId) { result in
+//            switch result {
+//            case .success(var cast):
+//                DispatchQueue.main.async {
+//                    let castArray: [Person]?
+//                    
+//                    if(cast.cast.count > 10) {
+//                        let lastElement = cast.cast.count - 1
+//                        cast.cast.removeSubrange(10...lastElement)
+//                    }
+//                    castArray = cast.cast
+//                    
+//                    var castInfo: [Character] = []
+//                    
+//                    
+//                    castArray?.forEach { person in
+//                       
+//                        let imagePath = person.profilePath
+//                        let url = URL(string: "https://image.tmdb.org/t/p/original\(imagePath)")!
+//                            
+//                        NetworkManager.shared.getImage(from: url) { data, response, error in
+//                            guard let data = data, error == nil else { return }
+//                            let image = UIImage(data: data)
+//                            let character: Character?
+//                            
+//                            guard let image = image else {
+//                                character = Character(name: person.name, character: person.character, image: UIImage(systemName: "person.fill")!)
+//                                return
+//                            }
+//                            
+//                            character = Character(name: person.name, character: person.character, image: image)
+//                                
+//                            castInfo.append(character!)
+//                        }
+//                        
+//                    }
+//                    
+//                    print(castInfo)
+//                    
+//                    
+////                    self.getImages()
+//                }
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//            }
+//        }
+//    }
 }
 
 
@@ -148,7 +286,6 @@ extension SelectionCarousselVC: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieCell", for: indexPath) as! MovieCell
-        cell.button.addTarget(self, action: #selector(presentDetailsVC), for: .touchUpInside)
 
         if let movies = moviesToDisplay {
             let model = movies[indexPath.row % movies.count]
@@ -167,7 +304,8 @@ extension SelectionCarousselVC: UICollectionViewDelegate {
         scrollToMiddle = false
         let cellToSearch = collectionView.cellForItem(at: indexPath) as! MovieCell
         self.movieSelected = cellToSearch.model
-        presentDetailsVC()
+        
+        presentDetailsVC(movieId: movieSelected!.id)
     }
 }
 

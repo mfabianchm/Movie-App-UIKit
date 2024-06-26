@@ -127,8 +127,9 @@ extension HomeVC: UITextFieldDelegate {
 
 
 extension HomeVC {
+    
     func getMovies(type: EndPoint) {
-        
+
         let requestName: EndPoint
         let movieType: String
         
@@ -147,10 +148,9 @@ extension HomeVC {
             movieType = "upcoming"
         }
         
-        NetworkManager.shared.getMovies(requestName: requestName) { result in
-            switch result {
-               case .success(let movies):
-                
+        Task {
+            do {
+                let movies = try await NetworkManager.shared.getMovies(requestName:  requestName)
                 if(movieType == "popular") {
                     self.fetchedMovies.popularMovies = movies.data
                     self.posterImages.popularMovies = movies.posterImages
@@ -169,7 +169,7 @@ extension HomeVC {
                     DispatchQueue.main.async {
                         self.selectionCarouselVC.fetchedMovies = self.fetchedMovies
                         self.selectionCarouselVC.posterImages = self.posterImages
-                    
+                        
                         self.selectionCarouselVC.moviesToDisplay = self.selectionCarouselVC.fetchedMovies?.popularMovies
                         self.selectionCarouselVC.postersToDisplay = self.selectionCarouselVC.posterImages?.popularMovies
                         
@@ -178,25 +178,36 @@ extension HomeVC {
                         self.view.isUserInteractionEnabled = true
                     }
                 }
-               case .failure(let error):
-                   print(error.localizedDescription)
-               }
-        }
-        
-    }
-    
-    func getGenres() {
-        NetworkManager.shared.getMoviesGenres { result in
-            switch result {
-               case .success(let genres):
-                self.genres = genres.genres
-                self.selectionCarouselVC.genres = genres.genres
-                
-               case .failure(let error):
-                   print(error.localizedDescription)
-               }
+            } catch  {
+                if let movieError = error as? MovieAppError {
+                    print(movieError.rawValue)
+                } else {
+                    print("something went wrong?")
+                }
+            }
         }
     }
 }
+
+
+extension HomeVC {
+        func getGenres() {
+            Task {
+                do {
+                    let genres = try await NetworkManager.shared.getMovieGenres()
+                    self.genres = genres?.genres
+                    self.selectionCarouselVC.genres = genres?.genres
+                } catch {
+                    if let movieError = error as? MovieAppError {
+                        print(movieError.rawValue)
+                    } else {
+                        print("something went wrong?")
+                    }
+                }
+            }
+        }
+}
+
+
 
 

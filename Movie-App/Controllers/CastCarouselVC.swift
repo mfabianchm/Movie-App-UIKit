@@ -41,7 +41,7 @@ class CastCarouselVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.translatesAutoresizingMaskIntoConstraints = false
-        getMovieCast()
+//        getMovieCast()
         configure()
     }
         
@@ -118,60 +118,60 @@ extension CastCarouselVC: UICollectionViewDelegate {
 
 
 extension CastCarouselVC {
-    func getMovieCast() {
-        NetworkManager.shared.getCastInfo(movie_id: self.movieId) { result in
-            switch result {
-            case .success(var cast):
-                DispatchQueue.main.async {
-                    let castArray: [Person]?
-                    
-                    if(cast.cast.count > 10) {
-                        let lastElement = cast.cast.count - 1
-                        cast.cast.removeSubrange(10...lastElement)
-                    }
-                    castArray = cast.cast
-                    
-                    castArray?.forEach { person in
-                        self.actors.append(person.name)
-                        self.characters.append(person.character)
-                        if let profilePath = person.profilePath {
-                            self.imagesName.append(person.profilePath!)
-                        }
-                       
-                    }
-                    
-                    self.getImages()
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
+//    func getMovieCast() {
+//        NetworkManager.shared.getCastInfo(movie_id: self.movieId) { result in
+//            switch result {
+//            case .success(var cast):
+//                DispatchQueue.main.async {
+//                    let castArray: [Person]?
+//
+//                    if(cast.cast.count > 10) {
+//                        let lastElement = cast.cast.count - 1
+//                        cast.cast.removeSubrange(10...lastElement)
+//                    }
+//                    castArray = cast.cast
+//
+//                    castArray?.forEach { person in
+//                        self.actors.append(person.name)
+//                        self.characters.append(person.character)
+//                        if let profilePath = person.profilePath {
+//                            self.imagesName.append(person.profilePath!)
+//                        }
+//
+//                    }
+//
+//                    self.getImages()
+//                }
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//            }
+//        }
+//    }
     
-    func getImages() {
-        if(self.imagesName.isEmpty) {
-            return
-        }
-        
-        self.imagesName.forEach { path in
-            let imagePath = path
-            let url = URL(string: "https://image.tmdb.org/t/p/original\(imagePath)")!
-            
-            NetworkManager.shared.getImage(from: url) { data, response, error in
-                guard let data = data, error == nil else { return }
-                let image = UIImage(data: data)
-                
-                guard let image = image else {
-                    self.images.append(UIImage(systemName: "person.fill")!)
-                    return
-                }
-                
-                self.images.append(image)
-                
-                DispatchQueue.main.async {
-                    self.castCollectionView.reloadData()
-                }
-            }
-        }
-    }
+//    func getImages() {
+//        if(self.imagesName.isEmpty) {
+//            return
+//        }
+//        
+//        self.imagesName.forEach { path in
+//            let imagePath = path
+//            let url = URL(string: "https://image.tmdb.org/t/p/original\(imagePath)")!
+//            
+//            NetworkManager.shared.getImage(from: url) { data, response, error in
+//                guard let data = data, error == nil else { return }
+//                let image = UIImage(data: data)
+//                
+//                guard let image = image else {
+//                    self.images.append(UIImage(systemName: "person.fill")!)
+//                    return
+//                }
+//                
+//                self.images.append(image)
+//                
+//                DispatchQueue.main.async {
+//                    self.castCollectionView.reloadData()
+//                }
+//            }
+//        }
+//    }
 }

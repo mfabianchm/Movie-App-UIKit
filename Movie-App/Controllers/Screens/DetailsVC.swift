@@ -7,22 +7,22 @@
 
 import UIKit
 
+//1. At the moment we open this screen we instatiate all properties, the init methods gets called and viewDidLoad too.
+
 class DetailsVC: UIViewController {
     
     let scrollView = UIScrollView()
     var contentView: UIView?
     var castCarouselVC: CastCarouselVC?
+    var movieImagesCarouselVC: MovieImagesCarouselVC?
     
     var padding: CGFloat = 10
-    
     var posterImage: UIImage?
     var movieGenres: [String] = []
     let model: Movie?
-    
     let genres: [Genre]?
     var movieGenresId: [Int]?
     var cast: [Person]?
-    
     var movieDetails: MovieDetails?
 
     init(model: Movie?, genres: [Genre]) {
@@ -43,13 +43,13 @@ class DetailsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setMovieGenres()
-        getImage()
-        getMovieDetails()
-        getMovieImages()
-        
+//        getImage()
+     
         
         contentView = DetailsContentView(model: model!, genres: movieGenres)
         castCarouselVC = CastCarouselVC(movieId: model!.id)
+        movieImagesCarouselVC = MovieImagesCarouselVC(movieId: model!.id)
+        
         addVCChilds()
         configure()
     }
@@ -67,10 +67,14 @@ class DetailsVC: UIViewController {
     
     func addVCChilds() {
         addChild(castCarouselVC!)
+        addChild(movieImagesCarouselVC!)
         
         guard let contentView = contentView as? DetailsContentView else {return}
+        
         contentView.configureCastCarouselView(childView: castCarouselVC!.view)
+        contentView.configureCastCarouselView(childView: movieImagesCarouselVC!.view)
         castCarouselVC!.didMove(toParent: self)
+        movieImagesCarouselVC!.didMove(toParent: self)
     }
     
     func configure() {
@@ -151,49 +155,34 @@ class DetailsVC: UIViewController {
 }
 
 extension DetailsVC {
-    
-    func getMovieImages() {
-        NetworkManager.shared.getMovieImages(movie_id: model!.id) {  result in
-            switch result {
-            case .success(let moviesArray):
-                print(moviesArray)
+        
+//    func getMovieDetails() {
+//        NetworkManager.shared.getMovieDetails(id: model!.id) { result in
+//            switch result {
+//            case .success(let movie):
 //                DispatchQueue.main.async {
 //                    self.movieDetails = movie
 //                    self.configureInfoMovieStackView()
 //                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//            }
+//        }
+//    }
     
-    func getMovieDetails() {
-        NetworkManager.shared.getMovieDetails(id: model!.id) { result in
-            switch result {
-            case .success(let movie):
-                DispatchQueue.main.async {
-                    self.movieDetails = movie
-                    self.configureInfoMovieStackView()
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
-    func getImage() {
-        guard let movieData = model else {return}
-        guard let movieUrl = movieData.posterPath else {return}
-        let url = URL(string: "https://image.tmdb.org/t/p/original\(movieUrl)")!
-        
-        NetworkManager.shared.getImage(from: url) { data, response, error in
-            guard let data = data, error == nil else { return }
-            DispatchQueue.main.async() { [weak self] in
-                guard let self = self else {return}
-                guard let contentView = self.contentView as? DetailsContentView else {return}
-                
-                contentView.mainMovieImage.image = UIImage(data: data)
-            }
-        }
-    }
+//    func getImage() {
+//        guard let movieData = model else {return}
+//        guard let movieUrl = movieData.posterPath else {return}
+//        let url = URL(string: "https://image.tmdb.org/t/p/original\(movieUrl)")!
+//
+//        NetworkManager.shared.getImage(from: url) { data, response, error in
+//            guard let data = data, error == nil else { return }
+//            DispatchQueue.main.async() { [weak self] in
+//                guard let self = self else {return}
+//                guard let contentView = self.contentView as? DetailsContentView else {return}
+//
+//                contentView.mainMovieImage.image = UIImage(data: data)
+//            }
+//        }
+//    }
 }

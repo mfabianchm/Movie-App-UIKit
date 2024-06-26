@@ -8,7 +8,7 @@
 import UIKit
 
 enum MovieAppError: String, Error {
-    case invalidUsername = "Invalid URL!"
+    case invalidURL = "Invalid URL!"
     case invalidResponse = "Invalid Response"
     case unableToComplete = "Unable to complete"
     case invalidData = "Invalid Data"
@@ -29,8 +29,7 @@ class NetworkManager {
     private let baseURL = "https://api.themoviedb.org/3/"
     let decoder = JSONDecoder()
     
-    func getMovies(requestName: EndPoint, completed: @escaping (Result<MoviesData, MovieAppError>) -> Void) {
-        
+    func getMovies(requestName: EndPoint) async throws -> MoviesData {
         let endPoint: String
         
         switch requestName {
@@ -43,11 +42,9 @@ class NetworkManager {
         case .upcomingMovies:
             endPoint = baseURL + requestName.rawValue
         }
-            
-           
+        
         guard let url = URL(string: endPoint) else {
-            print("invalid URL")
-            return
+            throw MovieAppError.invalidURL
         }
         
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
@@ -64,62 +61,44 @@ class NetworkManager {
             "accept": "application/json",
             "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjNjI5MzYzYmNlMmEyNDQ0Yzc3NmU5ZGI3NDlkMjg2MiIsInN1YiI6IjY1Mjc1OWQ2ODEzODMxMDBlMTJlMGZlYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.eIYhB8d7dfMO53g5e_y7Vqu0O08NINMKdoY1NZrO-FU"
         ]
-
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw MovieAppError.invalidResponse
+        }
+        
+        do {
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            let movies = try decoder.decode(Movies.self, from: data)
+            var moviesCoverImages: [UIImage] = []
             
-            if let _ = error {
-                completed(.failure(.unableToComplete))
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                completed(.failure(.invalidResponse))
-                return
-            }
-            
-            
-            guard let data = data else {
-                completed(.failure(.invalidData))
-                return
-            }
-            
-            
-            do {
-                let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-                let movies = try decoder.decode(Movies.self, from: data)
-                var moviesCoverImages: [UIImage] = []
+            movies.results.forEach { movie in
+                guard let posterPath = movie.posterPath else {return}
+                let url = URL(string: "https://image.tmdb.org/t/p/original\(posterPath)")
+                let data = try? Data(contentsOf: url!)
                 
-                movies.results.forEach { movie in
-                    guard let posterPath = movie.posterPath else {return}
-                    let url = URL(string: "https://image.tmdb.org/t/p/original\(posterPath)")
-                    let data = try? Data(contentsOf: url!)
-                    
-                    if let imageData = data {
-                        let image = UIImage(data: imageData)
-                        moviesCoverImages.append(image!)
-                    }
+                if let imageData = data {
+                    let image = UIImage(data: imageData)
+                    moviesCoverImages.append(image!)
                 }
-                
-                let moviesData = MoviesData(data: movies.results, posterImages: moviesCoverImages)
-                completed(.success(moviesData))
-            } catch {
-                completed(.failure(.errorInParsing))
             }
+            
+            let moviesData = MoviesData(data: movies.results, posterImages: moviesCoverImages)
+            return moviesData
+            
+        } catch  {
+            throw MovieAppError.errorInParsing
         }
         
-        task.resume()
-        }
+    }
     
     
-    
-    func searchMovie(movieName: String, completed: @escaping (Result<Movies, MovieAppError>) -> Void) {
-        
+    func searchMovie(movieName: String) async throws -> Movies? {
         let endPoint = baseURL + "search/movie"
            
         guard let url = URL(string: endPoint) else {
-            print("invalid URL")
-            return
+            throw MovieAppError.invalidURL
         }
         
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
@@ -137,271 +116,167 @@ class NetworkManager {
             "accept": "application/json",
             "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjNjI5MzYzYmNlMmEyNDQ0Yzc3NmU5ZGI3NDlkMjg2MiIsInN1YiI6IjY1Mjc1OWQ2ODEzODMxMDBlMTJlMGZlYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.eIYhB8d7dfMO53g5e_y7Vqu0O08NINMKdoY1NZrO-FU"
         ]
-
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            
-            if let _ = error {
-                completed(.failure(.unableToComplete))
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                completed(.failure(.invalidResponse))
-                return
-            }
-            
-            
-            guard let data = data else {
-                completed(.failure(.invalidData))
-                return
-            }
-            
-            
-            do {
-                let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-                let movies = try decoder.decode(Movies.self, from: data)
-                completed(.success(movies))
-            } catch {
-                completed(.failure(.errorInParsing))
-            }
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw MovieAppError.invalidResponse
         }
         
-        task.resume()
+        do {
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            let movies = try decoder.decode(Movies.self, from: data)
+            return movies
+        } catch  {
+            throw MovieAppError.errorInParsing
         }
+    }
     
     
-    func getMovieDetails(id: Int, completed: @escaping (Result<MovieDetails, MovieAppError>) -> Void) {
+    func createURLRequest(url: URL, hasQuerys: Bool) -> URLRequest {
         
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+        
+        if(hasQuerys) {
+            let queryItems: [URLQueryItem] = [
+                URLQueryItem(name: "language", value: "en-US"),
+            ]
+            components.queryItems = components.queryItems.map { $0 + queryItems } ?? queryItems
+        }
+        
+        var request = URLRequest(url: components.url!)
+        request.httpMethod = "GET"
+        request.timeoutInterval = 10
+        request.allHTTPHeaderFields = [
+            "accept": "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjNjI5MzYzYmNlMmEyNDQ0Yzc3NmU5ZGI3NDlkMjg2MiIsInN1YiI6IjY1Mjc1OWQ2ODEzODMxMDBlMTJlMGZlYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.eIYhB8d7dfMO53g5e_y7Vqu0O08NINMKdoY1NZrO-FU"
+        ]
+        
+        return request
+    }
+    
+    
+    
+    
+    
+    func getMovieDetails(id: Int) async throws -> MovieDetails? {
         let endPoint = baseURL + "movie/\(id.description)"
-           
+        
         guard let url = URL(string: endPoint) else {
-            print("invalid URL")
-            return
+            throw MovieAppError.invalidURL
         }
         
-        var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
-        let queryItems: [URLQueryItem] = [
-          URLQueryItem(name: "language", value: "en-US"),
-        ]
-        components.queryItems = components.queryItems.map { $0 + queryItems } ?? queryItems
-    
-        var request = URLRequest(url: components.url!)
-        request.httpMethod = "GET"
-        request.timeoutInterval = 10
-        request.allHTTPHeaderFields = [
-            "accept": "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjNjI5MzYzYmNlMmEyNDQ0Yzc3NmU5ZGI3NDlkMjg2MiIsInN1YiI6IjY1Mjc1OWQ2ODEzODMxMDBlMTJlMGZlYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.eIYhB8d7dfMO53g5e_y7Vqu0O08NINMKdoY1NZrO-FU"
-        ]
-
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        let urlRequest = createURLRequest(url: url, hasQuerys: true)
             
-            if let _ = error {
-                completed(.failure(.unableToComplete))
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                completed(.failure(.invalidResponse))
-                return
-            }
-            
-            
-            guard let data = data else {
-                completed(.failure(.invalidData))
-                return
-            }
-            
-            
-            do {
-                let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-                let movieDetails = try decoder.decode(MovieDetails.self, from: data)
-                completed(.success(movieDetails))
-            } catch {
-                completed(.failure(.errorInParsing))
-            }
+        let (data, response) = try await URLSession.shared.data(for: urlRequest)
+        
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw MovieAppError.invalidResponse
         }
         
-        task.resume()
+        do {
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            let movieDetails = try decoder.decode(MovieDetails.self, from: data)
+            return movieDetails
+        } catch  {
+            throw MovieAppError.errorInParsing
         }
+    }
     
     
-    func getMoviesGenres(completed: @escaping (Result<Genres, MovieAppError>) -> Void) {
+    
+    
+    func getMovieGenres() async throws -> Genres? {
         let endPoint = baseURL + "genre/movie/list"
-           
+        
         guard let url = URL(string: endPoint) else {
-            print("invalid URL")
-            return
+            throw MovieAppError.invalidURL
         }
         
-        var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
-        let queryItems: [URLQueryItem] = [
-          URLQueryItem(name: "language", value: "en"),
-        ]
-        components.queryItems = components.queryItems.map { $0 + queryItems } ?? queryItems
+        let urlRequest = createURLRequest(url: url, hasQuerys: true)
+            
+        let (data, response) = try await URLSession.shared.data(for: urlRequest)
         
-        var request = URLRequest(url: components.url!)
-        request.httpMethod = "GET"
-        request.timeoutInterval = 10
-        request.allHTTPHeaderFields = [
-            "accept": "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjNjI5MzYzYmNlMmEyNDQ0Yzc3NmU5ZGI3NDlkMjg2MiIsInN1YiI6IjY1Mjc1OWQ2ODEzODMxMDBlMTJlMGZlYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.eIYhB8d7dfMO53g5e_y7Vqu0O08NINMKdoY1NZrO-FU"
-        ]
-
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            
-            if let _ = error {
-                completed(.failure(.unableToComplete))
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                completed(.failure(.invalidResponse))
-                return
-            }
-            
-            
-            guard let data = data else {
-                completed(.failure(.invalidData))
-                return
-            }
-            
-            
-            do {
-                let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-                let genres = try decoder.decode(Genres.self, from: data)
-                completed(.success(genres))
-            } catch {
-                completed(.failure(.errorInParsing))
-            }
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw MovieAppError.invalidResponse
         }
         
-        task.resume()
+        do {
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            let genres = try decoder.decode(Genres.self, from: data)
+            return genres
+        } catch  {
+            throw MovieAppError.errorInParsing
+        }
+        
     }
     
-    func getCastInfo(movie_id: Int, completed: @escaping (Result<Cast, MovieAppError>) -> Void) {
-        let endPoint = baseURL + "movie/\(movie_id)/credits"
-           
+    func getCastInfo(id: Int) async throws -> Cast? {
+        let endPoint = baseURL + "movie/\(id)/credits"
+        
         guard let url = URL(string: endPoint) else {
-            print("invalid URL")
-            return
+            throw MovieAppError.invalidURL
         }
         
-        var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
-        let queryItems: [URLQueryItem] = [
-          URLQueryItem(name: "language", value: "en"),
-        ]
-        components.queryItems = components.queryItems.map { $0 + queryItems } ?? queryItems
+        let urlRequest = createURLRequest(url: url, hasQuerys: true)
+            
+        let (data, response) = try await URLSession.shared.data(for: urlRequest)
         
-        var request = URLRequest(url: components.url!)
-        request.httpMethod = "GET"
-        request.timeoutInterval = 10
-        request.allHTTPHeaderFields = [
-            "accept": "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjNjI5MzYzYmNlMmEyNDQ0Yzc3NmU5ZGI3NDlkMjg2MiIsInN1YiI6IjY1Mjc1OWQ2ODEzODMxMDBlMTJlMGZlYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.eIYhB8d7dfMO53g5e_y7Vqu0O08NINMKdoY1NZrO-FU"
-        ]
-
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            
-            if let _ = error {
-                completed(.failure(.unableToComplete))
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                completed(.failure(.invalidResponse))
-                return
-            }
-            
-            
-            guard let data = data else {
-                completed(.failure(.invalidData))
-                return
-            }
-            
-            
-            do {
-                let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-                let cast = try decoder.decode(Cast.self, from: data)
-                completed(.success(cast))
-            } catch {
-                completed(.failure(.errorInParsing))
-            }
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw MovieAppError.invalidResponse
         }
         
-        task.resume()
+        do {
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            let cast = try decoder.decode(Cast.self, from: data)
+            return cast
+        } catch  {
+            throw MovieAppError.errorInParsing
+        }
     }
     
-    func getMovieImages(movie_id: Int, completed: @escaping (Result<[UIImage], MovieAppError>) -> Void) {
-        let endPoint = baseURL + "movie/\(movie_id)/images"
-           
+    
+    func getMovieImages(id: Int) async throws -> [UIImage]? {
+        let endPoint = baseURL + "movie/\(id)/images"
+       
         guard let url = URL(string: endPoint) else {
-            print("invalid URL")
-            return
+            throw MovieAppError.invalidURL
         }
         
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.timeoutInterval = 10
-        request.allHTTPHeaderFields = [
-            "accept": "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjNjI5MzYzYmNlMmEyNDQ0Yzc3NmU5ZGI3NDlkMjg2MiIsInN1YiI6IjY1Mjc1OWQ2ODEzODMxMDBlMTJlMGZlYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.eIYhB8d7dfMO53g5e_y7Vqu0O08NINMKdoY1NZrO-FU"
-        ]
-
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        let urlRequest = createURLRequest(url: url, hasQuerys: false)
             
-            if let _ = error {
-                completed(.failure(.unableToComplete))
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                completed(.failure(.invalidResponse))
-                return
-            }
-            
-            
-            guard let data = data else {
-                completed(.failure(.invalidData))
-                return
-            }
-            
-            
-            do {
-                let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-                let imagesPath = try decoder.decode(MovieImages.self, from: data)
-                
-                var movieImages: [UIImage] = []
-                
-                imagesPath.backdrops.forEach { image in
-                    let url = URL(string: "https://image.tmdb.org/t/p/original\(image.filePath)")
-                    let data = try? Data(contentsOf: url!)
-                    
-                    if let imageData = data {
-                        let image = UIImage(data: imageData)
-                        movieImages.append(image!)
-                    }
-                }
-                
-                completed(.success(movieImages))
-            } catch {
-                completed(.failure(.errorInParsing))
-            }
+        let (data, response) = try await URLSession.shared.data(for: urlRequest)
+        
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw MovieAppError.invalidResponse
         }
         
-        task.resume()
+        do {
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            let imagesPath = try decoder.decode(MovieImages.self, from: data)
+            var movieImages: [UIImage] = []
+            
+            imagesPath.backdrops.forEach { image in
+                let url = URL(string: "https://image.tmdb.org/t/p/original\(image.filePath)")
+                let data = try? Data(contentsOf: url!)
+                
+                if let imageData = data {
+                    let image = UIImage(data: imageData)
+                    movieImages.append(image!)
+                } 
+            }
+            
+            return movieImages
+            
+        } catch  {
+            throw MovieAppError.errorInParsing
+        }
     }
     
-    func getImage(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
-    }
-    
-    
-    
+        
+//    func getImage(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+//        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+//    }
     
 }
 
