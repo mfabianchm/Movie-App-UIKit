@@ -10,10 +10,12 @@ import UIKit
 class DetailsContentView: UIView {
     
     let profileImage = ProfileImageView(frame: .zero)
-    let mainMovieImage = DetailsPosterImage()
+    var mainMovieImage: DetailsPosterImage?
     let rankingLabel = UILabel()
     let iconsStack = IconsStackView()
-    var infoMovieStack = InfoMovieStackView()
+    var infoMovieStack:  InfoMovieStackView?
+    
+    
     let storyLineView = StoryLineView()
     
     var castCarousel: UIView?
@@ -22,15 +24,21 @@ class DetailsContentView: UIView {
     var padding: CGFloat = 10
     
     var posterImage: UIImage?
-    var movieGenres: [String] = []
-    var model: Movie?
-    var movieDetails: MovieDetails?
+    
+    let model: Movie?
+    let genres: [String]?
+    let movieDetails: MovieDetails?
+    let images: [UIImage]?
+    let cast: Cast?
 
-     init(model: Movie, genres: [String]) {
-         self.model = model
-         self.movieGenres = genres
-         super.init(frame: .zero)
-         configure()
+    init(model: Movie, genres: [String], details: MovieDetails, images: [UIImage], cast: Cast) {
+        self.model = model
+        self.genres = genres
+        self.movieDetails = details
+        self.images = images
+        self.cast = cast
+        super.init(frame: .zero)
+        configure()
     }
     
     required init?(coder: NSCoder) {
@@ -40,13 +48,18 @@ class DetailsContentView: UIView {
     func configure() {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.backgroundColor = UIColor(named: "Dark-Gray")
+        
+        mainMovieImage = DetailsPosterImage(posterImage: images![0], movieGenres: genres!)
+        infoMovieStack = InfoMovieStackView(title: model!.title, releaseDate: model!.releaseDate, language: movieDetails!.originalLanguage, country: movieDetails!.originCountry, status: movieDetails!.status, genres: genres!.joined())
+        
+        
         addViews()
         configureRankingLabel()
         configureLayout()
         
+        
         profileImage.layer.zPosition = 100
-        mainMovieImage.movieGenres = movieGenres
-        mainMovieImage.setGenresStackView()
+
     }
     
     
@@ -73,10 +86,10 @@ class DetailsContentView: UIView {
     
     func addViews() {
         self.addSubview(profileImage)
-        self.addSubview(mainMovieImage)
+        self.addSubview(mainMovieImage!)
         self.addSubview(rankingLabel)
         self.addSubview(iconsStack)
-        self.addSubview(infoMovieStack)
+        self.addSubview(infoMovieStack!)
     }
     
     func configureLayout() {
@@ -86,12 +99,12 @@ class DetailsContentView: UIView {
             profileImage.widthAnchor.constraint(equalToConstant: 50),
             profileImage.heightAnchor.constraint(equalToConstant: 50),
             
-            mainMovieImage.topAnchor.constraint(equalTo: self.topAnchor),
-            mainMovieImage.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            mainMovieImage.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            mainMovieImage.heightAnchor.constraint(equalToConstant: 550),
+            mainMovieImage!.topAnchor.constraint(equalTo: self.topAnchor),
+            mainMovieImage!.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            mainMovieImage!.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            mainMovieImage!.heightAnchor.constraint(equalToConstant: 550),
             
-            rankingLabel.topAnchor.constraint(equalTo: mainMovieImage.bottomAnchor, constant: 10),
+            rankingLabel.topAnchor.constraint(equalTo: mainMovieImage!.bottomAnchor, constant: 10),
             rankingLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
             rankingLabel.widthAnchor.constraint(equalToConstant: 100),
             rankingLabel.heightAnchor.constraint(equalToConstant: 35),
@@ -101,9 +114,9 @@ class DetailsContentView: UIView {
             iconsStack.heightAnchor.constraint(equalToConstant: 35),
             iconsStack.widthAnchor.constraint(equalToConstant: 110),
             
-            infoMovieStack.topAnchor.constraint(equalTo: rankingLabel.bottomAnchor, constant: 20),
-            infoMovieStack.leadingAnchor.constraint(equalTo: rankingLabel.leadingAnchor),
-            infoMovieStack.trailingAnchor.constraint(equalTo: iconsStack.trailingAnchor)
+            infoMovieStack!.topAnchor.constraint(equalTo: rankingLabel.bottomAnchor, constant: 20),
+            infoMovieStack!.leadingAnchor.constraint(equalTo: rankingLabel.leadingAnchor),
+            infoMovieStack!.trailingAnchor.constraint(equalTo: iconsStack.trailingAnchor)
         ])
         
     }
@@ -117,9 +130,9 @@ class DetailsContentView: UIView {
         storyLineView.updateView(description: model!.overview ?? "N/A")
         
         NSLayoutConstraint.activate([
-            castCarousel!.topAnchor.constraint(equalTo: infoMovieStack.bottomAnchor, constant: 10),
-            castCarousel!.leadingAnchor.constraint(equalTo: infoMovieStack.leadingAnchor),
-            castCarousel!.trailingAnchor.constraint(equalTo: infoMovieStack.trailingAnchor),
+            castCarousel!.topAnchor.constraint(equalTo: infoMovieStack!.bottomAnchor, constant: 10),
+            castCarousel!.leadingAnchor.constraint(equalTo: infoMovieStack!.leadingAnchor),
+            castCarousel!.trailingAnchor.constraint(equalTo: infoMovieStack!.trailingAnchor),
             castCarousel!.heightAnchor.constraint(equalToConstant: 140),
             
             storyLineView.topAnchor.constraint(equalTo: castCarousel!.bottomAnchor, constant: 10),
@@ -139,9 +152,9 @@ class DetailsContentView: UIView {
         storyLineView.updateView(description: model!.overview ?? "N/A")
         
         NSLayoutConstraint.activate([
-            castCarousel!.topAnchor.constraint(equalTo: infoMovieStack.bottomAnchor, constant: 10),
-            castCarousel!.leadingAnchor.constraint(equalTo: infoMovieStack.leadingAnchor),
-            castCarousel!.trailingAnchor.constraint(equalTo: infoMovieStack.trailingAnchor),
+            castCarousel!.topAnchor.constraint(equalTo: infoMovieStack!.bottomAnchor, constant: 10),
+            castCarousel!.leadingAnchor.constraint(equalTo: infoMovieStack!.leadingAnchor),
+            castCarousel!.trailingAnchor.constraint(equalTo: infoMovieStack!.trailingAnchor),
             castCarousel!.heightAnchor.constraint(equalToConstant: 140),
             
             storyLineView.topAnchor.constraint(equalTo: castCarousel!.bottomAnchor, constant: 10),

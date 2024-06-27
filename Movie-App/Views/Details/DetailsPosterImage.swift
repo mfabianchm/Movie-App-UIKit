@@ -16,9 +16,12 @@ class DetailsPosterImage: UIImageView {
     var posterImage: UIImage?
     var movieGenres: [String]?
     
-    init() {
+    init(posterImage: UIImage, movieGenres: [String]) {
+        self.posterImage = posterImage
+        self.movieGenres = movieGenres
         super.init(frame: .zero)
         configure()
+        setGenresStackView()
         configureLayout()
     }
     
@@ -29,7 +32,7 @@ class DetailsPosterImage: UIImageView {
     
     func configure() {
         self.image = self.posterImage
-        self.contentMode = .scaleToFill
+        self.contentMode = .scaleAspectFill
         self.backgroundColor = .gray
         self.translatesAutoresizingMaskIntoConstraints = false
         

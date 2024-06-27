@@ -160,7 +160,7 @@ class NetworkManager {
     
     
     
-    func getMovieGenres() async throws -> Genres? {
+    func getMovieGenres() async throws -> Genres {
         let endPoint = baseURL + "genre/movie/list"
         
         guard let url = URL(string: endPoint) else {

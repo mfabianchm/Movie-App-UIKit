@@ -39,7 +39,8 @@ class MovieCell: UICollectionViewCell {
         button.titleEdgeInsets = UIEdgeInsets(top: 0.0, left: 10.0, bottom: 15.0, right: 10.0)
         button.titleLabel?.font = UIFont(name: "Montserrat-SemiBold", size: 23)
         button.titleLabel?.numberOfLines = 4
-        button.setBackgroundImage(UIImage(named: "loading-image"), for: .normal)
+        button.tintColor = UIColor(named: "Medium-Gray")
+        button.setBackgroundImage(UIImage(systemName: "square.fill"), for: .normal)
         button.isUserInteractionEnabled = false
         
         hdLabel.translatesAutoresizingMaskIntoConstraints = false

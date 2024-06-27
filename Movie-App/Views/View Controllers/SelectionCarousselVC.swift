@@ -19,21 +19,26 @@ class SelectionCarousselVC: UIViewController {
     
     let buttonsStackView = ButtonsStackView()
     let moviesCollectionView = MoviesCollectionView()
-    let loadingVC = LoadingViewController()
     
     let buttonsText: [String] = ["Popular", "New", "Most-Rated", "Upcoming"]
     var buttons: [UIButton] = []
     
-    let cellScale: CGFloat = 0.6
     let numberOfItems = 100
     var padding: CGFloat = 10
 
     var movieSelected: Movie?
     var centerCell: MovieCell?
     
-    var fetchedMovies: FetchedMovies?
-    var posterImages: PosterImages?
     var genres: [Genre]?
+    var popularMovies: [Movie]?
+    var moviesInTheatres: [Movie]?
+    var ratedMovies: [Movie]?
+    var upcomingMovies: [Movie]?
+    
+    var popularMoviesImages: [UIImage]?
+    var moviesInTheatresImages: [UIImage]?
+    var ratedMoviesImages: [UIImage]?
+    var upcomingMoviesImages: [UIImage]?
     
     var moviesToDisplay: [Movie]?
     var postersToDisplay: [UIImage]?
@@ -107,20 +112,20 @@ class SelectionCarousselVC: UIViewController {
         
         switch sender.tag {
         case 0:
-            moviesToDisplay = fetchedMovies?.popularMovies
-            postersToDisplay = posterImages?.popularMovies
+            moviesToDisplay = popularMovies
+            postersToDisplay = popularMoviesImages
             moviesCollectionView.reloadData()
         case 1:
-            moviesToDisplay = fetchedMovies?.moviesInTheatres
-            postersToDisplay = posterImages?.moviesInTheatres
+            moviesToDisplay = moviesInTheatres
+            postersToDisplay = moviesInTheatresImages
             moviesCollectionView.reloadData()
         case 2:
-            moviesToDisplay = fetchedMovies?.ratedMovies
-            postersToDisplay = posterImages?.ratedMovies
+            moviesToDisplay = ratedMovies
+            postersToDisplay = ratedMoviesImages
             moviesCollectionView.reloadData()
         default:
-            moviesToDisplay = fetchedMovies?.upcomingMovies
-            postersToDisplay = posterImages?.upcomingMovies
+            moviesToDisplay = upcomingMovies
+            postersToDisplay = upcomingMoviesImages
             moviesCollectionView.reloadData()
         }
 
@@ -134,16 +139,25 @@ class SelectionCarousselVC: UIViewController {
     }
     
    
-//    @objc func presentDetailsVC() {
-//        guard let genres = genres else {return}
-//
-////        1 GET IMAGES
-//
-//
-//
-//
-//        navigationController?.pushViewController(DetailsVC(model: movieSelected, genres: genres), animated: true)
-//    }
+    func updateCollectionView(genres: [Genre], popularMovies: MoviesData, moviesInTheatres: MoviesData, ratedMovies: MoviesData, upcomingMovies: MoviesData) {
+        self.genres = genres
+        
+        self.popularMovies = popularMovies.data
+        self.moviesInTheatres = moviesInTheatres.data
+        self.ratedMovies = ratedMovies.data
+        self.upcomingMovies = upcomingMovies.data
+        
+        self.popularMoviesImages = popularMovies.posterImages
+        self.moviesInTheatresImages = moviesInTheatres.posterImages
+        self.ratedMoviesImages = ratedMovies.posterImages
+        self.upcomingMoviesImages = upcomingMovies.posterImages
+        
+        self.moviesToDisplay = popularMovies.data
+        self.postersToDisplay = popularMovies.posterImages
+        
+        moviesCollectionView.reloadData()
+        
+    }
     
     
     func presentDetailsVC(movieId: Int) {

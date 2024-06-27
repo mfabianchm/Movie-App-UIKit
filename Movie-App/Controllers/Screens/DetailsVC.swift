@@ -7,7 +7,6 @@
 
 import UIKit
 
-//1. At the moment we open this screen we instatiate all properties, the init methods gets called and viewDidLoad too.
 
 class DetailsVC: UIViewController {
     
@@ -17,8 +16,9 @@ class DetailsVC: UIViewController {
     var movieImagesCarouselVC: MovieImagesCarouselVC?
     
     var padding: CGFloat = 10
+    
     var posterImage: UIImage?
-    var movieGenres: [String] = []
+    var movieGenres: [String]?
     
     let model: Movie?
     let genres: [Genre]?
@@ -35,8 +35,8 @@ class DetailsVC: UIViewController {
         self.details = details
         self.images = images
         self.cast = cast
-        
         super.init(nibName: nil, bundle: nil)
+        setMovieGenres()
     }
     
     required init?(coder: NSCoder) {
@@ -49,21 +49,12 @@ class DetailsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setMovieGenres()
-        print(model)
-        print(genres)
-        print(details)
-        print(images)
-        print(cast)
-//        getImage()
-     
-        
-//        contentView = DetailsContentView(model: model!, genres: movieGenres)
-//        castCarouselVC = CastCarouselVC(movieId: model!.id)
+        contentView = DetailsContentView(model: model!, genres: movieGenres!, details: details!, images: images!, cast: cast!)
+        castCarouselVC = CastCarouselVC(cast: cast!)
 //        movieImagesCarouselVC = MovieImagesCarouselVC(movieId: model!.id)
 //
-//        addVCChilds()
-//        configure()
+        addVCChilds()
+        configure()
     }
     
     
@@ -79,14 +70,14 @@ class DetailsVC: UIViewController {
     
     func addVCChilds() {
         addChild(castCarouselVC!)
-        addChild(movieImagesCarouselVC!)
+//        addChild(movieImagesCarouselVC!)
         
-        guard let contentView = contentView as? DetailsContentView else {return}
-        
-        contentView.configureCastCarouselView(childView: castCarouselVC!.view)
-        contentView.configureCastCarouselView(childView: movieImagesCarouselVC!.view)
+//        guard let contentView = contentView as? DetailsContentView else {return}
+//
+//        contentView.configureCastCarouselView(childView: castCarouselVC!.view)
+//        contentView.configureCastCarouselView(childView: movieImagesCarouselVC!.view)
         castCarouselVC!.didMove(toParent: self)
-        movieImagesCarouselVC!.didMove(toParent: self)
+//        movieImagesCarouselVC!.didMove(toParent: self)
     }
     
     func configure() {
@@ -109,8 +100,9 @@ class DetailsVC: UIViewController {
     func setMovieGenres() {
         
         guard let model = model else {return}
-        
+     
         var genresIds: [Int] = model.genreIds
+        var genresArray: [String] = []
         
         if(genresIds.count > 2) {
             let lastElement = genresIds.count - 1
@@ -120,40 +112,41 @@ class DetailsVC: UIViewController {
         genresIds.forEach { id in
             genres?.forEach { genre in
                 if(genre.id) == id {
-                    movieGenres.append(genre.name)
+                    genresArray.append(genre.name)
                 }
             }
         }
         
+        self.movieGenres = genresArray
+                
     }
     
     
-    func configureInfoMovieStackView() {
-        let countriesString: String
-        let genresString = movieGenres.joined()
-        
-        if let countries = details?.originCountry {
-            countriesString = countries.joined(separator: ",")
-        } else {
-            countriesString = "N/A"
-        }
-        
-        guard let contentView = contentView as? DetailsContentView else {return}
-        
-        contentView.infoMovieStack.originalTitle =  model!.originalTitle
-        contentView.infoMovieStack.countriesString = countriesString
-        contentView.infoMovieStack.releaseDate = "\(model!.releaseDate)•\(genresString)"
-        contentView.infoMovieStack.originalLanguage = details?.originalLanguage
-        contentView.infoMovieStack.status = details?.status
-        
-        contentView.infoMovieStack.redrawView()
-        
-    }
+//    func configureInfoMovieStackView() {
+//        let countriesString: String
+//        let genresString = movieGenres.joined()
+//        
+//        if let countries = details?.originCountry {
+//            countriesString = countries.joined(separator: ",")
+//        } else {
+//            countriesString = "N/A"
+//        }
+//        
+//        guard let contentView = contentView as? DetailsContentView else {return}
+//        
+//        contentView.infoMovieStack.originalTitle =  model!.originalTitle
+//        contentView.infoMovieStack.countriesString = countriesString
+//        contentView.infoMovieStack.releaseDate = "\(model!.releaseDate)•\(genresString)"
+//        contentView.infoMovieStack.originalLanguage = details?.originalLanguage
+//        contentView.infoMovieStack.status = details?.status
+//        
+//        contentView.infoMovieStack.redrawView()
+//        
+//    }
     
     func configureConstrainst() {
         
         NSLayoutConstraint.activate([
-            
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -166,40 +159,8 @@ class DetailsVC: UIViewController {
             contentView!.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: 0),
             contentView!.widthAnchor.constraint(equalTo: view.widthAnchor),
             contentView!.heightAnchor.constraint(equalToConstant: 2000),
-            
         ])
     }
 }
 
-extension DetailsVC {
-        
-//    func getMovieDetails() {
-//        NetworkManager.shared.getMovieDetails(id: model!.id) { result in
-//            switch result {
-//            case .success(let movie):
-//                DispatchQueue.main.async {
-//                    self.movieDetails = movie
-//                    self.configureInfoMovieStackView()
-//                }
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//            }
-//        }
-//    }
-    
-//    func getImage() {
-//        guard let movieData = model else {return}
-//        guard let movieUrl = movieData.posterPath else {return}
-//        let url = URL(string: "https://image.tmdb.org/t/p/original\(movieUrl)")!
-//
-//        NetworkManager.shared.getImage(from: url) { data, response, error in
-//            guard let data = data, error == nil else { return }
-//            DispatchQueue.main.async() { [weak self] in
-//                guard let self = self else {return}
-//                guard let contentView = self.contentView as? DetailsContentView else {return}
-//
-//                contentView.mainMovieImage.image = UIImage(data: data)
-//            }
-//        }
-//    }
-}
+

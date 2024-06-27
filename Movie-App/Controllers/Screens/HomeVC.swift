@@ -21,12 +21,11 @@ struct PosterImages {
     var upcomingMovies: [UIImage]?
 }
 
-class HomeVC: UIViewController {
+class HomeVC: LoadingVC  {
     
     let scrollView = UIScrollView()
     let contentView = HomeContentView()
     let selectionCarouselVC = SelectionCarousselVC()
-    let loadingVC = LoadingViewController()
     
     var fetchedMovies: FetchedMovies = FetchedMovies()
     var posterImages: PosterImages = PosterImages()
@@ -37,24 +36,8 @@ class HomeVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "Dark-Gray")
-
-        getGenres()
-        getMovies(type: .popularMovies)
-        getMovies(type: .moviesInTheatres)
-        getMovies(type: .ratedMovies)
-        getMovies(type: .upcomingMovies)
         configure()
-        
-        if(fetchedMovies.popularMovies == nil) {
-            self.add(loadingVC)
-            view.isUserInteractionEnabled = false
-            NSLayoutConstraint.activate([
-                loadingVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                loadingVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                loadingVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                loadingVC.view.topAnchor.constraint(equalTo: view.topAnchor),
-            ])
-        }
+        getData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -117,7 +100,6 @@ class HomeVC: UIViewController {
 }
 
 
-
 extension HomeVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         print("return button pressed")
@@ -128,84 +110,35 @@ extension HomeVC: UITextFieldDelegate {
 
 extension HomeVC {
     
-    func getMovies(type: EndPoint) {
-
-        let requestName: EndPoint
-        let movieType: String
-        
-        switch type {
-        case .popularMovies:
-            requestName = type
-            movieType = "popular"
-        case .moviesInTheatres:
-            requestName = type
-            movieType = "inTheatres"
-        case .ratedMovies:
-            requestName = type
-            movieType = "rated"
-        case .upcomingMovies:
-            requestName = type
-            movieType = "upcoming"
-        }
+    func getData() {
+        showLoadingView()
         
         Task {
             do {
-                let movies = try await NetworkManager.shared.getMovies(requestName:  requestName)
-                if(movieType == "popular") {
-                    self.fetchedMovies.popularMovies = movies.data
-                    self.posterImages.popularMovies = movies.posterImages
-                }
-                if(movieType == "inTheatres") {
-                    self.fetchedMovies.moviesInTheatres = movies.data
-                    self.posterImages.moviesInTheatres = movies.posterImages
-                }
-                if(movieType == "rated") {
-                    self.fetchedMovies.ratedMovies = movies.data
-                    self.posterImages.ratedMovies = movies.posterImages
-                }
-                else {
-                    self.fetchedMovies.upcomingMovies = movies.data
-                    self.posterImages.upcomingMovies = movies.posterImages
-                    DispatchQueue.main.async {
-                        self.selectionCarouselVC.fetchedMovies = self.fetchedMovies
-                        self.selectionCarouselVC.posterImages = self.posterImages
-                        
-                        self.selectionCarouselVC.moviesToDisplay = self.selectionCarouselVC.fetchedMovies?.popularMovies
-                        self.selectionCarouselVC.postersToDisplay = self.selectionCarouselVC.posterImages?.popularMovies
-                        
-                        self.selectionCarouselVC.moviesCollectionView.reloadData()
-                        self.loadingVC.remove()
-                        self.view.isUserInteractionEnabled = true
-                    }
-                }
-            } catch  {
+                let genres = try await NetworkManager.shared.getMovieGenres()
+                let popularMovies = try await NetworkManager.shared.getMovies(requestName: .popularMovies)
+                let moviesInTheatres = try await NetworkManager.shared.getMovies(requestName: .moviesInTheatres)
+                let ratedMovies = try await NetworkManager.shared.getMovies(requestName: .ratedMovies)
+                let upcomingMovies = try await NetworkManager.shared.getMovies(requestName: .upcomingMovies)
+                
+                updateUI(genres: genres.genres, popularMovies: popularMovies, moviesInTheatres: moviesInTheatres, ratedMovies: ratedMovies, upcomingMovies: upcomingMovies)
+                
+                dismissLoadingView()
+            } catch {
                 if let movieError = error as? MovieAppError {
                     print(movieError.rawValue)
                 } else {
                     print("something went wrong?")
                 }
+                dismissLoadingView()
             }
         }
     }
-}
-
-
-extension HomeVC {
-        func getGenres() {
-            Task {
-                do {
-                    let genres = try await NetworkManager.shared.getMovieGenres()
-                    self.genres = genres?.genres
-                    self.selectionCarouselVC.genres = genres?.genres
-                } catch {
-                    if let movieError = error as? MovieAppError {
-                        print(movieError.rawValue)
-                    } else {
-                        print("something went wrong?")
-                    }
-                }
-            }
-        }
+    
+    func updateUI(genres: [Genre], popularMovies: MoviesData, moviesInTheatres: MoviesData, ratedMovies: MoviesData, upcomingMovies: MoviesData) {
+        selectionCarouselVC.updateCollectionView(genres: genres, popularMovies: popularMovies, moviesInTheatres: moviesInTheatres, ratedMovies: ratedMovies, upcomingMovies: upcomingMovies)
+    }
+    
 }
 
 
