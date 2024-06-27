@@ -19,16 +19,23 @@ class DetailsVC: UIViewController {
     var padding: CGFloat = 10
     var posterImage: UIImage?
     var movieGenres: [String] = []
+    
     let model: Movie?
     let genres: [Genre]?
+    let details: MovieDetails?
+    let images: [UIImage]?
+    let cast: Cast?
+    
     var movieGenresId: [Int]?
-    var cast: [Person]?
-    var movieDetails: MovieDetails?
 
-    init(model: Movie?, genres: [Genre]) {
-        self.model = model
+
+    init(infoMovie: Movie?, genres: [Genre], details: MovieDetails, images: [UIImage], cast: Cast) {
+        self.model = infoMovie
         self.genres = genres
-        self.movieGenresId = model?.genreIds
+        self.details = details
+        self.images = images
+        self.cast = cast
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -43,15 +50,20 @@ class DetailsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setMovieGenres()
+        print(model)
+        print(genres)
+        print(details)
+        print(images)
+        print(cast)
 //        getImage()
      
         
-        contentView = DetailsContentView(model: model!, genres: movieGenres)
-        castCarouselVC = CastCarouselVC(movieId: model!.id)
-        movieImagesCarouselVC = MovieImagesCarouselVC(movieId: model!.id)
-        
-        addVCChilds()
-        configure()
+//        contentView = DetailsContentView(model: model!, genres: movieGenres)
+//        castCarouselVC = CastCarouselVC(movieId: model!.id)
+//        movieImagesCarouselVC = MovieImagesCarouselVC(movieId: model!.id)
+//
+//        addVCChilds()
+//        configure()
     }
     
     
@@ -95,12 +107,17 @@ class DetailsVC: UIViewController {
     
     
     func setMovieGenres() {
-        if(movieGenresId!.count > 2) {
-            let lastElement = movieGenresId!.count - 1
-            movieGenresId!.removeSubrange(2...lastElement)
+        
+        guard let model = model else {return}
+        
+        var genresIds: [Int] = model.genreIds
+        
+        if(genresIds.count > 2) {
+            let lastElement = genresIds.count - 1
+            genresIds.removeSubrange(2...lastElement)
         }
         
-        movieGenresId?.forEach { id in
+        genresIds.forEach { id in
             genres?.forEach { genre in
                 if(genre.id) == id {
                     movieGenres.append(genre.name)
@@ -115,7 +132,7 @@ class DetailsVC: UIViewController {
         let countriesString: String
         let genresString = movieGenres.joined()
         
-        if let countries = movieDetails?.originCountry {
+        if let countries = details?.originCountry {
             countriesString = countries.joined(separator: ",")
         } else {
             countriesString = "N/A"
@@ -126,8 +143,8 @@ class DetailsVC: UIViewController {
         contentView.infoMovieStack.originalTitle =  model!.originalTitle
         contentView.infoMovieStack.countriesString = countriesString
         contentView.infoMovieStack.releaseDate = "\(model!.releaseDate)•\(genresString)"
-        contentView.infoMovieStack.originalLanguage = movieDetails?.originalLanguage
-        contentView.infoMovieStack.status = movieDetails?.status
+        contentView.infoMovieStack.originalLanguage = details?.originalLanguage
+        contentView.infoMovieStack.status = details?.status
         
         contentView.infoMovieStack.redrawView()
         

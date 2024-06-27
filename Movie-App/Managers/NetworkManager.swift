@@ -131,33 +131,7 @@ class NetworkManager {
             throw MovieAppError.errorInParsing
         }
     }
-    
-    
-    func createURLRequest(url: URL, hasQuerys: Bool) -> URLRequest {
         
-        var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
-        
-        if(hasQuerys) {
-            let queryItems: [URLQueryItem] = [
-                URLQueryItem(name: "language", value: "en-US"),
-            ]
-            components.queryItems = components.queryItems.map { $0 + queryItems } ?? queryItems
-        }
-        
-        var request = URLRequest(url: components.url!)
-        request.httpMethod = "GET"
-        request.timeoutInterval = 10
-        request.allHTTPHeaderFields = [
-            "accept": "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjNjI5MzYzYmNlMmEyNDQ0Yzc3NmU5ZGI3NDlkMjg2MiIsInN1YiI6IjY1Mjc1OWQ2ODEzODMxMDBlMTJlMGZlYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.eIYhB8d7dfMO53g5e_y7Vqu0O08NINMKdoY1NZrO-FU"
-        ]
-        
-        return request
-    }
-    
-    
-    
-    
     
     func getMovieDetails(id: Int) async throws -> MovieDetails? {
         let endPoint = baseURL + "movie/\(id.description)"
@@ -271,6 +245,28 @@ class NetworkManager {
         } catch  {
             throw MovieAppError.errorInParsing
         }
+    }
+    
+    
+    func createURLRequest(url: URL, hasQuerys: Bool) -> URLRequest {
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+        
+        if(hasQuerys) {
+            let queryItems: [URLQueryItem] = [
+                URLQueryItem(name: "language", value: "en-US"),
+            ]
+            components.queryItems = components.queryItems.map { $0 + queryItems } ?? queryItems
+        }
+        
+        var request = URLRequest(url: components.url!)
+        request.httpMethod = "GET"
+        request.timeoutInterval = 10
+        request.allHTTPHeaderFields = [
+            "accept": "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjNjI5MzYzYmNlMmEyNDQ0Yzc3NmU5ZGI3NDlkMjg2MiIsInN1YiI6IjY1Mjc1OWQ2ODEzODMxMDBlMTJlMGZlYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.eIYhB8d7dfMO53g5e_y7Vqu0O08NINMKdoY1NZrO-FU"
+        ]
+        
+        return request
     }
     
         

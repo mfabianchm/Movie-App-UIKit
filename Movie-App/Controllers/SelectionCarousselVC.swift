@@ -148,6 +148,7 @@ class SelectionCarousselVC: UIViewController {
     
     func presentDetailsVC(movieId: Int) {
 //         guard let genres = genres else {return}
+//        Images, MovieDetails, Cast
 
         let images: [UIImage]
         
@@ -156,8 +157,20 @@ class SelectionCarousselVC: UIViewController {
 //        getMovieCast(movieId: movieId)
         Task {
             do {
-                let details = try await NetworkManager.shared.getMovies(requestName: .upcomingMovies)
-                print(details)
+                async let movieDetails = try await NetworkManager.shared.getMovieDetails(id: movieId)
+                async let movieImages = try await NetworkManager.shared.getMovieImages(id: movieId)
+                async let movieCast = try await NetworkManager.shared.getCastInfo(id: movieId)
+                
+                let(details, images, cast) = await (try movieDetails, try movieImages, try movieCast)
+                
+                guard let movieSelected = movieSelected else {return}
+                guard let genres = genres else {return}
+                guard let details = details else {return}
+                guard let images = images else {return}
+                guard let cast = cast else {return}
+                
+                navigationController?.pushViewController(DetailsVC(infoMovie: movieSelected, genres: genres, details: details, images: images, cast: cast), animated: true)
+                
             } catch {
                 if let movieError = error as? MovieAppError {
                     print(movieError.rawValue)
