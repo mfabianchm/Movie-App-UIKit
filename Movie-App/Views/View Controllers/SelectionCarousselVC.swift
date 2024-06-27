@@ -160,149 +160,14 @@ class SelectionCarousselVC: UIViewController {
     }
     
     
-    func presentDetailsVC(movieId: Int) {
-//         guard let genres = genres else {return}
-//        Images, MovieDetails, Cast
-
-        let images: [UIImage]
+     func presentDetailsVC() {
+        guard let movieSelected = movieSelected else {return}
+        guard let genres = genres else {return}
         
-//        getData(movieId: movieId)
-//        getMovieImages(movieId: movieId)
-//        getMovieCast(movieId: movieId)
-        Task {
-            do {
-                async let movieDetails = try await NetworkManager.shared.getMovieDetails(id: movieId)
-                async let movieImages = try await NetworkManager.shared.getMovieImages(id: movieId)
-                async let movieCast = try await NetworkManager.shared.getCastInfo(id: movieId)
-                
-                let(details, images, cast) = await (try movieDetails, try movieImages, try movieCast)
-                
-                guard let movieSelected = movieSelected else {return}
-                guard let genres = genres else {return}
-                guard let details = details else {return}
-                guard let images = images else {return}
-                guard let cast = cast else {return}
-                
-                navigationController?.pushViewController(DetailsVC(infoMovie: movieSelected, genres: genres, details: details, images: images, cast: cast), animated: true)
-                
-            } catch {
-                if let movieError = error as? MovieAppError {
-                    print(movieError.rawValue)
-                } else {
-                    print("something went wrong?")
-                }
-            }
-        }
-        
-            
-
-        
-       
- 
- 
- 
- 
-//         navigationController?.pushViewController(DetailsVC(model: movieSelected, genres: genres), animated: true)
+        navigationController?.pushViewController(DetailsVC(infoMovie: movieSelected, genres: genres), animated: true)
      }
     
     
-}
-
-
-
-extension SelectionCarousselVC {
-    
-//    func getMovieDetails(movieId: Int) async throws -> MovieDetails {
-//        do {
-//            let movieDetails = try await NetworkManager.shared.getMovieDetails(id: movieId)
-//        } catch MovieAppError.invalidURL {
-//            print("invalid URL")
-//        } catch MovieAppError.invalidData {
-//            print("invalid Data")
-//        } catch MovieAppError.invalidResponse {
-//            print("invalid Response")
-//        } catch MovieAppError.errorInParsing {
-//            print("Error in parsing")
-//        }
-//    }
-    
-//    func getData(movieId: Int) {
-//        NetworkManager.shared.getMovieDetails(id: movieId) { result in
-//            switch result {
-//            case .success(let movie):
-//                DispatchQueue.main.async {
-//                    print(movie)
-//                }
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//            }
-//        }
-//    }
-    
-    
-//    func getMovieImages(movieId: Int) {
-//        NetworkManager.shared.getMovieImages(movie_id: movieId) { result in
-//            switch result {
-//            case .success(let moviesArray):
-//                print(moviesArray)
-////                DispatchQueue.main.async {
-////                    self.movieDetails = movie
-////                    self.configureInfoMovieStackView()
-////                }
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//            }
-//        }
-//    }
-    
-//    func getMovieCast(movieId: Int) {
-//        NetworkManager.shared.getCastInfo(movie_id: movieId) { result in
-//            switch result {
-//            case .success(var cast):
-//                DispatchQueue.main.async {
-//                    let castArray: [Person]?
-//                    
-//                    if(cast.cast.count > 10) {
-//                        let lastElement = cast.cast.count - 1
-//                        cast.cast.removeSubrange(10...lastElement)
-//                    }
-//                    castArray = cast.cast
-//                    
-//                    var castInfo: [Character] = []
-//                    
-//                    
-//                    castArray?.forEach { person in
-//                       
-//                        let imagePath = person.profilePath
-//                        let url = URL(string: "https://image.tmdb.org/t/p/original\(imagePath)")!
-//                            
-//                        NetworkManager.shared.getImage(from: url) { data, response, error in
-//                            guard let data = data, error == nil else { return }
-//                            let image = UIImage(data: data)
-//                            let character: Character?
-//                            
-//                            guard let image = image else {
-//                                character = Character(name: person.name, character: person.character, image: UIImage(systemName: "person.fill")!)
-//                                return
-//                            }
-//                            
-//                            character = Character(name: person.name, character: person.character, image: image)
-//                                
-//                            castInfo.append(character!)
-//                        }
-//                        
-//                    }
-//                    
-//                    print(castInfo)
-//                    
-//                    
-////                    self.getImages()
-//                }
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//            }
-//        }
-//    }
 }
 
 
@@ -324,7 +189,6 @@ extension SelectionCarousselVC: UICollectionViewDataSource {
 }
 
 
-
 extension SelectionCarousselVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
@@ -332,7 +196,7 @@ extension SelectionCarousselVC: UICollectionViewDelegate {
         let cellToSearch = collectionView.cellForItem(at: indexPath) as! MovieCell
         self.movieSelected = cellToSearch.model
         
-        presentDetailsVC(movieId: movieSelected!.id)
+        presentDetailsVC()
     }
 }
 
@@ -343,7 +207,6 @@ extension SelectionCarousselVC: UICollectionViewDelegateFlowLayout {
             return UIEdgeInsets(top: 0, left: sideInset, bottom: 0, right: sideInset)
         }
 }
-
 
 
 extension SelectionCarousselVC: UIScrollViewDelegate {
@@ -363,8 +226,6 @@ extension SelectionCarousselVC: UIScrollViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
       guard scrollView is UICollectionView else {return}
-
-      let centerCell: MovieCell?
 
       let centerPoint = CGPoint(x: self.moviesCollectionView.frame.size.width / 2 + scrollView.contentOffset.x,
                                 y: self.moviesCollectionView.frame.size.height / 2 + scrollView.contentOffset.y)

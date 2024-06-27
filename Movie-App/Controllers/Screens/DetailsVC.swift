@@ -8,7 +8,7 @@
 import UIKit
 
 
-class DetailsVC: UIViewController {
+class DetailsVC: LoadingVC {
     
     let scrollView = UIScrollView()
     var contentView: UIView?
@@ -22,19 +22,15 @@ class DetailsVC: UIViewController {
     
     let model: Movie?
     let genres: [Genre]?
-    let details: MovieDetails?
-    let images: [UIImage]?
-    let cast: Cast?
+    var details: MovieDetails?
+    var images: [UIImage]?
+    var cast: Cast?
     
     var movieGenresId: [Int]?
 
-
-    init(infoMovie: Movie?, genres: [Genre], details: MovieDetails, images: [UIImage], cast: Cast) {
+    init(infoMovie: Movie?, genres: [Genre]) {
         self.model = infoMovie
         self.genres = genres
-        self.details = details
-        self.images = images
-        self.cast = cast
         super.init(nibName: nil, bundle: nil)
         setMovieGenres()
     }
@@ -49,12 +45,16 @@ class DetailsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        contentView = DetailsContentView(model: model!, genres: movieGenres!, details: details!, images: images!, cast: cast!)
-        castCarouselVC = CastCarouselVC(cast: cast!)
+        
+        contentView = DetailsContentView(model: model!, genres: movieGenres!)
+        configure()
+        getMovieInfo()
+        
+        
+//        castCarouselVC = CastCarouselVC(cast: cast!)
 //        movieImagesCarouselVC = MovieImagesCarouselVC(movieId: model!.id)
 //
-        addVCChilds()
-        configure()
+//        addVCChilds()
     }
     
     
@@ -152,14 +152,49 @@ class DetailsVC: UIViewController {
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
-            contentView!.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor, constant: 0
-                                        ),
+            contentView!.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor, constant: 0),
             contentView!.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
             contentView!.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: 0),
             contentView!.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: 0),
             contentView!.widthAnchor.constraint(equalTo: view.widthAnchor),
             contentView!.heightAnchor.constraint(equalToConstant: 2000),
         ])
+    }
+}
+
+
+extension DetailsVC {
+    func getMovieInfo() {
+        showLoadingView()
+        
+        Task {
+            do {
+                async let movieDetails = try await NetworkManager.shared.getMovieDetails(id: model!.id)
+                async let movieImages = try await NetworkManager.shared.getMovieImages(id: model!.id)
+                async let movieCast = try await NetworkManager.shared.getCastInfo(id: model!.id)
+                
+                let(details, images, cast) = await (try movieDetails, try movieImages, try movieCast)
+                
+                guard let details = details else {return}
+                guard let images = images else {return}
+                guard let cast = cast else {return}
+                
+                guard let contentView = self.contentView as? DetailsContentView else {return}
+                self.details = details
+                self.images = images
+                self.cast = cast
+                
+                contentView.updateUI(movieDetails: details, movieImages: images, movieCast: cast)
+                dismissLoadingView()
+            } catch {
+                if let movieError = error as? MovieAppError {
+                    print(movieError.rawValue)
+                } else {
+                    print("something went wrong?")
+                }
+                dismissLoadingView()
+            }
+        }
     }
 }
 

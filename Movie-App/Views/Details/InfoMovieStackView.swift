@@ -12,9 +12,9 @@ class InfoMovieStackView: UIStackView {
 
     let title: String
     let releaseDate: String
-    let language: String
-    var country: [String]
-    let status: String
+    var language: String = "N/A"
+    var country: String = "N/A"
+    var status: String = "N/A"
     let genres: String
     
     let movieTitle = UILabel()
@@ -24,12 +24,9 @@ class InfoMovieStackView: UIStackView {
     var languageLabel: DetailsLabel?
     var statusLabel:  DetailsLabel?
     
-    init(title: String, releaseDate: String, language: String, country: [String], status: String, genres: String) {
+    init(title: String, releaseDate: String, genres: String) {
         self.title = title
         self.releaseDate = releaseDate
-        self.language = language
-        self.country = country
-        self.status = status
         self.genres = genres
         super.init(frame: .zero)
         configure()
@@ -50,23 +47,24 @@ class InfoMovieStackView: UIStackView {
         movieTitle.font = UIFont(name: "Montserrat-SemiBold", size: 30)
         movieTitle.textColor = .white
         
-        if (country.isEmpty) {
-            countryLabel = DetailsLabel(text: "Country: N/A")
-        } else {
-            countryLabel = DetailsLabel(text: "Country: \(country[0])")
-        }
-       
+        countryLabel = DetailsLabel(text: "Country: \(String(describing: country))")
         releaseDateLabel = DetailsLabel(text: "\(releaseDate)•\(genres)")
         languageLabel = DetailsLabel(text: "Original language: \(String(describing: language))")
         statusLabel = DetailsLabel(text: "Status: \(String(describing: status))")
-        
-
+       
         self.addArrangedSubview(movieTitle)
         self.addArrangedSubview(releaseDateLabel!)
         self.addArrangedSubview(countryLabel!)
         self.addArrangedSubview(languageLabel!)
         self.addArrangedSubview(statusLabel!)
-        
+    }
+    
+    func updateInfoStackView(language: String, country: [String], status: String) {
+        if (!country.isEmpty) {
+            countryLabel?.text = "Country: \(country[0])"
+        }
+        languageLabel?.text = "Original language: \(String(describing: language))"
+        statusLabel?.text = "Status: \(String(describing: status))"
     }
         
 }

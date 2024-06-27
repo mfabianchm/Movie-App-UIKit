@@ -13,11 +13,9 @@ class DetailsPosterImage: UIImageView {
     let qualityLabel = UILabel()
     let genresStackView = UIStackView()
     
-    var posterImage: UIImage?
     var movieGenres: [String]?
     
-    init(posterImage: UIImage, movieGenres: [String]) {
-        self.posterImage = posterImage
+    init(movieGenres: [String]) {
         self.movieGenres = movieGenres
         super.init(frame: .zero)
         configure()
@@ -31,9 +29,8 @@ class DetailsPosterImage: UIImageView {
     
     
     func configure() {
-        self.image = self.posterImage
+        self.image = UIImage(systemName: "square.fill" )
         self.contentMode = .scaleAspectFill
-        self.backgroundColor = .gray
         self.translatesAutoresizingMaskIntoConstraints = false
         
         self.addSubview(hdLabel)
@@ -112,6 +109,10 @@ class DetailsPosterImage: UIImageView {
             genresStackView.heightAnchor.constraint(equalToConstant: 25),
         ])
        
+    }
+    
+    func updateImageView(image: UIImage) {
+        self.image = image
     }
 
 }
