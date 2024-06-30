@@ -13,9 +13,9 @@ class MovieImagesCollectionView: UICollectionView {
     
     init() {
         super.init(frame: .zero, collectionViewLayout: layout)
-        layout.itemSize = .init(width: 100, height: 100)
+        layout.itemSize = .init(width: 80, height: 80)
         layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 10
+        layout.minimumLineSpacing = 20
         configure()
     }
     

@@ -11,8 +11,6 @@ class MovieImageCell: UICollectionViewCell {
     
     let imageView = UIImageView()
     
-    var image: UIImage?
-    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         configure()
@@ -24,20 +22,20 @@ class MovieImageCell: UICollectionViewCell {
 
     
     func configure() {
+        self.backgroundColor = .red
         
         self.layer.cornerRadius = 10
+        self.layer.masksToBounds = true
         
         imageView.image = UIImage(systemName: "square.fill")
-        imageView.layer.masksToBounds = true
-        imageView.contentMode = .scaleAspectFit
+        imageView.layer.masksToBounds = false
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 10
         imageView.translatesAutoresizingMaskIntoConstraints = false
 
-       
-        
         addSubview(imageView)
-      
-        
+
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: self.topAnchor),
             imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
@@ -48,7 +46,6 @@ class MovieImageCell: UICollectionViewCell {
     }
     
     func configureData( image: UIImage) {
-        self.image = image
         imageView.image = image
     }
 }

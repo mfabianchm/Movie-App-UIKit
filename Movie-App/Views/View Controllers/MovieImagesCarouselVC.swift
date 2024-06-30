@@ -10,17 +10,15 @@ import UIKit
 class MovieImagesCarouselVC: UIViewController {
 
     let titleLabel = UILabel()
-    let collectionView = MoviesCollectionView()
+    let collectionView = MovieImagesCollectionView()
 
-    let numberOfCells = 10
+    var numberOfCells = 10
     
     var padding: CGFloat = 10
     
-    var movieId: Int
     var images: [UIImage] = []
     
-    init(movieId: Int) {
-        self.movieId = movieId
+    init() {
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -32,7 +30,6 @@ class MovieImagesCarouselVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.translatesAutoresizingMaskIntoConstraints = false
-//        getMovieImages()
         configure()
     }
         
@@ -63,48 +60,30 @@ class MovieImagesCarouselVC: UIViewController {
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             
+            collectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor)
+            collectionView.heightAnchor.constraint(equalToConstant: 80),
         ])
     }
-    
-//    func getMovieImages() {
-//        NetworkManager.shared.getMovieImages(movie_id: movieId) { result in
-//            switch result {
-//            case .success(let moviesArray):
-//                self.images = moviesArray
-//                print(moviesArray)
-////                DispatchQueue.main.async {
-////                    self.movieDetails = movie
-////                    self.configureInfoMovieStackView()
-////                }
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//            }
-//        }
-//    }
 }
 
 extension MovieImagesCarouselVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return self.images.count
+            return numberOfCells
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieImageCell", for: indexPath) as! MovieImageCell
-        
-        let image: UIImage
-        
-        if(self.images.isEmpty) {
-            image = UIImage(systemName: "person.fill")!
+
+        if(self.images.count == 0) {
+            return cell
         } else {
-            image = self.images[indexPath.row]
+            let image = self.images[indexPath.row]
+            cell.configureData(image: image)
+            return cell
         }
-        
-        cell.configureData(image: image)
-        return cell
     }
 }
 
@@ -112,5 +91,17 @@ extension MovieImagesCarouselVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
        print("cell clicked")
+    }
+}
+
+extension MovieImagesCarouselVC {
+    
+    func updateMovieImagesCarousel(images: [UIImage]) {
+        images.forEach { image in
+            self.images.append(image)
+        }
+        
+        self.numberOfCells = self.images.count
+        collectionView.reloadData()
     }
 }

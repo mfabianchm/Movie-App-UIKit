@@ -198,7 +198,6 @@
 				58B267AE2C2503CA00E987C4 /* InfoMovieStackView.swift */,
 				58B267B02C25052500E987C4 /* DetailsLabel.swift */,
 				58B267D62C28CDF700E987C4 /* CastCollectionView.swift */,
-				58B267DA2C28D02B00E987C4 /* CastCell.swift */,
 				58B267DC2C2A1BE600E987C4 /* StoryLineView.swift */,
 				58B267E42C2A44DF00E987C4 /* MovieImagesCollectionView.swift */,
 			);
@@ -240,6 +239,7 @@
 		58B267E92C2DBAB500E987C4 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				58B267DA2C28D02B00E987C4 /* CastCell.swift */,
 				58C76E622C12A79C00E88D54 /* MovieCell.swift */,
 				58B267E22C2A42EC00E987C4 /* MovieImageCell.swift */,
 			);

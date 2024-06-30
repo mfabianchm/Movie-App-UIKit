@@ -9,7 +9,7 @@ import UIKit
 
 class CastCell: UICollectionViewCell {
   
-    let imageView = UIButton()
+    let imageView = UIImageView()
     let nameLabel = UILabel()
     let charactherLabel = UILabel()
     
@@ -29,10 +29,11 @@ class CastCell: UICollectionViewCell {
     
     func configure() {
         
-        imageView.setBackgroundImage(UIImage(systemName: "person.fill"), for: .normal)
-        imageView.layer.masksToBounds = true
-        imageView.contentMode = .center
+        imageView.image = UIImage(systemName: "person.fill")
+        imageView.layer.masksToBounds = false
+        imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 25
+        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
 
         nameLabel.text = "N/A"
@@ -64,22 +65,28 @@ class CastCell: UICollectionViewCell {
             charactherLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 5),
             charactherLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             charactherLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            
-            
-//            imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-//            imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-//            imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
         ])
     }
     
-    func configureData( image: UIImage, name: String, character: String) {
-        self.image = image
-        self.actorName = name
-        self.character = character
-        
-        imageView.setBackgroundImage(image, for: .normal)
+    func configureData(name: String, character: String, urlPath: String?) {
+//        self.actorName = name
+//        self.character = character
         nameLabel.text = name
         charactherLabel.text = character
+//        guard let path = urlPath else {
+//            return
+//        }
+        
+        if(urlPath == "no-image") {return}
+        
+        downloadImage(fromURL: urlPath!)
+    }
+    
+    func downloadImage(fromURL url: String) {
+        Task {
+            let image = await NetworkManager.shared.downloadImage(from: url) ?? UIImage(systemName: "person.fill" )
+            imageView.image = image
+        }
     }
     
 }

@@ -13,14 +13,11 @@ class DetailsPosterImage: UIImageView {
     let qualityLabel = UILabel()
     let genresStackView = UIStackView()
     
-    var movieGenres: [String]?
+    var movieGenres = ["N/A", "N/A"]
     
-    init(movieGenres: [String]) {
-        self.movieGenres = movieGenres
+    init() {
         super.init(frame: .zero)
         configure()
-        setGenresStackView()
-        configureLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -30,7 +27,7 @@ class DetailsPosterImage: UIImageView {
     
     func configure() {
         self.image = UIImage(systemName: "square.fill" )
-        self.contentMode = .scaleAspectFill
+        self.contentMode = .scaleAspectFit
         self.translatesAutoresizingMaskIntoConstraints = false
         
         self.addSubview(hdLabel)
@@ -39,6 +36,8 @@ class DetailsPosterImage: UIImageView {
         configureHDLabel()
         configureQualityLabel()
         configureGenresStackView()
+        setGenresStackView()
+        configureLayout()
     }
     
     func configureHDLabel() {
@@ -73,7 +72,7 @@ class DetailsPosterImage: UIImageView {
     }
     
     func setGenresStackView() {
-        movieGenres!.forEach { genre in
+        movieGenres.forEach { genre in
             let genreLabel: UILabel = {
                 let label = UILabel()
                 label.backgroundColor = UIColor.black.withAlphaComponent(0.3)
@@ -111,8 +110,15 @@ class DetailsPosterImage: UIImageView {
        
     }
     
-    func updateImageView(image: UIImage) {
+    func updateImageView(image: UIImage, genres: [String]) {
+        genresStackView.subviews.forEach { subview in
+            subview.removeFromSuperview()
+        }
+        
+        self.movieGenres = genres
+        self.setGenresStackView()
         self.image = image
+        self.contentMode = .scaleAspectFill
     }
 
 }

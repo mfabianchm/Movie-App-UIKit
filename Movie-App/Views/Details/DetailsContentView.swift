@@ -9,30 +9,30 @@ import UIKit
 
 class DetailsContentView: UIView {
     
+    let scrollView = UIScrollView()
+    let contentView = UIView()
+    
     let profileImage = ProfileImageView(frame: .zero)
-    var mainMovieImage: DetailsPosterImage?
     let rankingLabel = UILabel()
+    let mainMovieImage = DetailsPosterImage()
     let iconsStack = IconsStackView()
-    var infoMovieStack:  InfoMovieStackView?
+    let infoMovieStack = InfoMovieStackView()
+    let storylineView = StoryLineView()
     
     
-//    let storyLineView = StoryLineView()
-    
-    var castCarousel: UIView?
+    var castCarouselView: UIView?
     var movieImagesCarousel: UIView?
     
     var padding: CGFloat = 10
     var posterImage: UIImage?
     
-    let model: Movie?
-    let genres: [String]?
+    var model: Movie?
+    var genres: [String]?
     var movieDetails: MovieDetails?
     var images: [UIImage]?
     var cast: Cast?
     
-    init(model: Movie, genres: [String]) {
-        self.model = model
-        self.genres = genres
+    override init(frame: CGRect) {
         super.init(frame: .zero)
         configure()
     }
@@ -41,25 +41,28 @@ class DetailsContentView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
     func configure() {
-        self.translatesAutoresizingMaskIntoConstraints = false
-        self.backgroundColor = UIColor(named: "Dark-Gray")
-        
-        mainMovieImage = DetailsPosterImage(movieGenres: genres!)
-        infoMovieStack = InfoMovieStackView(title: model!.title, releaseDate: model!.releaseDate, genres: genres!.joined())
-        
-        
-        addViews()
+        configureMainView()
+        configureProfileImage()
+        configureMainMovieImage()
         configureRankingLabel()
-        configureLayout()
-        profileImage.layer.zPosition = 100
-        
-        
-
+        configureIconsStack()
+        configureInfoMovieStack()
+        configureStorylineView()
+        configureConstrainst()
     }
     
+    func configureMainView() {
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.backgroundColor = UIColor(named: "Dark-Gray")
+    }
     
     func configureRankingLabel() {
+        contentView.addSubview(rankingLabel)
         rankingLabel.translatesAutoresizingMaskIntoConstraints = false
         rankingLabel.backgroundColor = UIColor(named: "Yellow")
         rankingLabel.textColor = .gray
@@ -67,104 +70,107 @@ class DetailsContentView: UIView {
         rankingLabel.layer.masksToBounds = true
         rankingLabel.font = UIFont(name: "Montserrat-SemiBold", size: 12)
         rankingLabel.textAlignment = .center
-
-        guard let model = model else {
-            rankingLabel.text = "N/A"
-            return
-        }
-
-        let ranking = String(format: "%.2f", model.voteAverage)
-
-        let attributedString = NSMutableAttributedString(string: "IMDB \(ranking)/10")
-        attributedString.addAttribute(.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: 10))
-        rankingLabel.attributedText = attributedString
-    }
-
-    func addViews() {
-        self.addSubview(profileImage)
-        self.addSubview(mainMovieImage!)
-        self.addSubview(rankingLabel)
-        self.addSubview(iconsStack)
-        self.addSubview(infoMovieStack!)
+        rankingLabel.text = "N/A"
     }
     
-    func configureLayout() {
+    func configureProfileImage() {
+        contentView.addSubview(profileImage)
+        profileImage.layer.zPosition = 100
+    }
+    
+    func configureMainMovieImage() {
+        contentView.addSubview(mainMovieImage)
+    }
+    
+    func configureIconsStack() {
+        contentView.addSubview(iconsStack)
+    }
+    
+    func configureInfoMovieStack() {
+        contentView.addSubview(infoMovieStack)
+    }
+    
+    func configureStorylineView() {
+        contentView.addSubview(storylineView)
+    }
+    
+    
+    func configureConstrainst() {
         NSLayoutConstraint.activate([
-            profileImage.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
-            profileImage.topAnchor.constraint(equalTo: self.topAnchor, constant: -45),
+            scrollView.topAnchor.constraint(equalTo: self.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            
+            contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor, constant: 0),
+            contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: 0),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: 0),
+            contentView.widthAnchor.constraint(equalTo: self.widthAnchor),
+            contentView.heightAnchor.constraint(equalToConstant: 2000),
+            
+            profileImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            profileImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: -45),
             profileImage.widthAnchor.constraint(equalToConstant: 50),
             profileImage.heightAnchor.constraint(equalToConstant: 50),
             
-            mainMovieImage!.topAnchor.constraint(equalTo: self.topAnchor),
-            mainMovieImage!.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            mainMovieImage!.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            mainMovieImage!.heightAnchor.constraint(equalToConstant: 550),
+            mainMovieImage.topAnchor.constraint(equalTo: contentView.topAnchor),
+            mainMovieImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            mainMovieImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            mainMovieImage.heightAnchor.constraint(equalToConstant: 550),
             
-            rankingLabel.topAnchor.constraint(equalTo: mainMovieImage!.bottomAnchor, constant: 10),
-            rankingLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
+            rankingLabel.topAnchor.constraint(equalTo: mainMovieImage.bottomAnchor, constant: 10),
+            rankingLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
             rankingLabel.widthAnchor.constraint(equalToConstant: 100),
             rankingLabel.heightAnchor.constraint(equalToConstant: 35),
-
+            
             iconsStack.topAnchor.constraint(equalTo: rankingLabel.topAnchor),
             iconsStack.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
             iconsStack.heightAnchor.constraint(equalToConstant: 35),
             iconsStack.widthAnchor.constraint(equalToConstant: 110),
-
-            infoMovieStack!.topAnchor.constraint(equalTo: rankingLabel.bottomAnchor, constant: 20),
-            infoMovieStack!.leadingAnchor.constraint(equalTo: rankingLabel.leadingAnchor),
-            infoMovieStack!.trailingAnchor.constraint(equalTo: iconsStack.trailingAnchor)
+            
+            infoMovieStack.topAnchor.constraint(equalTo: rankingLabel.bottomAnchor, constant: 20),
+            infoMovieStack.leadingAnchor.constraint(equalTo: rankingLabel.leadingAnchor),
+            infoMovieStack.trailingAnchor.constraint(equalTo: iconsStack.trailingAnchor),
         ])
     }
     
-//    func configureCastCarouselView(childView: UIView) {
-//
-//        self.castCarousel = childView
-//
-//        self.addSubview(castCarousel!)
-//        self.addSubview(storyLineView)
-//        storyLineView.updateView(description: model!.overview ?? "N/A")
-//
-//        NSLayoutConstraint.activate([
-//            castCarousel!.topAnchor.constraint(equalTo: infoMovieStack!.bottomAnchor, constant: 10),
-//            castCarousel!.leadingAnchor.constraint(equalTo: infoMovieStack!.leadingAnchor),
-//            castCarousel!.trailingAnchor.constraint(equalTo: infoMovieStack!.trailingAnchor),
-//            castCarousel!.heightAnchor.constraint(equalToConstant: 140),
-//
-//            storyLineView.topAnchor.constraint(equalTo: castCarousel!.bottomAnchor, constant: 10),
-//            storyLineView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
-//            storyLineView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding)
-//
-//
-//        ])
-//    }
-    
-//    func configureMoviesCarouselView(childView: UIView) {
-//
-//        self.movieImagesCarousel = childView
-//
-//        self.addSubview(movieImagesCarousel!)
-//        self.addSubview(storyLineView)
-//        storyLineView.updateView(description: model!.overview ?? "N/A")
-//
-//        NSLayoutConstraint.activate([
-//            castCarousel!.topAnchor.constraint(equalTo: infoMovieStack!.bottomAnchor, constant: 10),
-//            castCarousel!.leadingAnchor.constraint(equalTo: infoMovieStack!.leadingAnchor),
-//            castCarousel!.trailingAnchor.constraint(equalTo: infoMovieStack!.trailingAnchor),
-//            castCarousel!.heightAnchor.constraint(equalToConstant: 140),
-//
-//            storyLineView.topAnchor.constraint(equalTo: castCarousel!.bottomAnchor, constant: 10),
-//            storyLineView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
-//            storyLineView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding)
-//
-//
-//        ])
-//    }
-    
-    func updateUI(movieDetails: MovieDetails, movieImages: [UIImage], movieCast: Cast) {
-        mainMovieImage!.updateImageView(image: movieImages[0])
-        infoMovieStack!.updateInfoStackView(language: movieDetails.originalLanguage, country: movieDetails.originCountry, status: movieDetails.status)
+    func configureVCChildsContrains(carouselView: UIView, movieImagesView: UIView) {
+        self.castCarouselView = carouselView
+        self.movieImagesCarousel = movieImagesView
+        
+        NSLayoutConstraint.activate([
+            castCarouselView!.topAnchor.constraint(equalTo: infoMovieStack.bottomAnchor, constant: 10),
+            castCarouselView!.leadingAnchor.constraint(equalTo: infoMovieStack.leadingAnchor),
+            castCarouselView!.trailingAnchor.constraint(equalTo: infoMovieStack.trailingAnchor),
+            castCarouselView!.heightAnchor.constraint(equalToConstant: 140),
             
+            storylineView.topAnchor.constraint(equalTo: castCarouselView!.bottomAnchor, constant: 10),
+            storylineView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            storylineView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            
+            movieImagesCarousel!.topAnchor.constraint(equalTo: storylineView.bottomAnchor, constant: 10),
+            movieImagesCarousel!.leadingAnchor.constraint(equalTo: infoMovieStack.leadingAnchor),
+            movieImagesCarousel!.trailingAnchor.constraint(equalTo: infoMovieStack.trailingAnchor),
+            movieImagesCarousel!.heightAnchor.constraint(equalToConstant: 140),
+        ])
     }
-
+    
+    func updateUI(model: Movie, genres: [String], movieDetails: MovieDetails, movieImages: [UIImage], movieCast: Cast) {
+        mainMovieImage.updateImageView(image: movieImages[0], genres: genres)
+        updateRankingLabel(model: model)
+        infoMovieStack.updateInfoStackView(title: model.originalTitle ,language: movieDetails.originalLanguage, country: movieDetails.originCountry, status: movieDetails.status, genres: genres, releaseDate: movieDetails.releaseDate)
+        storylineView.updateView(description: model.overview ?? "N/A")
+        
+        
+    }
+    
+    func updateRankingLabel(model: Movie) {
+        let ranking = String(format: "%.2f", model.voteAverage)
+        
+        let attributedString = NSMutableAttributedString(string: "IMDB \(ranking)/10")
+        attributedString.addAttribute(.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: 10))
+        rankingLabel.attributedText = attributedString
+    }
+    
 }
-

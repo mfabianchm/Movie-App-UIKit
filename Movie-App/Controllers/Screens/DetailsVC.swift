@@ -10,10 +10,10 @@ import UIKit
 
 class DetailsVC: LoadingVC {
     
-    let scrollView = UIScrollView()
-    var contentView: UIView?
-    var castCarouselVC: CastCarouselVC?
-    var movieImagesCarouselVC: MovieImagesCarouselVC?
+    let mainView = DetailsContentView()
+    
+    let castCarouselVC = CastCarouselVC()
+    let movieImagesCarouselVC = MovieImagesCarouselVC()
     
     var padding: CGFloat = 10
     
@@ -43,18 +43,14 @@ class DetailsVC: LoadingVC {
         print("deinit")
     }
     
+    override func loadView() {
+        view = mainView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        contentView = DetailsContentView(model: model!, genres: movieGenres!)
-        configure()
         getMovieInfo()
-        
-        
-//        castCarouselVC = CastCarouselVC(cast: cast!)
-//        movieImagesCarouselVC = MovieImagesCarouselVC(movieId: model!.id)
-//
-//        addVCChilds()
+        addVCChilds()
     }
     
     
@@ -69,34 +65,27 @@ class DetailsVC: LoadingVC {
 //       }
     
     func addVCChilds() {
-        addChild(castCarouselVC!)
-//        addChild(movieImagesCarouselVC!)
+        self.add(castCarouselVC)
+        self.add(movieImagesCarouselVC)
         
-//        guard let contentView = contentView as? DetailsContentView else {return}
-//
-//        contentView.configureCastCarouselView(childView: castCarouselVC!.view)
-//        contentView.configureCastCarouselView(childView: movieImagesCarouselVC!.view)
-        castCarouselVC!.didMove(toParent: self)
-//        movieImagesCarouselVC!.didMove(toParent: self)
+        mainView.configureVCChildsContrains(carouselView: castCarouselVC.view, movieImagesView: movieImagesCarouselVC.view)
     }
     
-    func configure() {
-        configureScrollView()
-        addViews()
-        configureConstrainst()
-    }
+//    func configureVCChildsContrains() {
+//        NSLayoutConstraint.activate([
+//            castCarouselVC.view.topAnchor.constraint(equalTo: mainView.infoMovieStack.bottomAnchor, constant: 10),
+//            castCarouselVC.view.leadingAnchor.constraint(equalTo: mainView.infoMovieStack.leadingAnchor),
+//            castCarouselVC.view.trailingAnchor.constraint(equalTo: mainView.infoMovieStack.trailingAnchor),
+//            castCarouselVC.view.heightAnchor.constraint(equalToConstant: 140),
+//        ])
+//    }
     
-    func configureScrollView() {
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.backgroundColor = UIColor(named: "Dark-Gray")
-    }
-    
-    func addViews() {
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentView!)
-    }
-    
-    
+//    func configure() {
+//        configureScrollView()
+//        addViews()
+//        configureConstrainst()
+//    }
+        
     func setMovieGenres() {
         
         guard let model = model else {return}
@@ -120,46 +109,6 @@ class DetailsVC: LoadingVC {
         self.movieGenres = genresArray
                 
     }
-    
-    
-//    func configureInfoMovieStackView() {
-//        let countriesString: String
-//        let genresString = movieGenres.joined()
-//        
-//        if let countries = details?.originCountry {
-//            countriesString = countries.joined(separator: ",")
-//        } else {
-//            countriesString = "N/A"
-//        }
-//        
-//        guard let contentView = contentView as? DetailsContentView else {return}
-//        
-//        contentView.infoMovieStack.originalTitle =  model!.originalTitle
-//        contentView.infoMovieStack.countriesString = countriesString
-//        contentView.infoMovieStack.releaseDate = "\(model!.releaseDate)•\(genresString)"
-//        contentView.infoMovieStack.originalLanguage = details?.originalLanguage
-//        contentView.infoMovieStack.status = details?.status
-//        
-//        contentView.infoMovieStack.redrawView()
-//        
-//    }
-    
-    func configureConstrainst() {
-        
-        NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
-            contentView!.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor, constant: 0),
-            contentView!.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
-            contentView!.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: 0),
-            contentView!.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: 0),
-            contentView!.widthAnchor.constraint(equalTo: view.widthAnchor),
-            contentView!.heightAnchor.constraint(equalToConstant: 2000),
-        ])
-    }
 }
 
 
@@ -179,13 +128,14 @@ extension DetailsVC {
                 guard let images = images else {return}
                 guard let cast = cast else {return}
                 
-                guard let contentView = self.contentView as? DetailsContentView else {return}
                 self.details = details
                 self.images = images
                 self.cast = cast
                 
-                contentView.updateUI(movieDetails: details, movieImages: images, movieCast: cast)
+                mainView.updateUI(model: model!, genres: movieGenres!, movieDetails: details, movieImages: images, movieCast: cast)
                 dismissLoadingView()
+                castCarouselVC.updateCastCarousel(cast: cast)
+                movieImagesCarouselVC.updateMovieImagesCarousel(images: images)
             } catch {
                 if let movieError = error as? MovieAppError {
                     print(movieError.rawValue)

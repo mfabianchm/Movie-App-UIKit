@@ -269,10 +269,19 @@ class NetworkManager {
         return request
     }
     
+    func downloadImage(from urlString: String) async -> UIImage? {
+        let url = "https://image.tmdb.org/t/p/original\(urlString)"
         
-//    func getImage(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-//        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
-//    }
+        guard let url = URL(string: url) else { return nil }
+        
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            guard let image = UIImage(data: data) else { return nil }
+            return image
+        } catch {
+            return nil
+        }
+    }
     
 }
 
