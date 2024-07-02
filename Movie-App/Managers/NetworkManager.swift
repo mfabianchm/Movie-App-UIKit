@@ -283,6 +283,31 @@ class NetworkManager {
         }
     }
     
+    func downloadVideoId(movie_id: Int) async throws -> String? {
+        
+        let endPoint = "https://api.themoviedb.org/3/movie/\(movie_id)/videos"
+       
+        guard let url = URL(string: endPoint) else {
+            throw MovieAppError.invalidURL
+        }
+        
+        let urlRequest = createURLRequest(url: url, hasQuerys: false)
+        
+        let (data, response) = try await URLSession.shared.data(for: urlRequest)
+        
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw MovieAppError.invalidResponse
+        }
+        
+        do {
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            let video = try decoder.decode(MovieVideos.self, from: data)
+            return video.results?[0].key
+        } catch {
+            throw MovieAppError.errorInParsing
+        }
+    }
+    
 }
 
 

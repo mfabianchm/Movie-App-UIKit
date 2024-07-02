@@ -5,9 +5,12 @@
 //  Created by Marcos Fabian Chong Megchun on 20/06/24.
 //
 
+import youtube_ios_player_helper
 import UIKit
 
 class DetailsContentView: UIView {
+    
+    let videoPlayer = YTPlayerView()
     
     let scrollView = UIScrollView()
     let contentView = UIView()
@@ -18,10 +21,12 @@ class DetailsContentView: UIView {
     let iconsStack = IconsStackView()
     let infoMovieStack = InfoMovieStackView()
     let storylineView = StoryLineView()
+    let socialMediaButtonsView = SocialMediaButtons()
     
     
     var castCarouselView: UIView?
     var movieImagesCarousel: UIView?
+    var recommendedMoviesView: UIView?
     
     var padding: CGFloat = 10
     var posterImage: UIImage?
@@ -50,6 +55,8 @@ class DetailsContentView: UIView {
         configureIconsStack()
         configureInfoMovieStack()
         configureStorylineView()
+        configureVideoPlayer()
+        configureSocialMediaButtons()
         configureConstrainst()
     }
     
@@ -94,6 +101,16 @@ class DetailsContentView: UIView {
         contentView.addSubview(storylineView)
     }
     
+    func configureVideoPlayer() {
+        contentView.addSubview(videoPlayer)
+        videoPlayer.backgroundColor = .black
+        videoPlayer.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    func configureSocialMediaButtons() {
+        contentView.addSubview(socialMediaButtonsView)
+    }
+        
     
     func configureConstrainst() {
         NSLayoutConstraint.activate([
@@ -135,9 +152,10 @@ class DetailsContentView: UIView {
         ])
     }
     
-    func configureVCChildsContrains(carouselView: UIView, movieImagesView: UIView) {
+    func configureVCChildsContrains(carouselView: UIView, movieImagesView: UIView, recommendedMoviesView: UIView) {
         self.castCarouselView = carouselView
         self.movieImagesCarousel = movieImagesView
+        self.recommendedMoviesView = recommendedMoviesView
         
         NSLayoutConstraint.activate([
             castCarouselView!.topAnchor.constraint(equalTo: infoMovieStack.bottomAnchor, constant: 10),
@@ -153,6 +171,21 @@ class DetailsContentView: UIView {
             movieImagesCarousel!.leadingAnchor.constraint(equalTo: infoMovieStack.leadingAnchor),
             movieImagesCarousel!.trailingAnchor.constraint(equalTo: infoMovieStack.trailingAnchor),
             movieImagesCarousel!.heightAnchor.constraint(equalToConstant: 140),
+            
+            videoPlayer.topAnchor.constraint(equalTo: movieImagesCarousel!.bottomAnchor, constant: 20),
+            videoPlayer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            videoPlayer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            videoPlayer.heightAnchor.constraint(equalToConstant: 300),
+            
+            socialMediaButtonsView.topAnchor.constraint(equalTo: videoPlayer.bottomAnchor, constant: 10),
+            socialMediaButtonsView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            socialMediaButtonsView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            socialMediaButtonsView.heightAnchor.constraint(equalToConstant: 80),
+            
+            self.recommendedMoviesView!.topAnchor.constraint(equalTo: socialMediaButtonsView.bottomAnchor, constant: 0),
+            self.recommendedMoviesView!.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            self.recommendedMoviesView!.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            self.recommendedMoviesView!.heightAnchor.constraint(equalToConstant: 380)
         ])
     }
     
@@ -161,8 +194,6 @@ class DetailsContentView: UIView {
         updateRankingLabel(model: model)
         infoMovieStack.updateInfoStackView(title: model.originalTitle ,language: movieDetails.originalLanguage, country: movieDetails.originCountry, status: movieDetails.status, genres: genres, releaseDate: movieDetails.releaseDate)
         storylineView.updateView(description: model.overview ?? "N/A")
-        
-        
     }
     
     func updateRankingLabel(model: Movie) {

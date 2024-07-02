@@ -27,6 +27,7 @@ class HomeVC: LoadingVC  {
     let contentView = HomeContentView()
     let selectionCarouselVC = SelectionCarousselVC()
     
+    
     var fetchedMovies: FetchedMovies = FetchedMovies()
     var posterImages: PosterImages = PosterImages()
     var genres: [Genre]?
@@ -59,7 +60,6 @@ class HomeVC: LoadingVC  {
         addVCChilds()
         configureConstrainst()
     }
-    
     
     func configureScrollView() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false

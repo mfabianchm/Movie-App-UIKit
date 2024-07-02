@@ -8,13 +8,26 @@
 import UIKit
 
 class RecommendedMoviesCollectionView: UICollectionView {
-
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    
+    let layout = UICollectionViewFlowLayout()
+    
+    init() {
+        super.init(frame: .zero, collectionViewLayout: layout)
+        layout.itemSize = .init(width: 200, height: 300)
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 30
+        configure()
     }
-    */
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configure() {
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.showsHorizontalScrollIndicator = false
+        self.alwaysBounceHorizontal = true
+        self.backgroundColor = UIColor(named: "Dark-Gray")
+    }
 
 }

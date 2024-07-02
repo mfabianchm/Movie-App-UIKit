@@ -39,3 +39,12 @@ struct MovieDetails: Decodable {
     var releaseDate: String
     var status: String
 }
+
+
+struct MovieVideos: Decodable {
+    var results: [Video]?
+}
+
+struct Video: Decodable {
+    var key: String
+}

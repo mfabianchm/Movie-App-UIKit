@@ -14,6 +14,7 @@ class DetailsVC: LoadingVC {
     
     let castCarouselVC = CastCarouselVC()
     let movieImagesCarouselVC = MovieImagesCarouselVC()
+    let recommendedMoviesVC = RecommendedMoviesVC()
     
     var padding: CGFloat = 10
     
@@ -67,24 +68,10 @@ class DetailsVC: LoadingVC {
     func addVCChilds() {
         self.add(castCarouselVC)
         self.add(movieImagesCarouselVC)
+        self.add(recommendedMoviesVC)
         
-        mainView.configureVCChildsContrains(carouselView: castCarouselVC.view, movieImagesView: movieImagesCarouselVC.view)
+        mainView.configureVCChildsContrains(carouselView: castCarouselVC.view, movieImagesView: movieImagesCarouselVC.view, recommendedMoviesView: recommendedMoviesVC.view)
     }
-    
-//    func configureVCChildsContrains() {
-//        NSLayoutConstraint.activate([
-//            castCarouselVC.view.topAnchor.constraint(equalTo: mainView.infoMovieStack.bottomAnchor, constant: 10),
-//            castCarouselVC.view.leadingAnchor.constraint(equalTo: mainView.infoMovieStack.leadingAnchor),
-//            castCarouselVC.view.trailingAnchor.constraint(equalTo: mainView.infoMovieStack.trailingAnchor),
-//            castCarouselVC.view.heightAnchor.constraint(equalToConstant: 140),
-//        ])
-//    }
-    
-//    func configure() {
-//        configureScrollView()
-//        addViews()
-//        configureConstrainst()
-//    }
         
     func setMovieGenres() {
         
@@ -115,14 +102,15 @@ class DetailsVC: LoadingVC {
 extension DetailsVC {
     func getMovieInfo() {
         showLoadingView()
-        
         Task {
             do {
                 async let movieDetails = try await NetworkManager.shared.getMovieDetails(id: model!.id)
                 async let movieImages = try await NetworkManager.shared.getMovieImages(id: model!.id)
                 async let movieCast = try await NetworkManager.shared.getCastInfo(id: model!.id)
+                async let videoId = try await NetworkManager.shared.downloadVideoId(movie_id: model!.id)
+                async let movies = try await NetworkManager.shared.getMovies(requestName: .popularMovies)
                 
-                let(details, images, cast) = await (try movieDetails, try movieImages, try movieCast)
+                let(details, images, cast, idVideo, recommendedMovies) = await (try movieDetails, try movieImages, try movieCast, try videoId, try movies)
                 
                 guard let details = details else {return}
                 guard let images = images else {return}
@@ -133,16 +121,19 @@ extension DetailsVC {
                 self.cast = cast
                 
                 mainView.updateUI(model: model!, genres: movieGenres!, movieDetails: details, movieImages: images, movieCast: cast)
-                dismissLoadingView()
                 castCarouselVC.updateCastCarousel(cast: cast)
                 movieImagesCarouselVC.updateMovieImagesCarousel(images: images)
+                mainView.videoPlayer.load(withVideoId: idVideo!)
+                recommendedMoviesVC.updateRecommendedMoviesVC(movies: recommendedMovies.data)
+//                dismissLoadingView()
+                
             } catch {
                 if let movieError = error as? MovieAppError {
                     print(movieError.rawValue)
                 } else {
                     print("something went wrong?")
+//                    dismissLoadingView()
                 }
-                dismissLoadingView()
             }
         }
     }
