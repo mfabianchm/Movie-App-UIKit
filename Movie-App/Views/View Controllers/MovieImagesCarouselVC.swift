@@ -90,7 +90,11 @@ extension MovieImagesCarouselVC: UICollectionViewDataSource {
 extension MovieImagesCarouselVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
-       print("cell clicked")
+        let view =  PopupImagesModalVC(images: self.images, imageToShow: self.images[indexPath.row])
+        view.modalPresentationStyle = .formSheet
+        view.modalTransitionStyle = .coverVertical
+        self.present(view, animated: true)
+        
     }
 }
 
