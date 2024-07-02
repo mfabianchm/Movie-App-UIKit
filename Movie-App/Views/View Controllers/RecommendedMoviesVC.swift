@@ -11,8 +11,9 @@ class RecommendedMoviesVC: UIViewController {
 
     let titleLabel = UILabel()
     let collectionView = RecommendedMoviesCollectionView()
-    
+
     var movies: [Movie] = []
+    var genres: [Genre]?
 
     var numberOfCells = 10
     
@@ -98,7 +99,12 @@ extension RecommendedMoviesVC: UICollectionViewDataSource {
 extension RecommendedMoviesVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
-       print("cell clicked")
+        self.navigationController?.popViewController(animated: true)
+        
+        let movie =  movies[indexPath.row]
+        guard let genres = genres else {return}
+        
+        navigationController?.pushViewController(DetailsVC(infoMovie: movie, genres: genres), animated: true)
     }
 }
 
@@ -112,4 +118,5 @@ extension RecommendedMoviesVC {
         self.numberOfCells = self.movies.count
         collectionView.reloadData()
     }
+    
 }

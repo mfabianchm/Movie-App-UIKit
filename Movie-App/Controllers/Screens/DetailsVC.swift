@@ -51,6 +51,7 @@ class DetailsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        recommendedMoviesVC.genres = genres
         addVCChilds()
         getMovieInfo()
     }
