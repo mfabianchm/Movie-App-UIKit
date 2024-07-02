@@ -52,6 +52,7 @@ class SocialMediaButtons: UIView {
         NSLayoutConstraint.activate([
             titleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
+            titleLabel.widthAnchor.constraint(equalToConstant: 100),
             
             stackView.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor,constant: 20),
             stackView.topAnchor.constraint(equalTo: self.topAnchor),
@@ -65,17 +66,13 @@ class SocialMediaButtons: UIView {
         images.forEach { image in
             let imageView: UIImageView = {
                 let imageView = UIImageView()
+                imageView.translatesAutoresizingMaskIntoConstraints = false
                 imageView.image = image
                 imageView.layer.cornerRadius = 20
                 imageView.layer.masksToBounds = true
                 imageView.contentMode = .scaleAspectFit
                 return imageView
             }()
-            
-            NSLayoutConstraint.activate([
-                imageView.heightAnchor.constraint(equalToConstant: 40),
-                imageView.widthAnchor.constraint(equalToConstant: 40)
-            ])
             
             stackView.addArrangedSubview(imageView)
             

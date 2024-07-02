@@ -8,8 +8,9 @@
 import UIKit
 
 
-class DetailsVC: LoadingVC {
+class DetailsVC: UIViewController {
     
+    var loadingView: UIView?
     let mainView = DetailsContentView()
     
     let castCarouselVC = CastCarouselVC()
@@ -50,10 +51,9 @@ class DetailsVC: LoadingVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getMovieInfo()
         addVCChilds()
+        getMovieInfo()
     }
-    
     
 //    override func viewWillAppear(_ animated: Bool){
 //        super.viewWillAppear(animated)
@@ -125,16 +125,54 @@ extension DetailsVC {
                 movieImagesCarouselVC.updateMovieImagesCarousel(images: images)
                 mainView.videoPlayer.load(withVideoId: idVideo!)
                 recommendedMoviesVC.updateRecommendedMoviesVC(movies: recommendedMovies.data)
-//                dismissLoadingView()
+                dismissLoadingView()
+
                 
             } catch {
                 if let movieError = error as? MovieAppError {
                     print(movieError.rawValue)
                 } else {
                     print("something went wrong?")
-//                    dismissLoadingView()
                 }
+                dismissLoadingView()
             }
+        }
+    }
+}
+
+extension DetailsVC {
+    func showLoadingView() {
+        loadingView = UIView()
+        mainView.addSubview(loadingView!)
+        
+        loadingView!.backgroundColor   = .black
+        loadingView!.alpha             = 0
+        
+        UIView.animate(withDuration: 0.25) { self.loadingView!.alpha = 0.9 }
+        
+        let activityIndicator = UIActivityIndicatorView(style: .large)
+        loadingView!.addSubview(activityIndicator)
+        
+        loadingView!.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            loadingView!.topAnchor.constraint(equalTo: mainView.topAnchor),
+            loadingView!.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
+            loadingView!.trailingAnchor.constraint(equalTo: mainView.trailingAnchor),
+            loadingView!.bottomAnchor.constraint(equalTo: mainView.bottomAnchor),
+            
+            activityIndicator.centerYAnchor.constraint(equalTo: loadingView!.centerYAnchor),
+            activityIndicator.centerXAnchor.constraint(equalTo: loadingView!.centerXAnchor)
+        ])
+        
+        activityIndicator.startAnimating()
+    }
+    
+    func dismissLoadingView() {
+        DispatchQueue.main.async {
+            self.loadingView!.removeFromSuperview()
+            self.loadingView = nil
         }
     }
 }

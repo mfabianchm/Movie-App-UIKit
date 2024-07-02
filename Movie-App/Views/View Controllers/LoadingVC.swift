@@ -15,7 +15,7 @@ class LoadingVC: UIViewController {
         containerView = UIView(frame: view.bounds)
         view.addSubview(containerView)
         
-        containerView.backgroundColor   = .red
+        containerView.backgroundColor   = .gray
         containerView.alpha             = 0
         
         UIView.animate(withDuration: 0.25) { self.containerView.alpha = 0.8 }
