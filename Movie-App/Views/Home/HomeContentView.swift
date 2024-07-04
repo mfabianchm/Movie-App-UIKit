@@ -27,7 +27,6 @@ class HomeContentView: UIView {
     
     func configure() {
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.translatesAutoresizingMaskIntoConstraints = false
         self.backgroundColor = UIColor(named: "Dark-Gray")
         
         self.addSubview(openSideBarBtn)

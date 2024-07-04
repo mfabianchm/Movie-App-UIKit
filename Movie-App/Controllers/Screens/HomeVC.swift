@@ -26,6 +26,7 @@ class HomeVC: LoadingVC  {
     let scrollView = UIScrollView()
     let contentView = HomeContentView()
     let selectionCarouselVC = SelectionCarousselVC()
+    let recommendedMoviesVC = HomeRecommendedMoviesVC()
     
     
     var fetchedMovies: FetchedMovies = FetchedMovies()
@@ -74,6 +75,7 @@ class HomeVC: LoadingVC  {
     
     func addVCChilds() {
         self.add(selectionCarouselVC)
+        self.add(recommendedMoviesVC)
     }
     
     func configureConstrainst() {
@@ -88,13 +90,17 @@ class HomeVC: LoadingVC  {
             contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: 0),
             contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: 0),
             contentView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            contentView.heightAnchor.constraint(equalToConstant: 2000),
+            contentView.heightAnchor.constraint(equalToConstant: 1000),
             
             selectionCarouselVC.view.topAnchor.constraint(equalTo: contentView.searchBar.bottomAnchor, constant: 10),
             selectionCarouselVC.view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             selectionCarouselVC.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            selectionCarouselVC.view.heightAnchor.constraint(equalToConstant: 400)
+            selectionCarouselVC.view.heightAnchor.constraint(equalToConstant: 400),
             
+            recommendedMoviesVC.view.topAnchor.constraint(equalTo: selectionCarouselVC.view.bottomAnchor, constant: 10),
+            recommendedMoviesVC.view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            recommendedMoviesVC.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            recommendedMoviesVC.view.heightAnchor.constraint(equalToConstant: 380)
         ])
     }
 }
@@ -102,7 +108,7 @@ class HomeVC: LoadingVC  {
 
 extension HomeVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        print("return button pressed")
+        print(contentView.searchBar.text)
         return true
     }
 }
@@ -122,6 +128,7 @@ extension HomeVC {
                 let upcomingMovies = try await NetworkManager.shared.getMovies(requestName: .upcomingMovies)
                 
                 updateUI(genres: genres.genres, popularMovies: popularMovies, moviesInTheatres: moviesInTheatres, ratedMovies: ratedMovies, upcomingMovies: upcomingMovies)
+                recommendedMoviesVC.updateRecommendedMoviesVC(movies: moviesInTheatres.data, genres: genres.genres)
                 
                 dismissLoadingView()
             } catch {

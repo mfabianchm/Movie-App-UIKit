@@ -46,6 +46,6 @@ class MovieImageCell: UICollectionViewCell {
     }
     
     func configureData( image: UIImage) {
-        imageView.image = image
-    }
+            imageView.image = image
+        }
 }

@@ -55,8 +55,10 @@
 		8271F8342C223EAD00350F7B /* ButtonsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8271F8332C223EAD00350F7B /* ButtonsStackView.swift */; };
 		8271F8362C223F9500350F7B /* CarouselButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8271F8352C223F9500350F7B /* CarouselButton.swift */; };
 		8292C35F2C3457AF00C16819 /* PopupImagesModalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8292C35E2C3457AF00C16819 /* PopupImagesModalVC.swift */; };
+		8292C3612C34B30300C16819 /* HomeRecommendedMoviesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8292C3602C34B30300C16819 /* HomeRecommendedMoviesVC.swift */; };
 		829D86DA2C18F3D10076910A /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829D86D92C18F3D10076910A /* LoadingView.swift */; };
 		829D86DC2C1902CC0076910A /* DetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829D86DB2C1902CC0076910A /* DetailsVC.swift */; };
+		82C41DD42C36213300C7DBC6 /* MovieSearchTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C41DD32C36213300C7DBC6 /* MovieSearchTVCell.swift */; };
 		82E774142C0A28D90026347D /* SelectionCarousselVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E774132C0A28D90026347D /* SelectionCarousselVC.swift */; };
 		82E774162C0A34780026347D /* Ext-UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E774152C0A34780026347D /* Ext-UIButton.swift */; };
 		82E774182C0A378D0026347D /* Ext-Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E774172C0A378D0026347D /* Ext-Fonts.swift */; };
@@ -115,8 +117,10 @@
 		8271F8332C223EAD00350F7B /* ButtonsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsStackView.swift; sourceTree = "<group>"; };
 		8271F8352C223F9500350F7B /* CarouselButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselButton.swift; sourceTree = "<group>"; };
 		8292C35E2C3457AF00C16819 /* PopupImagesModalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupImagesModalVC.swift; sourceTree = "<group>"; };
+		8292C3602C34B30300C16819 /* HomeRecommendedMoviesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRecommendedMoviesVC.swift; sourceTree = "<group>"; };
 		829D86D92C18F3D10076910A /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		829D86DB2C1902CC0076910A /* DetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsVC.swift; sourceTree = "<group>"; };
+		82C41DD32C36213300C7DBC6 /* MovieSearchTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieSearchTVCell.swift; sourceTree = "<group>"; };
 		82E774132C0A28D90026347D /* SelectionCarousselVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCarousselVC.swift; sourceTree = "<group>"; };
 		82E774152C0A34780026347D /* Ext-UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext-UIButton.swift"; sourceTree = "<group>"; };
 		82E774172C0A378D0026347D /* Ext-Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext-Fonts.swift"; sourceTree = "<group>"; };
@@ -261,6 +265,7 @@
 				58B267E62C2DB1C800E987C4 /* LoadingVC.swift */,
 				58CA9E792C3376A200F35825 /* RecommendedMoviesVC.swift */,
 				8292C35E2C3457AF00C16819 /* PopupImagesModalVC.swift */,
+				8292C3602C34B30300C16819 /* HomeRecommendedMoviesVC.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -272,6 +277,7 @@
 				58C76E622C12A79C00E88D54 /* MovieCell.swift */,
 				58B267E22C2A42EC00E987C4 /* MovieImageCell.swift */,
 				58CA9E7D2C3377C900F35825 /* RecommendedMoviesCell.swift */,
+				82C41DD32C36213300C7DBC6 /* MovieSearchTVCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -481,6 +487,7 @@
 				582B964E2BFFA9DE0021AED6 /* HomeVC.swift in Sources */,
 				58B267AD2C25028000E987C4 /* IconsStackView.swift in Sources */,
 				58B267E32C2A42EC00E987C4 /* MovieImageCell.swift in Sources */,
+				82C41DD42C36213300C7DBC6 /* MovieSearchTVCell.swift in Sources */,
 				58B267D72C28CDF700E987C4 /* CastCollectionView.swift in Sources */,
 				58B267A82C24DE7000E987C4 /* DetailsContentView.swift in Sources */,
 				58EC2C152C078F1D00A6D287 /* Ext-UISearchBar.swift in Sources */,
@@ -493,6 +500,7 @@
 				8292C35F2C3457AF00C16819 /* PopupImagesModalVC.swift in Sources */,
 				58B267DD2C2A1BE600E987C4 /* StoryLineView.swift in Sources */,
 				8271F82F2C21FF2400350F7B /* Ext-UIViewController.swift in Sources */,
+				8292C3612C34B30300C16819 /* HomeRecommendedMoviesVC.swift in Sources */,
 				582B96542C00EF760021AED6 /* SideBar.swift in Sources */,
 				58CA9E7A2C3376A200F35825 /* RecommendedMoviesVC.swift in Sources */,
 				582B96492BFF9F430021AED6 /* CustomBarButtonItem.swift in Sources */,
