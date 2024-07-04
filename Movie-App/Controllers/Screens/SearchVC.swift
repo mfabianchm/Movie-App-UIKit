@@ -17,12 +17,14 @@ class SearchVC: UIViewController {
     
     var numberOfCells: Int = 10
     var movies: [Movie]?
+    var genres: [Genre]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "Dark-Gray")
         configure()
+        getGenres()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -87,12 +89,37 @@ class SearchVC: UIViewController {
         self.numberOfCells = movies!.count
         moviesTableView.reloadData()
     }
+    
+    func presentDetailsVC(movie: Movie) {
+        navigationController?.pushViewController(DetailsVC(infoMovie: movie, genres: self.genres!), animated: true)
+    }
+    
+    func getGenres() {
+        Task {
+            do {
+                let genres = try await NetworkManager.shared.getMovieGenres()
+                self.genres = genres.genres
+            } catch {
+                if let movieError = error as? MovieAppError {
+                    print(movieError.rawValue)
+                } else {
+                    print("something went wrong?")
+                }
+                
+            }
+        }
+    }
    
 }
 
 extension SearchVC: UITableViewDelegate {
     func tableView(_: UITableView, heightForRowAt: IndexPath) -> CGFloat {
         return 100
+    }
+    
+    func tableView(_: UITableView, didSelectRowAt: IndexPath) {
+        let movie: Movie = self.movies![didSelectRowAt.row]
+        presentDetailsVC(movie: movie)
     }
 }
 
