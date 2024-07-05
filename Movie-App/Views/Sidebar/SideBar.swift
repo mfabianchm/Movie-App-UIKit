@@ -93,6 +93,8 @@ class SidebarLauncher: NSObject{
     }
 
 }
+
+
 extension SidebarLauncher: NavigationDelegate{
     func navigation(didSelect: NavigationModel?) {
         closeSidebar(option: didSelect)

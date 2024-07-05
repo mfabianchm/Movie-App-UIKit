@@ -157,25 +157,27 @@ extension SearchVC: UISearchBarDelegate {
         showLoadingView()
         guard let movieToSearch = searchBar.text else {return}
         
-        Task {
-            do {
-                let movieInfo = try await NetworkManager.shared.searchMovie(movieName: movieToSearch)
-                guard let movies: [Movie] = movieInfo?.results else {return}
-                self.movies = movies
-                showTableView()
-                
-                dismissLoadingView()
-                
-            } catch {
-                if let movieError = error as? MovieAppError {
-                    print(movieError.rawValue)
-                } else {
-                    print("something went wrong")
-                }
-                dismissLoadingView()
-            }
-            
-        }
+        getData(movieToSearch: movieToSearch)
+        
+//        Task {
+//            do {
+//                let movieInfo = try await NetworkManager.shared.searchMovie(movieName: movieToSearch)
+//                guard let movies: [Movie] = movieInfo?.results else {return}
+//                self.movies = movies
+//                showTableView()
+//                
+//                dismissLoadingView()
+//                
+//            } catch {
+//                if let movieError = error as? MovieAppError {
+//                    print(movieError.rawValue)
+//                } else {
+//                    print("something went wrong")
+//                }
+//                dismissLoadingView()
+//            }
+//            
+//        }
     }
 
 }
@@ -210,9 +212,35 @@ extension SearchVC {
     }
     
     func dismissLoadingView() {
+        guard let loadingView = loadingView else {return}
+        
         DispatchQueue.main.async {
-            self.loadingView!.removeFromSuperview()
+            loadingView.removeFromSuperview()
             self.loadingView = nil
         }
     }
+    
+    func getData(movieToSearch: String) {
+        print("ahhhhh")
+        Task {
+            do {
+                let movieInfo = try await NetworkManager.shared.searchMovie(movieName: movieToSearch)
+                guard let movies: [Movie] = movieInfo?.results else {return}
+                self.movies = movies
+                showTableView()
+                
+                dismissLoadingView()
+                
+            } catch {
+                if let movieError = error as? MovieAppError {
+                    print(movieError.rawValue)
+                } else {
+                    print("something went wrong")
+                }
+                dismissLoadingView()
+            }
+            
+        }
+    }
+    
 }

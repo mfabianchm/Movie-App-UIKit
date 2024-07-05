@@ -7,8 +7,12 @@
 
 import UIKit
 
-class MovieTabBarController: UITabBarController {
-    
+protocol NavigationTabBarDelegate {
+    func changeToSearchVC(movieToSearch: String) -> Void
+}
+
+class MovieTabBarController: UITabBarController, NavigationTabBarDelegate {
+
     var homeNC: UIViewController?
     var favoritesNC: UIViewController?
     var searchNC: UIViewController?
@@ -26,6 +30,7 @@ class MovieTabBarController: UITabBarController {
     
     func createHomeNC() -> UINavigationController {
         let homeVC        = HomeVC()
+        homeVC.delegate = self
         homeVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "homekit"), tag: 0)
         homeVC.contentView.openSideBarBtn.addTarget(self, action: #selector(didSelect(_:)), for: .touchUpInside)
         
@@ -51,6 +56,14 @@ class MovieTabBarController: UITabBarController {
     
     @objc func didSelect(_ sender: UIButton){
             SidebarLauncher.init(delegate: self).show()
+    }
+    
+    func changeToSearchVC(movieToSearch: String) {
+        self.selectedViewController = searchNC!
+        guard let navController = searchNC as? UINavigationController else { return }
+        let vc = navController.viewControllers[0]
+        guard let searchVC = vc as? SearchVC else {return}
+        searchVC.getData(movieToSearch: movieToSearch)
     }
     
 }

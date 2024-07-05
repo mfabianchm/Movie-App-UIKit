@@ -33,6 +33,8 @@ class HomeVC: LoadingVC  {
     var posterImages: PosterImages = PosterImages()
     var genres: [Genre]?
     
+    var delegate: NavigationTabBarDelegate?
+    
     var padding: CGFloat = 10
 
     override func viewDidLoad() {
@@ -108,7 +110,7 @@ class HomeVC: LoadingVC  {
 
 extension HomeVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        print(contentView.searchBar.text)
+        self.delegate!.changeToSearchVC(movieToSearch: textField.text!)
         return true
     }
 }
