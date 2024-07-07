@@ -9,7 +9,7 @@ import UIKit
 
 
 
-struct Movie: Decodable {
+struct Movie: Decodable, Encodable, Hashable {
     var genreIds: [Int]
     var id: Int
     var originalLanguage: String

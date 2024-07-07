@@ -19,6 +19,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.rootViewController = MovieTabBarController()
         window.makeKeyAndVisible()
         self.window = window
+        
+        UINavigationBar.appearance().tintColor = .white
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

@@ -39,6 +39,10 @@ class SearchVC: UIViewController {
     }
     
     func configure() {
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
+        
+        
         view.addSubview(searchBar)
         view.addSubview(titleLabel)
         configureTableView()

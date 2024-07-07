@@ -16,6 +16,8 @@ class MovieTabBarController: UITabBarController, NavigationTabBarDelegate {
     var homeNC: UIViewController?
     var favoritesNC: UIViewController?
     var searchNC: UIViewController?
+    
+    let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
 
     override func viewDidLoad() {
         super.viewDidLoad()
