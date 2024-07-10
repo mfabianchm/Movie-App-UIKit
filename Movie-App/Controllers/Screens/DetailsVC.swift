@@ -54,6 +54,8 @@ class DetailsVC: UIViewController {
         recommendedMoviesVC.genres = genres
         addVCChilds()
         getMovieInfo()
+        guard let favoriteButton = mainView.iconsStack.arrangedSubviews[0] as? UIButton else {return}
+                favoriteButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
     }
     
 //    override func viewWillAppear(_ animated: Bool){
@@ -65,6 +67,30 @@ class DetailsVC: UIViewController {
 //        super.viewWillDisappear(animated)
 //        self.navigationController?.isNavigationBarHidden = false
 //       }
+    
+    @objc func addButtonTapped() {
+        addMovieToFavorites(movie: model!)
+    }
+    
+    func addMovieToFavorites(movie: Movie) {
+        
+        PersistenceManager.updateWith(favorite: movie, actionType: .add) { [weak self] error in
+            guard let self else { return }
+            
+            guard let error else {
+                DispatchQueue.main.async {
+                    self.presentGFAlert(title: "Success!", message: "You have successfully favorited this user 🎉", buttonTitle: "Hooray!")
+                }
+                print("Success!")
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.presentGFAlert(title: "Something went wrong", message: error.rawValue, buttonTitle: "Ok")
+            }
+        }
+    }
+    
     
     func addVCChilds() {
         self.add(castCarouselVC)

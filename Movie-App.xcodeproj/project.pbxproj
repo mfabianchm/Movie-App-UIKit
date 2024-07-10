@@ -45,6 +45,8 @@
 		58CA9E7E2C3377C900F35825 /* RecommendedMoviesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58CA9E7D2C3377C900F35825 /* RecommendedMoviesCell.swift */; };
 		58E21EAF2C32695800F9FA7F /* SocialMediaButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E21EAE2C32695800F9FA7F /* SocialMediaButtons.swift */; };
 		58EC2C152C078F1D00A6D287 /* Ext-UISearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EC2C142C078F1D00A6D287 /* Ext-UISearchBar.swift */; };
+		8246FFB22C3F3B600064DA86 /* AlertVCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8246FFB12C3F3B600064DA86 /* AlertVCViewController.swift */; };
+		8246FFB42C3F3BC40064DA86 /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8246FFB32C3F3BC40064DA86 /* AlertView.swift */; };
 		8271F8232C21F6B300350F7B /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8271F8222C21F6B300350F7B /* Movie.swift */; };
 		8271F8252C21F73400350F7B /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8271F8242C21F73400350F7B /* Genre.swift */; };
 		8271F8272C21F80E00350F7B /* SideBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8271F8262C21F80E00350F7B /* SideBarButton.swift */; };
@@ -108,6 +110,8 @@
 		58E21EAE2C32695800F9FA7F /* SocialMediaButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialMediaButtons.swift; sourceTree = "<group>"; };
 		58EC2C142C078F1D00A6D287 /* Ext-UISearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext-UISearchBar.swift"; sourceTree = "<group>"; };
 		69BE71720255C86ABBFD12B4 /* Pods_Movie_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Movie_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8246FFB12C3F3B600064DA86 /* AlertVCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertVCViewController.swift; sourceTree = "<group>"; };
+		8246FFB32C3F3BC40064DA86 /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
 		8271F8222C21F6B300350F7B /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		8271F8242C21F73400350F7B /* Genre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genre.swift; sourceTree = "<group>"; };
 		8271F8262C21F80E00350F7B /* SideBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarButton.swift; sourceTree = "<group>"; };
@@ -161,6 +165,7 @@
 				8271F8302C222D8A00350F7B /* Home */,
 				58B267A92C24E1A700E987C4 /* Details */,
 				58B267E82C2DB1D900E987C4 /* View Controllers */,
+				8246FFB32C3F3BC40064DA86 /* AlertView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -269,6 +274,7 @@
 				58CA9E792C3376A200F35825 /* RecommendedMoviesVC.swift */,
 				8292C35E2C3457AF00C16819 /* PopupImagesModalVC.swift */,
 				8292C3602C34B30300C16819 /* HomeRecommendedMoviesVC.swift */,
+				8246FFB12C3F3B600064DA86 /* AlertVCViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -466,6 +472,7 @@
 			files = (
 				58B267AB2C24E1DE00E987C4 /* DetailsPosterImage.swift in Sources */,
 				58B267E52C2A44DF00E987C4 /* MovieImagesCollectionView.swift in Sources */,
+				8246FFB22C3F3B600064DA86 /* AlertVCViewController.swift in Sources */,
 				82E774162C0A34780026347D /* Ext-UIButton.swift in Sources */,
 				582B96502BFFAA000021AED6 /* SearchVC.swift in Sources */,
 				58C76E632C12A79C00E88D54 /* MovieCell.swift in Sources */,
@@ -488,6 +495,7 @@
 				829D86DC2C1902CC0076910A /* DetailsVC.swift in Sources */,
 				8271F8362C223F9500350F7B /* CarouselButton.swift in Sources */,
 				582B964E2BFFA9DE0021AED6 /* HomeVC.swift in Sources */,
+				8246FFB42C3F3BC40064DA86 /* AlertView.swift in Sources */,
 				58B267AD2C25028000E987C4 /* IconsStackView.swift in Sources */,
 				58B267E32C2A42EC00E987C4 /* MovieImageCell.swift in Sources */,
 				82C41DD42C36213300C7DBC6 /* MovieSearchTVCell.swift in Sources */,
