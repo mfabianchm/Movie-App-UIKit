@@ -124,10 +124,16 @@ extension HomeVC {
         Task {
             do {
                 let genres = try await NetworkManager.shared.getMovieGenres()
+                print("done")
                 let popularMovies = try await NetworkManager.shared.getMovies(requestName: .popularMovies)
+                print("done1")
                 let moviesInTheatres = try await NetworkManager.shared.getMovies(requestName: .moviesInTheatres)
+                print("done2")
                 let ratedMovies = try await NetworkManager.shared.getMovies(requestName: .ratedMovies)
+                print("done3")
                 let upcomingMovies = try await NetworkManager.shared.getMovies(requestName: .upcomingMovies)
+                print("done4")
+                
                 
                 updateUI(genres: genres.genres, popularMovies: popularMovies, moviesInTheatres: moviesInTheatres, ratedMovies: ratedMovies, upcomingMovies: upcomingMovies)
                 recommendedMoviesVC.updateRecommendedMoviesVC(movies: moviesInTheatres.data, genres: genres.genres)

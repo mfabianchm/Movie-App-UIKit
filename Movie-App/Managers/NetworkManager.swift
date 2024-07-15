@@ -70,10 +70,14 @@ class NetworkManager {
         
         do {
             decoder.keyDecodingStrategy = .convertFromSnakeCase
-            let movies = try decoder.decode(Movies.self, from: data)
+            var movies = try decoder.decode(Movies.self, from: data)
             var moviesCoverImages: [UIImage] = []
             
+            movies.results.removeSubrange(5...movies.results.count - 1)
+            
+            
             movies.results.forEach { movie in
+                print("hola")
                 guard let posterPath = movie.posterPath else {return}
                 let url = URL(string: "https://image.tmdb.org/t/p/original\(posterPath)")
                 let data = try? Data(contentsOf: url!)

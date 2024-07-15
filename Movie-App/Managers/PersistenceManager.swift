@@ -12,8 +12,8 @@ enum PersistenceError: String, Error {
     case unableToComplete   = "Unable to complete your request. Please check your internet connection"
     case invalidResponse    = "Invalid response from the server. Please try again."
     case invalidData        = "The data received from the server was invalid. Please try again."
-    case unableToFavorite   = "There was an error favoriting this user. Please try again."
-    case alreadyInFavorites = "You've already favorited this user. You must REALLY like them!"
+    case unableToFavorite   = "There was an error favoriting this movie. Please try again."
+    case alreadyInFavorites = "You've already favorited this movie. You must REALLY like it!"
 }
 
 enum PersistenceActionType {
@@ -25,7 +25,6 @@ enum PersistenceManager {
     static private let defaults = UserDefaults.standard
     
     enum Keys { static let favorites = "favorites" }
-    
     
     static func updateWith(favorite: Movie, actionType: PersistenceActionType, completed: @escaping (PersistenceError?) -> Void) {
         retrieveFavorites { result in

@@ -55,7 +55,7 @@ class DetailsVC: UIViewController {
         addVCChilds()
         getMovieInfo()
         guard let favoriteButton = mainView.iconsStack.arrangedSubviews[0] as? UIButton else {return}
-                favoriteButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+        favoriteButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
     }
     
 //    override func viewWillAppear(_ animated: Bool){
